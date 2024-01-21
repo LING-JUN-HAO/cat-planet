@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>產品管理頁面</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link href="
@@ -32,13 +32,13 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.min.css
                 </button>
             </div>
 
-            <table class="table table-hover mt-4">
+            <table class="table table-hover mt-6">
                 <thead>
                     <tr>
                         <th width="120">
                             分類
                         </th>
-                        <th>
+                        <th width="200">
                             產品名稱
                         </th>
                         <th width="120">
@@ -214,10 +214,10 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.min.css
 
 
             <!-- Modal -->
-            <div id="spinnertModal" class="modal fade" id="exampleModal" tabindex="-1"
+            <div id="spinnerModal" class="modal fade" id="exampleModal" tabindex="-1"
                 aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog d-flex align-items-center justify-content-center text-white">
-                    <div class="text-center" v-if="isSpinner">
+                    <div class="text-center">
                         <div class="spinner-border" role="status">
                             <span class="sr-only"></span>
                         </div>
@@ -244,7 +244,6 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.min.css
                         products: [],
                         tempProduct: {},
                         isNew: false,
-                        isSpinner: true
                     }
                 },
                 methods: {
@@ -353,7 +352,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.min.css
                             }
                         );
                         spinnerModal = new bootstrap.Modal(
-                            document.getElementById("spinnertModal"),
+                            document.getElementById("spinnerModal"),
                             {
                                 keyboard: false,
                                 backdrop: 'static'

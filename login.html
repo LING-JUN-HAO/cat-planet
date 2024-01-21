@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>登入頁面</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link href="
@@ -25,18 +25,18 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.min.css
 </head>
 
 <body>
-    <div id="app">
-        <div class="container">
+    <div id="app" class="w-100">
+        <div class="container loginContainer">
             <div class="row justify-content-center">
-                <h1 class="h3 mb-3 font-weight-normal">
-                    請先登入
+                <h1 class="h3 my-3 pb-3 font-weight-normal text-left">
+                    會員登入
                 </h1>
                 <div class="col-8">
                     <form id="form" class="form-signin" @submit.prevent="login()">
                         <div class="form-floating mb-3">
                             <input type="email" class="form-control" id="username" placeholder="name@example.com"
                                 v-model="user.username" required autofocus>
-                            <label for="username">Email address</label>
+                            <label for="username">Account</label>
                         </div>
                         <div class="form-floating">
                             <input type="password" class="form-control" id="password" placeholder="Password"
@@ -49,9 +49,18 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.min.css
                     </form>
                 </div>
             </div>
-            <p class="mt-5 mb-3 text-muted">
-                &copy; 2021~∞ - 六角學院
-            </p>
+        </div>
+        <!-- Modal -->
+        <div id="spinnerModal" class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog d-flex align-items-center justify-content-center text-white">
+                <div class="text-center">
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only"></span>
+                    </div>
+                    <div>登入中....請稍後</div>
+                </div>
+            </div>
         </div>
     </div>
     <script type="module">
@@ -60,6 +69,8 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.min.css
 
         const url = 'https://ec-course-api.hexschool.io'; // 請加入站點
         const path = 'antoniovue'; // 請加入個人 API Path
+
+        let spinnerModal = null;
 
         createApp({
             data() {
@@ -72,18 +83,30 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.min.css
             },
             methods: {
                 async login() {
+                    spinnerModal.show()
                     try {
                         const res = await axios.post(`${url}/v2/admin/signin`, this.user)
                         const data = res.data
                         const { token, expired } = data
                         document.cookie = `hexToken=${token}; expireS=${new Date(expired)};`
+                        spinnerModal.hide()
                         window.location.href = 'product.html'
                     } catch (error) {
                         Swal.fire("登入失敗");
+                        spinnerModal.hide()
                         console.dir("error", error.message)
                     }
                 }
             },
+            mounted() {
+                spinnerModal = new bootstrap.Modal(
+                    document.getElementById("spinnerModal"),
+                    {
+                        keyboard: false,
+                        backdrop: 'static'
+                    }
+                );
+            }
         }).mount('#app');
     </script>
 </body>
