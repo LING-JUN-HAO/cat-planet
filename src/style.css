@@ -1,0 +1,10 @@
+@import "~bootstrap/scss/bootstrap.scss";
+
+html,
+body {
+  height: 100vh;
+  overflow: hidden;
+}
+.modal-open{
+  overflow: hidden;
+}
