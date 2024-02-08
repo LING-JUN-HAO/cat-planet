@@ -1,12 +1,12 @@
 <template>
   <div class="w-100">
-    <div class="container">
-      <div class="text-end mt-4 overflow-hidden">
+    <AdminHeader></AdminHeader>
+    <div class="container overflow-hidden">
+      <div class="text-end mt-3 mb-1">
         <button class="btn btn-primary" @click="openModal('new')">
           建立新的產品
         </button>
       </div>
-
       <table class="table table-hover mt-6">
         <thead>
           <tr>
@@ -23,9 +23,9 @@
               售價
             </th>
             <th width="100">
-              是否啟用
+              啟用
             </th>
-            <th width="120">
+            <th width="120" class="text-center">
               編輯
             </th>
           </tr>
@@ -48,7 +48,7 @@
               <span v-if="item.is_enabled" class="text-success">啟用</span>
               <span v-else>未啟用</span>
             </td>
-            <td>
+            <td class="text-center">
               <div class="btn-group">
                 <button type="button" class="btn btn-outline-primary btn-sm" @click="openModal('edit', item)">
                   編輯
@@ -61,14 +61,12 @@
           </tr>
         </tbody>
       </table>
-
       <pagination-vue :pages="pages" :get-products="getProducts"></pagination-vue>
-
       <!-- Modal -->
-      <product-modal-vue ref="pModal" :temp-Product="tempProduct" @update-temp-product="handleUpdateTempProduct" :isNew="isNew"></product-modal-vue>
-      <delete-modal-vue ref="dModal"  :deleteProduct="deleteProduct"></delete-modal-vue>
-      <spinner-modal-vue  ref="sModal" :loadingMessage="loadingMessage"></spinner-modal-vue>
-
+      <product-modal-vue ref="pModal" :temp-Product="tempProduct" @update-temp-product="handleUpdateTempProduct"
+        :isNew="isNew"></product-modal-vue>
+      <delete-modal-vue ref="dModal" :temp-Product="tempProduct" :deleteProduct="deleteProduct"></delete-modal-vue>
+      <spinner-modal-vue ref="sModal" :loadingMessage="loadingMessage"></spinner-modal-vue>
     </div>
   </div>
 </template>
@@ -78,6 +76,9 @@ import PaginationVue from '@/components/PaginationComponent.vue'
 import ProductModalVue from '@/components/ProductModal.vue'
 import SpinnerModalVue from '@/components/SpinnerModal.vue'
 import DeleteModalVue from '@/components/DeleteModal.vue'
+import AdminHeader from '@/components/AdminHeader.vue'
+import ShowNotification from '@/mixin/Swal.js'
+const { VITE_API, VITE_PATH } = import.meta.env
 
 export default {
   data () {
@@ -87,28 +88,28 @@ export default {
       tempProduct: {},
       isNew: false,
       pages: {},
-      loadingMessage: '資料處理中...請稍後',
-      url: 'https://ec-course-api.hexschool.io',
-      path: 'antoniovue'
+      loadingMessage: '資料處理中...請稍後'
     }
   },
   methods: {
     async checkAdmin () {
       try {
-        await this.$http.post(`${this.url}/v2/api/user/check`, this.user)
+        await this.$http.post(`${VITE_API}/api/user/check`, this.user)
         this.getProducts()
-        this.$swal.fire('登入驗證成功')
       } catch (error) {
-        window.location.href = 'login.html'
+        this.$router.push({ name: 'adminLogin' })
       }
     },
     async getProducts (page = 1) {
       try {
-        const res = await this.$http.get(`${this.url}/v2/api/${this.path}/admin/products?page=${page}`)
+        this.$refs.sModal.openModal()
+        const res = await this.$http.get(`${VITE_API}/api/${VITE_PATH}/admin/products?page=${page}`)
         this.products = res.data.products
         this.pages = res.data.pagination
       } catch (error) {
-        this.$swal.fire('商品資料取得發生異常')
+        ShowNotification('商品資料取得發生異常')
+      } finally {
+        this.$refs.sModal.closeModal()
       }
     },
     openModal (status, item) {
@@ -126,7 +127,7 @@ export default {
         this.isNew = false
         this.$refs.pModal.openModal()
       } else if (status === 'delete') {
-        this.tempProduct = { ...item }
+        this.tempProduct = item
         this.$refs.dModal.openModal()
       }
     },
@@ -139,36 +140,35 @@ export default {
         this.$refs.pModal.closeModal()
         this.$refs.sModal.openModal()
         let httpMethod = 'post'
-        let requestUrl = `${this.url}/v2/api/${this.path}/admin/product`
+        let requestUrl = `${VITE_API}/api/${VITE_PATH}/admin/product`
         let alertMsg = '商品資料新增成功'
 
         if (!this.isNew) {
           httpMethod = 'put'
-          requestUrl = `${this.url}/v2/api/${this.path}/admin/product/${this.tempProduct.id}`
+          requestUrl = `${VITE_API}/api/${VITE_PATH}/admin/product/${this.tempProduct.id}`
           alertMsg = '商品資料編輯成功'
         }
         await this.$http[httpMethod](requestUrl, {
           data: this.tempProduct
         })
-        this.$swal.fire(alertMsg)
-        this.$refs.sModal.closeModal()
+        ShowNotification(alertMsg)
         this.getProducts()
       } catch (error) {
-        this.$swal.fire('商品資料編輯異常')
+        ShowNotification('商品資料編輯異常')
+      } finally {
         this.$refs.sModal.closeModal()
       }
     },
     async deleteProduct () {
       this.$refs.dModal.closeModal()
       this.$refs.sModal.openModal()
-
       try {
-        await this.$http.delete(`${this.url}/v2/api/${this.path}/admin/product/${this.tempProduct.id}`)
-        this.$swal.fire('商品刪除成功')
+        await this.$http.delete(`${VITE_API}/api/${VITE_PATH}/admin/product/${this.tempProduct.id}`)
+        ShowNotification('商品刪除成功')
         this.getProducts()
-        this.$refs.sModal.closeModal()
       } catch (error) {
-        this.$swal.fire('商品刪除操作異常')
+        ShowNotification('商品刪除操作異常')
+      } finally {
         this.$refs.sModal.closeModal()
       }
     },
@@ -183,11 +183,10 @@ export default {
       '$1'
     )
     this.$http.defaults.headers.common.Authorization = hexCookie
-
     this.checkAdmin()
   },
   components: {
-    PaginationVue, SpinnerModalVue, ProductModalVue, DeleteModalVue
+    PaginationVue, SpinnerModalVue, ProductModalVue, DeleteModalVue, AdminHeader
   }
 }
 </script>
@@ -197,10 +196,11 @@ img {
   object-fit: contain;
   max-width: 100%;
 }
+
 .primary-image {
   height: 300px;
 }
+
 .images {
   height: 150px;
-}
-</style>
+}</style>

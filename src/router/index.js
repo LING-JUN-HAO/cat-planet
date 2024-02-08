@@ -1,23 +1,58 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import LoginPage from '@/views/LoginPage.vue'
-import ProductsPage from '@/views/ProductsPage.vue'
+import AdminLayout from '@/views/admin/AdminLayout.vue'
+import AdminLoginPage from '@/views/admin/LoginPage.vue'
+import AdminProductsPage from '@/views/admin/ProductsPage.vue'
+import ConsumerLayout from '@/views/consumer/ConsumerLayout.vue'
+import ConsumerCheckout from '@/views/consumer/CheckoutPage.vue'
+import ConsumerProducts from '@/views/consumer/ProductsPage.vue'
+import ConsumerCart from '@/views/consumer/CartPage.vue'
 
 const router = createRouter({
   history: createWebHashHistory(),
   routes: [
     {
-      path: '/login',
-      name: 'login',
-      component: LoginPage
+      path: '/admin',
+      name: 'admin',
+      component: AdminLayout,
+      children: [
+        {
+          path: 'login',
+          name: 'adminLogin',
+          component: AdminLoginPage
+        },
+        {
+          path: 'products',
+          name: 'adminProducts',
+          component: AdminProductsPage
+        }
+      ]
     },
     {
-      path: '/Products',
-      name: 'Products',
-      component: ProductsPage
+      path: '/consumer',
+      name: 'consumer',
+      component: ConsumerLayout,
+      children: [
+        {
+          path: 'checkout',
+          name: 'consumerCheckout',
+          component: ConsumerCheckout
+        },
+        {
+          path: 'products',
+          name: 'consumerProducts',
+          component: ConsumerProducts
+        },
+        {
+          path: 'carts',
+          name: 'consumerCarts',
+          component: ConsumerCart
+        }
+      ]
     },
     {
       path: '/:pathMatch(.*)*',
-      redirect: '/login'
+      name: 'notFount',
+      redirect: '/admin/login'
     }
   ]
 })

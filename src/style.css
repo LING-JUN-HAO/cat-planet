@@ -1,9 +1,10 @@
 @import "~bootstrap/scss/bootstrap.scss";
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
 
 html,
 body {
-  height: 100vh;
-  overflow: hidden;
+  height: 100%;
+  font-family: 'Noto Sans TC', sans-serif;
 }
 .modal-open{
   overflow: hidden;

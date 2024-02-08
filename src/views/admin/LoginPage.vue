@@ -6,13 +6,13 @@
         <div class="col-8">
           <form id="form" class="form-signin" @submit.prevent="login()">
             <div class="form-floating mb-3">
-              <input type="email" autocomplete="current-password" class="form-control" id="username" placeholder="Account" v-model="user.username"
-                required autofocus />
+              <input type="email" autocomplete="current-password" class="form-control" id="username" placeholder="Account"
+                v-model="user.username" required autofocus />
               <label for="username">Account</label>
             </div>
             <div class="form-floating">
-              <input type="password" autocomplete="current-password" class="form-control" id="password" placeholder="Password" v-model="user.password"
-                required />
+              <input type="password" autocomplete="current-password" class="form-control" id="password"
+                placeholder="Password" v-model="user.password" required />
               <label for="password">Password</label>
             </div>
             <button class="btn btn-lg btn-primary w-100 mt-3" type="submit">登入</button>
@@ -25,7 +25,9 @@
   </div>
 </template>
 <script>
-import SpinnerModal from '../components/SpinnerModal.vue'
+import SpinnerModal from '@/components/SpinnerModal.vue'
+import ShowNotification from '@/mixin/Swal.js'
+const { VITE_API } = import.meta.env
 
 export default {
   data () {
@@ -34,7 +36,6 @@ export default {
         username: '',
         password: ''
       },
-      url: 'https://ec-course-api.hexschool.io',
       loadingMessage: '登入中...請稍後'
     }
   },
@@ -42,21 +43,18 @@ export default {
     async login () {
       this.$refs.sModal.openModal()
       try {
-        const res = await this.$http.post(`${this.url}/v2/admin/signin`, this.user)
+        // 取得登入資料並儲存cookie
+        const res = await this.$http.post(`${VITE_API}/admin/signin`, this.user)
         const data = res.data
         const { token, expired } = data
         document.cookie = `hexToken=${token}; expireS=${new Date(expired)};`
         this.$refs.sModal.closeModal()
-        this.$router.push('/products')
+        this.$router.push({ name: 'adminProducts' })
       } catch (error) {
         this.user.username = ''
         this.user.password = ''
         this.$refs.sModal.closeModal()
-        this.$swal.fire({
-          title: '登入失敗',
-          heightAuto: false,
-          timer: 1000
-        })
+        ShowNotification('登入失敗')
       }
     }
   },

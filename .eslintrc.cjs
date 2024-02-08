@@ -30,6 +30,6 @@ module.exports = {
     'vue'
   ],
   rules: {
-    // Add any additional rules or overrides here
+    'vue/no-v-model-argument': 'off'
   }
 }
