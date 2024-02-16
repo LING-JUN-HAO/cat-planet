@@ -1,6 +1,5 @@
 <template>
   <div>
-    <consumer-header></consumer-header>
     <div class="d-flex flex-column align-items-center justify-content-center w-100">
       <VForm ref="orderForm" class="col-md-6 mt-3" v-slot="{ errors }" @submit="createOrder">
         <div class="row">
@@ -12,7 +11,7 @@
           </div>
           <div class="mb-3 col-4">
             <label for="tel" class="form-label">電話號碼</label>
-            <VField id="tel" name="電話" type="text" class="form-control" :class="{ 'is-invalid': errors['電話'] }"
+            <VField id="tel" name="電話" type="tel" class="form-control" :class="{ 'is-invalid': errors['電話'] }"
               placeholder="請輸入電話" rules="required|min:8|max:10" v-model="orderData.user.tel"></VField>
             <ErrorMessage name="電話" class="invalid-feedback"></ErrorMessage>
           </div>
@@ -44,7 +43,6 @@
 </template>
 
 <script>
-import ConsumerHeader from '@/components/ConsumerHeader.vue'
 import { cartStore } from '@/store/Store.js'
 import ShowNotification from '@/mixin/Swal.js'
 const { VITE_API, VITE_PATH } = import.meta.env
@@ -77,7 +75,6 @@ export default {
         console.log('error', error)
       }
     }
-  },
-  components: { ConsumerHeader }
+  }
 }
 </script>

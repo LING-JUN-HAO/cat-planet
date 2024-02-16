@@ -1,50 +1,46 @@
 <template>
-  <div>
-    <consumer-header></consumer-header>
-    <div class="container mt-4">
-
-      <div class="row gap-3">
-        <div v-for="item in products" :key="item.id" class="col-3 mb-4 py-4 card">
-          <div class="overflow-hidden">
-            <img :src="item.imageUrl" alt="" class="w-100 object-fit-cover productImg ">
-          </div>
-          <div>
-            <h2 class="fs-6 fw-bold my-3">{{ item.title }} | {{ item.category }}</h2>
-            <p>
-              <span>NT{{ item.price }}</span>
-              <span class="text-decoration-line-through ps-2">原價: {{ item.origin_price }}</span>
-            </p>
-          </div>
-          <div class="btn-group btn-group-sm">
-            <button type="button" class="btn btn-outline-secondary" @click="getProduct(item.id)"
-              :disabled="loadingStatus.loadingItem === item.id || !item.is_enabled">
-              <i class="fas fa-spinner fa-pulse" v-if="loadingStatus.loadingItem === item.id"></i>
-              查看更多
-            </button>
-            <button type="button" class="btn btn-outline-danger" @click="addToCart(item.id)"
-              :disabled="loadingStatus.loadingItem === item.id || !item.is_enabled">
-              <i class="fas fa-spinner fa-pulse" v-if="loadingStatus.loadingItem === item.id"></i>
-              加到購物車
-            </button>
-          </div>
+  <div class="container mt-4">
+    <div class="row gap-3">
+      <div v-for="item in products" :key="item.id" class="col-3 mb-4 py-4 card">
+        <div class="overflow-hidden" @click="getProduct(item.id)">
+          <img :src="item.imageUrl" :alt="item.id" class="w-100 object-fit-cover productImg ">
+        </div>
+        <div>
+          <h2 class="fs-6 fw-bold my-3">{{ item.title }} | {{ item.category }}</h2>
+          <p>
+            <span>NT{{ item.price }}</span>
+            <span class="text-decoration-line-through ps-2">原價: {{ item.origin_price }}</span>
+          </p>
+        </div>
+        <div class="btn-group btn-group-sm">
+          <button type="button" class="btn btn-outline-secondary" @click="getProduct(item.id)"
+            :disabled="loadingStatus.loadingItem === item.id || !item.is_enabled">
+            <i class="fas fa-spinner fa-pulse" v-if="loadingStatus.loadingItem === item.id"></i>
+            查看更多
+          </button>
+          <button type="button" class="btn btn-outline-danger" @click="addToCart(item.id)"
+            :disabled="loadingStatus.loadingItem === item.id || !item.is_enabled">
+            <i class="fas fa-spinner fa-pulse" v-if="loadingStatus.loadingItem === item.id"></i>
+            加到購物車
+          </button>
         </div>
       </div>
-      <!-- Modal -->
-      <consumer-product :product='product' ref="userProductModal" @add-to-cart='addToCart'></consumer-product>
-      <VueLoading v-model:active="isLoading" :loader="'spinner'"  :is-full-page="true">
-        <div class="loadingio-spinner-ripple-wu44vrvts1">
-          <div class="ldio-2gn8nvj94zp">
-            <div></div>
-            <div></div>
-          </div>
-        </div>
-      </VueLoading>
     </div>
+    <!-- Modal -->
+    <consumer-product :product='product' ref="userProductModal" @add-to-cart='addToCart'></consumer-product>
+    <VueLoading v-model:active="isLoading" :loader="'spinner'" :is-full-page="true">
+      <div class="loadingio-spinner-ripple-wu44vrvts1">
+        <div class="ldio-2gn8nvj94zp">
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    </VueLoading>
   </div>
 </template>
 
 <script>
-import ConsumerHeader from '@/components/ConsumerHeader.vue'
+
 import ConsumerProduct from '@/components/ConsumerProduct.vue'
 import ShowNotification from '@/mixin/Swal.js'
 import { cartStore } from '@/store/Store.js'
@@ -108,7 +104,7 @@ export default {
     this.cartStore.getCart()
   },
   components: {
-    ConsumerHeader, ConsumerProduct
+    ConsumerProduct
   }
 }
 </script>
@@ -126,6 +122,7 @@ export default {
   cursor: pointer;
   scale: 1.1;
 }
+
 .vl-shown {
   overflow: hidden;
 }
@@ -162,9 +159,11 @@ export default {
   opacity: 0.5;
 }
 
-.vl-overlay .vl-icon, .vl-parent {
+.vl-overlay .vl-icon,
+.vl-parent {
   position: relative;
 }
+
 @keyframes ldio-2gn8nvj94zp {
   0% {
     top: 96px;
@@ -173,6 +172,7 @@ export default {
     height: 0;
     opacity: 1;
   }
+
   100% {
     top: 18px;
     left: 18px;
@@ -181,37 +181,46 @@ export default {
     opacity: 0;
   }
 }
+
 .ldio-2gn8nvj94zp div {
   position: absolute;
   border-width: 4px;
   border-style: solid;
   opacity: 1;
   border-radius: 50%;
-  animation: ldio-2gn8nvj94zp 1s cubic-bezier(0,0.2,0.8,1) infinite;
+  animation: ldio-2gn8nvj94zp 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
 }
+
 .ldio-2gn8nvj94zp div:nth-child(1) {
   border-color: #1d3f72
 }
+
 .ldio-2gn8nvj94zp div:nth-child(2) {
   border-color: #5699d2;
   animation-delay: -0.5s;
 }
+
 .loadingio-spinner-ripple-wu44vrvts1 {
   width: 200px;
   height: 200px;
   display: inline-block;
   overflow: hidden;
-/*  background 設定 none  */
+  /*  background 設定 none  */
   background: none;
 }
+
 .ldio-2gn8nvj94zp {
   width: 100%;
   height: 100%;
   position: relative;
   transform: translateZ(0) scale(1);
   backface-visibility: hidden;
-  transform-origin: 0 0; /* see note above */
+  transform-origin: 0 0;
+  /* see note above */
 }
-.ldio-2gn8nvj94zp div { box-sizing: content-box; }
-/* generated by https://loading.io/ */
-</style>
+
+.ldio-2gn8nvj94zp div {
+  box-sizing: content-box;
+}
+
+/* generated by https://loading.io/ */</style>

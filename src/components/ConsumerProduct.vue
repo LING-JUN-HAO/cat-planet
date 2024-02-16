@@ -12,7 +12,7 @@
         <div class="modal-body">
           <div class="row">
             <div class="col-sm-6">
-              <img class="img-fluid" :src="product.imageUrl" alt="">
+              <img class="img-fluid" :src="product.imageUrl" :alt="product.id">
             </div>
             <div class="col-sm-6">
               <span class="badge bg-primary rounded-pill">{{ product.category }}</span>

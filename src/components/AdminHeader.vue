@@ -13,10 +13,10 @@
                             <router-link class="nav-link" active-class="active" to="/admin/products">產品管理</router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link class="nav-link" active-class="active" to="/admin/products1">優惠卷管理</router-link>
+                            <router-link class="nav-link" active-class="active" to="/admin/products">優惠卷管理</router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link class="nav-link" active-class="active" to="/admin/products2">訂單管理</router-link>
+                            <router-link class="nav-link" active-class="active" to="/admin/products">訂單管理</router-link>
                         </li>
                     </ul>
                 </div>

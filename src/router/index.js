@@ -52,7 +52,7 @@ const router = createRouter({
     {
       path: '/:pathMatch(.*)*',
       name: 'notFount',
-      redirect: '/admin/login'
+      redirect: '/Consumer/Products'
     }
   ]
 })

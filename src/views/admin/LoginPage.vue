@@ -21,7 +21,7 @@
       </div>
     </div>
     <!-- Modal -->
-    <spinner-Modal ref="sModal" :loadingMessage="loadingMessage"></spinner-Modal>
+    <spinner-modal ref="sModal" :loadingMessage="loadingMessage"></spinner-modal>
   </div>
 </template>
 <script>

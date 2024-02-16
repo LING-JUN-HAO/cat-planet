@@ -15,7 +15,7 @@
                 <label for="imageUrl" class="form-label">主要圖片</label>
                 <input v-model="newTemProduct.imageUrl" type="text" class="form-control mb-2"
                   placeholder="請輸入圖片連結">
-                <img class="img-fluid" :src="newTemProduct.imageUrl">
+                <img class="img-fluid" :src="newTemProduct.imageUrl" alt="主要圖片">
               </div>
               <h3 class="mb-3">多圖新增</h3>
               <div v-if="Array.isArray(newTemProduct.imagesUrl)">
@@ -54,7 +54,7 @@
                     placeholder="請輸入分類">
                 </div>
                 <div class="mb-3 col-md-6">
-                  <label for="price" class="form-label">單位</label>
+                  <label for="unit" class="form-label">單位</label>
                   <input id="unit" type="text" class="form-control" v-model="newTemProduct.unit" placeholder="請輸入單位">
                 </div>
               </div>
@@ -80,7 +80,7 @@
               </div>
               <div class="mb-3">
                 <label for="content" class="form-label">說明內容</label>
-                <textarea id="description" type="text" class="form-control" v-model="newTemProduct.content"
+                <textarea id="content" type="text" class="form-control" v-model="newTemProduct.content"
                   placeholder="請輸入說明內容"></textarea>
               </div>
               <div class="mb-3">

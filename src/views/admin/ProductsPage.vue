@@ -61,21 +61,21 @@
           </tr>
         </tbody>
       </table>
-      <pagination-vue :pages="pages" :get-products="getProducts"></pagination-vue>
+      <pagination :pages="pages" :get-products="getProducts"></pagination>
       <!-- Modal -->
-      <product-modal-vue ref="pModal" :temp-Product="tempProduct" @update-temp-product="handleUpdateTempProduct"
-        :isNew="isNew"></product-modal-vue>
-      <delete-modal-vue ref="dModal" :temp-Product="tempProduct" :deleteProduct="deleteProduct"></delete-modal-vue>
-      <spinner-modal-vue ref="sModal" :loadingMessage="loadingMessage"></spinner-modal-vue>
+      <admin-product-modal ref="pModal" :temp-Product="tempProduct" @update-temp-product="handleUpdateTempProduct"
+        :isNew="isNew"></admin-product-modal>
+      <admin-delete-modal ref="dModal" :temp-Product="tempProduct" :deleteProduct="deleteProduct"></admin-delete-modal>
+      <spinner-modal ref="sModal" :loadingMessage="loadingMessage"></spinner-modal>
     </div>
   </div>
 </template>
 
 <script>
-import PaginationVue from '@/components/PaginationComponent.vue'
-import ProductModalVue from '@/components/ProductModal.vue'
-import SpinnerModalVue from '@/components/SpinnerModal.vue'
-import DeleteModalVue from '@/components/DeleteModal.vue'
+import Pagination from '@/components/PaginationComponent.vue'
+import AdminProductModal from '@/components/AdminProductModal.vue'
+import SpinnerModal from '@/components/SpinnerModal.vue'
+import AdminDeleteModal from '@/components/AdminDeleteModal.vue'
 import AdminHeader from '@/components/AdminHeader.vue'
 import ShowNotification from '@/mixin/Swal.js'
 const { VITE_API, VITE_PATH } = import.meta.env
@@ -186,7 +186,7 @@ export default {
     this.checkAdmin()
   },
   components: {
-    PaginationVue, SpinnerModalVue, ProductModalVue, DeleteModalVue, AdminHeader
+    Pagination, SpinnerModal, AdminProductModal, AdminDeleteModal, AdminHeader
   }
 }
 </script>

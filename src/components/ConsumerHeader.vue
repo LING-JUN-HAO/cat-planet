@@ -2,7 +2,7 @@
   <header class="sticky-top ">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container-fluid">
-        <router-link class="navbar-brand ps-4" active-class="active" to="/admin/products">前台使用介面</router-link>
+        <router-link class="navbar-brand ps-4" active-class="active" to="/consumer/products">前台使用介面</router-link>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
           aria-controls="navbarText" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>

@@ -1,9 +1,8 @@
 <template>
   <div>
-    <consumer-header></consumer-header>
     <div class="container">
       <div class="text-end my-3">
-        <button class="btn btn-outline-danger" :disabled="cart.total === 0" type="button" @click="deleteAllCarts">清空購物車
+        <button class="btn btn-outline-danger" :disabled="cart.total === 0" type="button" @click="deleteCartClick">清空購物車
         </button>
       </div>
       <table class="table align-middle">
@@ -69,11 +68,12 @@
     </div>
     <!-- Modal -->
     <spinner-modal ref="sModal" :loadingMessage="loadingMessage"></spinner-modal>
+    <consumer-cart-delete-modal ref="dModal" :deleteAllCarts="deleteAllCarts"></consumer-cart-delete-modal>
   </div>
 </template>
 <script>
 import { mapState } from 'pinia'
-import ConsumerHeader from '@/components/ConsumerHeader.vue'
+import ConsumerCartDeleteModal from '@/components/ConsumerCartDeleteModal.vue'
 import SpinnerModal from '@/components/SpinnerModal.vue'
 import ShowNotification from '@/mixin/Swal.js'
 import { cartStore } from '@/store/Store.js'
@@ -91,7 +91,11 @@ export default {
     }
   },
   methods: {
+    deleteCartClick () {
+      this.$refs.dModal.openModal()
+    },
     async deleteAllCarts () {
+      this.$refs.dModal.closeModal()
       this.$refs.sModal.openModal()
       try {
         await this.$http.delete(`${VITE_API}/api/${VITE_PATH}/carts`)
@@ -143,7 +147,7 @@ export default {
     this.cartStore.getCart()
   },
   components: {
-    ConsumerHeader, SpinnerModal
+    SpinnerModal, ConsumerCartDeleteModal
   }
 }
 </script>
