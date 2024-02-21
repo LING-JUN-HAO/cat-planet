@@ -6,7 +6,7 @@
           <h5 class="modal-title">
             <span>新增產品</span>
           </h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <div class="row">
@@ -50,8 +50,9 @@
               <div class="row">
                 <div class="mb-3 col-md-6">
                   <label for="category" class="form-label">分類</label>
-                  <input id="category" type="text" class="form-control" v-model="newTemProduct.category"
-                    placeholder="請輸入分類">
+                  <select id="category" class="form-select" v-model.number="newTemProduct.category" placeholder="請輸入分類">
+                    <option v-for="i in options" :key="i + '123'" :value="i" selected >{{ i }}</option>
+                  </select>
                 </div>
                 <div class="mb-3 col-md-6">
                   <label for="unit" class="form-label">單位</label>
@@ -84,7 +85,7 @@
                   placeholder="請輸入說明內容"></textarea>
               </div>
               <div class="mb-3">
-                <div class="form-check">
+                <div class="form-check form-switch">
                   <input id="is_enabled" class="form-check-input" type="checkbox" :true-value="1" :false-value="0"
                     v-model="newTemProduct['is_enabled']">
                   <label class="form-check-label" for="is_enabled">是否啟用</label>
@@ -113,7 +114,8 @@ export default {
   data () {
     return {
       productModal: null,
-      newTemProduct: {}
+      newTemProduct: {},
+      options: ['貓咪玩具', '美容護理', '飲食用品', '貓咪床窩']
     }
   },
   methods: {

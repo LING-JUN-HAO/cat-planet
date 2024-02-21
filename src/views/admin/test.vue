@@ -10,22 +10,22 @@
       <table class="table table-hover mt-6">
         <thead>
           <tr>
-            <th data-field="category" width="120">
+            <th width="120">
               分類
             </th>
-            <th data-field="title" width="200">
+            <th width="200">
               產品名稱
             </th>
-            <th data-field="origin_price" width="120">
+            <th width="120">
               原價
             </th>
-            <th data-field="price" width="120">
+            <th width="120">
               售價
             </th>
-            <th data-field="is_enabled" width="100">
+            <th width="100">
               啟用
             </th>
-            <th data-field="id" width="120" class="text-center">
+            <th width="120" class="text-center">
               操作
             </th>
           </tr>

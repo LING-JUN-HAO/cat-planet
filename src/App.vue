@@ -12,7 +12,9 @@ html,
 body {
   height: 100%;
 }
-
+textarea{
+  resize: none !important;
+}
 .modal-open {
   overflow: hidden;
 }
