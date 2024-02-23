@@ -7,10 +7,12 @@
 * {
   font-family: 'Noto Sans TC', sans-serif;
 }
-
 html,
 body {
   height: 100%;
+}
+.btn:hover{
+  color: white !important;
 }
 textarea{
   resize: none !important;

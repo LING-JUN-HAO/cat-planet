@@ -3,7 +3,7 @@
     <AdminHeader></AdminHeader>
     <div class="container overflow-hidden">
       <div class="text-end mt-3 mb-1">
-        <button class="btn btn-primary" @click="openModal('new')">
+        <button class="btn btn-primary text-white" @click="openModal('new')">
           建立新的產品
         </button>
       </div>
@@ -16,13 +16,16 @@
             <th data-field="title" width="200">
               產品名稱
             </th>
-            <th data-field="origin_price" width="120">
+            <th data-field="multiImg" width="120" class="text-center">
+              多圖
+            </th>
+            <th data-field="origin_price" width="120" class="text-center">
               原價
             </th>
-            <th data-field="price" width="120">
+            <th data-field="price" width="120" class="text-center">
               售價
             </th>
-            <th data-field="is_enabled" width="100">
+            <th data-field="is_enabled" width="100" class="text-center">
               啟用
             </th>
             <th data-field="id" width="120" class="text-center">
@@ -38,14 +41,18 @@
             <td>
               {{ item.title }}
             </td>
-            <td>
+            <td class="text-center">
+              <span v-if="item.imagesUrl" class="text-success fw-bold">是</span>
+              <span v-else>否</span>
+            </td>
+            <td class="text-center">
               {{ item.origin_price }}
             </td>
-            <td>
+            <td class="text-center">
               {{ item.price }}
             </td>
-            <td>
-              <span v-if="item.is_enabled" class="text-success">啟用</span>
+            <td class="text-center">
+              <span v-if="item.is_enabled" class="text-success fw-bold">啟用</span>
               <span v-else>未啟用</span>
             </td>
             <td class="text-center">

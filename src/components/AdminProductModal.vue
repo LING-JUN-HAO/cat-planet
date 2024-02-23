@@ -2,7 +2,7 @@
   <div ref="productModal" class="modal fade" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
       <div class="modal-content border-0">
-        <div class="modal-header bg-dark text-white">
+        <div class="modal-header bg-hex text-white">
           <h5 class="modal-title">
             <span>新增產品</span>
           </h5>
@@ -13,38 +13,15 @@
             <div class="col-sm-4">
               <div class="mb-3">
                 <label for="imageUrl" class="form-label">主要圖片</label>
-                <input v-model="newTemProduct.imageUrl" type="text" class="form-control mb-2"
+                <input v-model="newTemProduct.imageUrl" type="text" class="form-control text-truncate mb-2"
                   placeholder="請輸入圖片連結">
-                <img class="img-fluid" :src="newTemProduct.imageUrl" alt="主要圖片">
-              </div>
-              <h3 class="mb-3">多圖新增</h3>
-              <div v-if="Array.isArray(newTemProduct.imagesUrl)">
-                <div class="mb-1" v-for="(image, key) in newTemProduct.imagesUrl" :key="key + 123">
-                  <div class="mb-3">
-                    <label :for="``" class="form-label">圖片網址</label>
-                    <input :id="``" v-model="newTemProduct.imagesUrl[key]" type="text" class="form-control"
-                      placeholder="請輸入圖片連結">
-                  </div>
-                  <img class="img-fluid" :src="image">
-                </div>
-                <div v-if="newTemProduct.imagesUrl.length === 0 ||
-                newTemProduct.imagesUrl[newTemProduct.imagesUrl.length - 1]
-                  ">
-                  <button class="btn btn-outline-primary btn-sm d-block w-100" @click="newTemProduct.imagesUrl.push('')">
-                    新增圖片
-                  </button>
-                </div>
-                <div v-else>
-                  <button class="btn btn-outline-danger btn-sm d-block w-100" @click="newTemProduct.imagesUrl.pop()">
-                    刪除圖片
-                  </button>
-                </div>
+                <img class="w-100 object-fit-cover mainImg" :src="newTemProduct.imageUrl" alt="主要圖片">
               </div>
             </div>
             <div class="col-sm-8">
               <div class="mb-3">
                 <label for="title" class="form-label">標題</label>
-                <input id="title" type="text" class="form-control" v-model="newTemProduct.title" placeholder="請輸入標題">
+                <input id="title" type="text" class="form-control text-truncate" v-model="newTemProduct.title" placeholder="請輸入標題">
               </div>
 
               <div class="row">
@@ -95,11 +72,11 @@
           </div>
         </div>
         <div class="modal-footer">
+          <button type="button" class="btn btn-primary text-white " @click="updateTempProduct">
+            確認
+          </button>
           <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
             取消
-          </button>
-          <button type="button" class="btn btn-primary" @click="updateTempProduct">
-            確認
           </button>
         </div>
       </div>
@@ -141,4 +118,8 @@ export default {
   }
 }
 </script>
-<style scoped></style>
+<style scoped>
+.mainImg{
+  height: 250px;
+}
+</style>

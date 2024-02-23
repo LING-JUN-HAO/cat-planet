@@ -114,7 +114,7 @@ export default {
 }
 
 .productImg {
-  height: 280px;
+  height: 250px;
   transition: all ease .3s;
 }
 

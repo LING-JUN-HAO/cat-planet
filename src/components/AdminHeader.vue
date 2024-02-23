@@ -1,8 +1,12 @@
 <template>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-hex">
             <div class="container-fluid">
-                <router-link class="navbar-brand ps-4" active-class="active" to="/admin/products">後台管理介面</router-link>
+                <router-link active-class="active" to="/admin/products">
+                    <div>
+                        <img src="../assets/image/icon.png" height="45px" alt="後台管理介面">
+                    </div>
+                </router-link>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
                     aria-controls="navbarText" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -13,10 +17,10 @@
                             <router-link class="nav-link" active-class="active" to="/admin/products">產品管理</router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link class="nav-link" active-class="active" to="/admin/products">優惠卷管理</router-link>
+                            <router-link class="nav-link" active-class="active" to="/admin/vouchers">優惠卷管理</router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link class="nav-link" active-class="active" to="/admin/products">訂單管理</router-link>
+                            <router-link class="nav-link" active-class="active" to="/admin/orders">訂單管理</router-link>
                         </li>
                     </ul>
                 </div>
@@ -24,3 +28,8 @@
         </nav>
     </header>
 </template>
+<style>
+.navbar-brand {
+    height: 40px;
+}
+</style>

@@ -15,7 +15,7 @@
                 required autocomplete="current-password" />
               <label for="password">Password</label>
             </div>
-            <button class="btn btn-lg btn-dark w-100 mt-3" type="submit">登入</button>
+            <button class="btn btn-lg btn-hex w-100 mt-3" type="submit">登入</button>
           </form>
         </div>
       </div>
