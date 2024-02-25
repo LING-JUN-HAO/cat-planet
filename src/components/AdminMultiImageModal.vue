@@ -15,7 +15,7 @@
                 <div class="carousel-indicators">
                   <template v-if="newTemProduct.imagesUrl">
                     <button v-for="(item, i) in newTemProduct.imagesUrl" type="button" :key="i + '123'"
-                      data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true">
+                      data-bs-target="#carouselExampleIndicators" :data-bs-slide-to="i" class="active" aria-current="true" @click="this.currentImageIndex = i">
                     </button>
                   </template>
                 </div>
@@ -25,28 +25,33 @@
                     建立新的輪播照片
                   </button>
                 </label>
-                <div class="carousel-inner">
+                <div class="position-relative">
+                  <div class="carousel-inner">
                   <template v-if="newTemProduct.imagesUrl">
                     <div v-for="(item, i) in newTemProduct.imagesUrl" :key="i + '123'"
-                      class="carousel-item active w-100 object-fit-cover mainImg">
+                      class="carousel-item w-100 object-fit-cover mainImg" :class="{ active: i == currentImageIndex }">
                       <img :src="item" class="d-block w-100" alt="輪播照片">
                     </div>
                   </template>
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
-                  data-bs-slide="prev">
-                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                  <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
-                  data-bs-slide="next">
-                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                  <span class="visually-hidden">Next</span>
-                </button>
+                <template v-if="this.newTemProduct.imagesUrl">
+                  <button v-if="this.currentImageIndex > 0  "
+                    class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                    data-bs-slide="prev" @click="this.currentImageIndex = this.currentImageIndex - 1">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                  </button>
+                  <button v-if="this.currentImageIndex < this.newTemProduct.imagesUrl.length - 1 " class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                    data-bs-slide="next" @click="this.currentImageIndex = this.currentImageIndex + 1">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                  </button>
+                </template>
+                </div>
               </div>
             </div>
             <div class="col-6 d-flex flex-column">
-              <label for="imageUrl" class="form-label my-2">當前次要圖片</label>
+              <label for="imageUrl" class="form-label my-2">編輯圖片</label>
               <template v-if="newTemProduct.imagesUrl">
                 <input v-model="this.newTemProduct.imagesUrl[currentImageIndex]" type="text"
                   class="form-control text-truncate mb-2" placeholder="請輸入圖片連結">
@@ -74,7 +79,7 @@
           <button type="button" class="btn btn-primary text-white" @click="updateTempProduct">
             確認
           </button>
-          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          <button type="button" class="btn btn-outline-secondary" @click="closeModal">
             取消
           </button>
         </div>
@@ -83,11 +88,12 @@
   </div>
 </template>
 <script>
+const { VITE_API, VITE_PATH } = import.meta.env
 
 export default {
   emits: ['update-temp-product'],
   props: ['tempProduct', 'isMultiImage'],
-  data () {
+  data() {
     return {
       multiImageModal: null,
       newTemProduct: {},
@@ -96,18 +102,39 @@ export default {
     }
   },
   methods: {
-    openModal () {
+    openModal() {
       this.multiImageModal.show()
     },
-    closeModal () {
+    closeModal() {
+      this.currentImageIndex = 0
       this.multiImageModal.hide()
     },
-    createImg () {
+    createImg() {
       this.newTemProduct.imagesUrl = [...this.newTemProduct.imagesUrl, '']
       this.currentImageIndex = this.newTemProduct.imagesUrl.length - 1
     },
-    updateTempProduct () {
+    updateTempProduct() {
       this.$emit('update-temp-product', this.newTemProduct)
+    },
+    async handleFileUpload (event) {
+      this.uploadStatus = true
+      const file = event.target.files[0]
+      if (!file) return
+      if (file.size > 3 * 1024 * 1024) {
+        ShowNotification('檔案大小超過3MB限制')
+        return
+      }
+      const formdata = new FormData()
+      formdata.append('file-to-upload', file)
+      console.log('file', file)
+      try {
+        const result = await this.$http.post(`${VITE_API}/api/${VITE_PATH}/admin/upload`, formdata)
+        this.newTemProduct.imagesUrl[this.currentImageIndex] = result.data.imageUrl
+      } catch (error) {
+        console.log('error', error)
+      } finally {
+        this.uploadStatus = false
+      }
     }
   },
   watch: {
@@ -116,7 +143,7 @@ export default {
       this.newTemProduct = newVal
     }
   },
-  mounted () {
+  mounted() {
     // eslint-disable-next-line no-undef
     this.multiImageModal = new bootstrap.Modal(this.$refs.multiImageModal, {
       keyboard: false,
@@ -137,5 +164,13 @@ export default {
 .uploadContainer {
   border: 4px dotted;
   cursor: pointer;
+}
+
+.carousel-control-prev-icon {
+ background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%236c5c53' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E") !important;
+}
+
+.carousel-control-next-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%236c5c53' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E") !important;
 }
 </style>

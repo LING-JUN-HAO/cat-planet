@@ -10,10 +10,10 @@
       <table class="table table-hover mt-6">
         <thead>
           <tr>
-            <th data-field="category" width="120">
+            <th data-field="category" width="120" class="text-center">
               分類
             </th>
-            <th data-field="title" width="200">
+            <th data-field="title" width="200" class="text-center">
               產品名稱
             </th>
             <th data-field="multiImg" width="120" class="text-center">
@@ -35,10 +35,10 @@
         </thead>
         <tbody>
           <tr v-for="(item) in products" :key="item.id">
-            <td>
+            <td class="text-center">
               {{ item.category }}
             </td>
-            <td>
+            <td class="text-center">
               {{ item.title }}
             </td>
             <td class="text-center">
@@ -78,9 +78,11 @@
       <!-- Modal -->
       <AdminProductModal ref="pModal" :temp-Product="tempProduct" @update-temp-product="handleUpdateTempProduct"
         :isNew="isNew"></AdminProductModal>
-      <AdminDeleteModal ref="dModal" :temp-Product="tempProduct" :deleteProduct="deleteProduct"></AdminDeleteModal>
+      <AdminDeleteModal ref="dModal" :type="'產品'" :temp-Product="tempProduct" :deleteProduct="deleteProduct">
+      </AdminDeleteModal>
       <SpinnerModal ref="sModal" :loadingMessage="loadingMessage"></SpinnerModal>
-      <AdminMultiImageModal ref="iModal" :temp-Product="tempProduct" :isMultiImage="isMultiImage" @update-temp-product="handleUpdateTempProduct" ></AdminMultiImageModal>
+      <AdminMultiImageModal ref="iModal" :temp-Product="tempProduct" :isMultiImage="isMultiImage"
+        @update-temp-product="handleUpdateTempProduct"></AdminMultiImageModal>
     </div>
   </div>
 </template>
@@ -96,7 +98,7 @@ import ShowNotification from '@/mixin/Swal.js'
 const { VITE_API, VITE_PATH } = import.meta.env
 
 export default {
-  data () {
+  data() {
     return {
       // 產品資料格式
       products: [],
@@ -108,7 +110,7 @@ export default {
     }
   },
   methods: {
-    async checkAdmin () {
+    async checkAdmin() {
       try {
         await this.$http.post(`${VITE_API}/api/user/check`, this.user)
         this.getProducts()
@@ -116,7 +118,7 @@ export default {
         this.$router.push({ name: 'adminLogin' })
       }
     },
-    async getProducts (page = 1) {
+    async getProducts(page = 1) {
       try {
         this.$refs.sModal.openModal()
         const res = await this.$http.get(`${VITE_API}/api/${VITE_PATH}/admin/products?page=${page}`)
@@ -128,7 +130,7 @@ export default {
         this.$refs.sModal.closeModal()
       }
     },
-    openModal (status, item) {
+    openModal(status, item) {
       if (status === 'new') {
         this.tempProduct = {
           imagesUrl: []
@@ -155,13 +157,14 @@ export default {
         this.$refs.iModal.openModal()
       }
     },
-    handleUpdateTempProduct (updatedTempProduct) {
+    handleUpdateTempProduct(updatedTempProduct) {
       this.tempProduct = updatedTempProduct
       this.updateProduct()
     },
-    async updateProduct () {
+    async updateProduct() {
       try {
         this.$refs.pModal.closeModal()
+        this.$refs.iModal.closeModal()
         this.$refs.sModal.openModal()
         let httpMethod = 'post'
         let requestUrl = `${VITE_API}/api/${VITE_PATH}/admin/product`
@@ -183,13 +186,13 @@ export default {
         this.$refs.sModal.closeModal()
       }
     },
-    async deleteProduct () {
+    async deleteProduct() {
       this.$refs.dModal.closeModal()
       this.$refs.sModal.openModal()
       try {
         await this.$http.delete(`${VITE_API}/api/${VITE_PATH}/admin/product/${this.tempProduct.id}`)
         ShowNotification('商品刪除成功')
-        this.getProducts()
+        this.getCoupons()
       } catch (error) {
         ShowNotification('商品刪除操作異常')
       } finally {
@@ -197,7 +200,7 @@ export default {
       }
     }
   },
-  mounted () {
+  mounted() {
     const hexCookie = document.cookie.replace(
       // eslint-disable-next-line no-useless-escape
       /(?:(?:^|.*;\s*)hexToken\s*\=\s*([^;]*).*$)|^.*$/,
