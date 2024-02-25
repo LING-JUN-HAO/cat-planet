@@ -42,8 +42,14 @@
               {{ item.title }}
             </td>
             <td class="text-center">
-              <span v-if="item.imagesUrl" class="text-success fw-bold">是</span>
-              <span v-else>否</span>
+              <span v-if="item.imagesUrl" class="text-success fw-bold">
+                是
+                <i class="bi bi-pencil-fill" @click="openModal('multiImage', item)"></i>
+              </span>
+              <span v-else>
+                否
+                <i class="bi bi-pencil-fill" @click="openModal('singleImage', item)"></i>
+              </span>
             </td>
             <td class="text-center">
               {{ item.origin_price }}
@@ -68,12 +74,13 @@
           </tr>
         </tbody>
       </table>
-      <pagination :pages="pages" :get-products="getProducts"></pagination>
+      <Pagination :pages="pages" :get-products="getProducts"></Pagination>
       <!-- Modal -->
-      <admin-product-modal ref="pModal" :temp-Product="tempProduct" @update-temp-product="handleUpdateTempProduct"
-        :isNew="isNew"></admin-product-modal>
-      <admin-delete-modal ref="dModal" :temp-Product="tempProduct" :deleteProduct="deleteProduct"></admin-delete-modal>
-      <spinner-modal ref="sModal" :loadingMessage="loadingMessage"></spinner-modal>
+      <AdminProductModal ref="pModal" :temp-Product="tempProduct" @update-temp-product="handleUpdateTempProduct"
+        :isNew="isNew"></AdminProductModal>
+      <AdminDeleteModal ref="dModal" :temp-Product="tempProduct" :deleteProduct="deleteProduct"></AdminDeleteModal>
+      <SpinnerModal ref="sModal" :loadingMessage="loadingMessage"></SpinnerModal>
+      <AdminMultiImageModal ref="iModal" :temp-Product="tempProduct" :isMultiImage="isMultiImage" @update-temp-product="handleUpdateTempProduct" ></AdminMultiImageModal>
     </div>
   </div>
 </template>
@@ -84,6 +91,7 @@ import AdminProductModal from '@/components/AdminProductModal.vue'
 import SpinnerModal from '@/components/SpinnerModal.vue'
 import AdminDeleteModal from '@/components/AdminDeleteModal.vue'
 import AdminHeader from '@/components/AdminHeader.vue'
+import AdminMultiImageModal from '@/components/AdminMultiImageModal.vue'
 import ShowNotification from '@/mixin/Swal.js'
 const { VITE_API, VITE_PATH } = import.meta.env
 
@@ -94,6 +102,7 @@ export default {
       products: [],
       tempProduct: {},
       isNew: false,
+      isMultiImage: false,
       pages: {},
       loadingMessage: '資料載入中...請稍後'
     }
@@ -136,6 +145,14 @@ export default {
       } else if (status === 'delete') {
         this.tempProduct = item
         this.$refs.dModal.openModal()
+      } else if (status === 'singleImage') {
+        this.tempProduct = { ...item }
+        this.isMultiImage = false
+        this.$refs.iModal.openModal()
+      } else if (status === 'multiImage') {
+        this.tempProduct = { ...item }
+        this.isMultiImage = true
+        this.$refs.iModal.openModal()
       }
     },
     handleUpdateTempProduct (updatedTempProduct) {
@@ -178,9 +195,6 @@ export default {
       } finally {
         this.$refs.sModal.closeModal()
       }
-    },
-    createImages () {
-      this.tempProduct.imagesUrl = []
     }
   },
   mounted () {
@@ -193,7 +207,7 @@ export default {
     this.checkAdmin()
   },
   components: {
-    Pagination, SpinnerModal, AdminProductModal, AdminDeleteModal, AdminHeader
+    Pagination, SpinnerModal, AdminProductModal, AdminDeleteModal, AdminHeader, AdminMultiImageModal
   }
 }
 </script>
@@ -210,5 +224,9 @@ img {
 
 .images {
   height: 150px;
+}
+
+.bi-pencil-fill {
+  cursor: pointer;
 }
 </style>
