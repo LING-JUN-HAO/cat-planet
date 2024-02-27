@@ -3,6 +3,7 @@ import AdminLayout from '@/views/admin/AdminLayout.vue'
 import AdminLoginPage from '@/views/admin/LoginPage.vue'
 import AdminProductsPage from '@/views/admin/ProductsPage.vue'
 import AdminVoucherPage from '@/views/admin/VoucherPage.vue'
+import AdminOrdersPage from '@/views/admin/OrdersPage.vue'
 import ConsumerLayout from '@/views/consumer/ConsumerLayout.vue'
 import ConsumerCheckout from '@/views/consumer/CheckoutPage.vue'
 import ConsumerProducts from '@/views/consumer/ProductsPage.vue'
@@ -30,6 +31,11 @@ const router = createRouter({
           path: 'vouchers',
           name: 'adminVoucher',
           component: AdminVoucherPage
+        },
+        {
+          path: 'orders',
+          name: 'adminOrders',
+          component: AdminOrdersPage
         }
       ]
     },

@@ -2,27 +2,25 @@
   <div class="w-100">
     <AdminHeader></AdminHeader>
     <div class="container overflow-hidden">
-      <div class="text-end mt-3 mb-1">
-        <button class="btn btn-primary text-white" @click="openModal('new')">
-          建立新的優惠卷
-        </button>
-      </div>
-      <table class="table table-hover mt-3">
+      <table class="table table-hover mt-4">
         <thead>
           <tr>
+            <th data-field="category" width="120" class="text-center">
+              分類
+            </th>
             <th data-field="title" width="200" class="text-center">
-              標題
+              產品名稱
             </th>
-            <th data-field="code" width="200" class="text-center">
-              識別碼
+            <th data-field="multiImg" width="120" class="text-center">
+              多圖
             </th>
-            <th data-field="percent" width="120" class="text-center">
-              折扣比例
+            <th data-field="origin_price" width="120" class="text-center">
+              原價
             </th>
-            <th data-field="due_date" width="120" class="text-center">
-              到期日期
+            <th data-field="price" width="120" class="text-center">
+              售價
             </th>
-            <th data-field="is_enabled" width="120" class="text-center">
+            <th data-field="is_enabled" width="100" class="text-center">
               啟用
             </th>
             <th data-field="id" width="120" class="text-center">
@@ -31,18 +29,28 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item) in coupons" :key="item.id">
+          <tr v-for="(item) in products" :key="item.id">
+            <td class="text-center">
+              {{ item.category }}
+            </td>
             <td class="text-center">
               {{ item.title }}
             </td>
             <td class="text-center">
-              {{ item.code }}
+              <span v-if="item.imagesUrl" class="text-success fw-bold">
+                是
+                <i class="bi bi-pencil-fill" @click="openModal('multiImage', item)"></i>
+              </span>
+              <span v-else>
+                否
+                <i class="bi bi-pencil-fill" @click="openModal('singleImage', item)"></i>
+              </span>
             </td>
             <td class="text-center">
-              {{ item.percent }} %
+              {{ item.origin_price }}
             </td>
             <td class="text-center">
-              {{ this.dataFormatter(item.due_date) }}
+              {{ item.price }}
             </td>
             <td class="text-center">
               <span v-if="item.is_enabled" class="text-success fw-bold">啟用</span>
@@ -61,34 +69,37 @@
           </tr>
         </tbody>
       </table>
-      <Pagination :pages="pages" :get-products="getCoupons"></Pagination>
+      <Pagination :pages="pages" :get-products="getProducts"></Pagination>
       <!-- Modal -->
-      <AdminCouponModal ref="pModal" :temp-Product="tempProduct" @update-temp-product="handleUpdateTempProduct"
-        :isNew="isNew"></AdminCouponModal>
-      <AdminDeleteModal ref="dModal" :type="'優惠卷'" :temp-Product="tempProduct" :deleteProduct="deleteCoupon">
+      <AdminProductModal ref="pModal" :temp-Product="tempProduct" @update-temp-product="handleUpdateTempProduct"
+        :isNew="isNew"></AdminProductModal>
+      <AdminDeleteModal ref="dModal" :type="'產品'" :temp-Product="tempProduct" :deleteProduct="deleteProduct">
       </AdminDeleteModal>
       <SpinnerModal ref="sModal" :loadingMessage="loadingMessage"></SpinnerModal>
+      <AdminMultiImageModal ref="iModal" :temp-Product="tempProduct" :isMultiImage="isMultiImage"
+        @update-temp-product="handleUpdateTempProduct"></AdminMultiImageModal>
     </div>
   </div>
 </template>
 
 <script>
 import Pagination from '@/components/PaginationComponent.vue'
-import AdminCouponModal from '@/components/AdminCouponModal.vue'
+import AdminProductModal from '@/components/AdminProductModal.vue'
 import SpinnerModal from '@/components/SpinnerModal.vue'
 import AdminDeleteModal from '@/components/AdminDeleteModal.vue'
 import AdminHeader from '@/components/AdminHeader.vue'
+import AdminMultiImageModal from '@/components/AdminMultiImageModal.vue'
 import ShowNotification from '@/mixin/Swal.js'
-import moment from 'moment'
-
 const { VITE_API, VITE_PATH } = import.meta.env
 
 export default {
   data () {
     return {
-      coupons: [],
+      // 產品資料格式
+      products: [],
       tempProduct: {},
       isNew: false,
+      isMultiImage: false,
       pages: {},
       loadingMessage: '資料載入中...請稍後'
     }
@@ -97,19 +108,19 @@ export default {
     async checkAdmin () {
       try {
         await this.$http.post(`${VITE_API}/api/user/check`, this.user)
-        this.getCoupons()
+        this.getProducts()
       } catch (error) {
         this.$router.push({ name: 'adminLogin' })
       }
     },
-    async getCoupons (page = 1) {
+    async getProducts (page = 1) {
       try {
         this.$refs.sModal.openModal()
-        const res = await this.$http.get(`${VITE_API}/api/${VITE_PATH}/admin/coupons?page=${page}`)
-        this.coupons = res.data.coupons
+        const res = await this.$http.get(`${VITE_API}/api/${VITE_PATH}/admin/products?page=${page}`)
+        this.products = res.data.products
         this.pages = res.data.pagination
       } catch (error) {
-        ShowNotification('優惠卷資料取得發生異常')
+        ShowNotification('商品資料取得發生異常')
       } finally {
         this.$refs.sModal.closeModal()
       }
@@ -117,17 +128,28 @@ export default {
     openModal (status, item) {
       if (status === 'new') {
         this.tempProduct = {
-          due_date: moment().unix()
+          imagesUrl: []
         }
         this.isNew = true
         this.$refs.pModal.openModal()
       } else if (status === 'edit') {
         this.tempProduct = { ...item }
+        if (!Array.isArray(this.tempProduct.imagesUrl)) {
+          this.tempProduct.imagesUrl = []
+        }
         this.isNew = false
         this.$refs.pModal.openModal()
       } else if (status === 'delete') {
         this.tempProduct = item
         this.$refs.dModal.openModal()
+      } else if (status === 'singleImage') {
+        this.tempProduct = { ...item }
+        this.isMultiImage = false
+        this.$refs.iModal.openModal()
+      } else if (status === 'multiImage') {
+        this.tempProduct = { ...item }
+        this.isMultiImage = true
+        this.$refs.iModal.openModal()
       }
     },
     handleUpdateTempProduct (updatedTempProduct) {
@@ -137,41 +159,40 @@ export default {
     async updateProduct () {
       try {
         this.$refs.pModal.closeModal()
+        this.$refs.iModal.closeModal()
         this.$refs.sModal.openModal()
         let httpMethod = 'post'
-        let requestUrl = `${VITE_API}/api/${VITE_PATH}/admin/coupon`
-        let alertMsg = '優惠卷新增成功'
+        let requestUrl = `${VITE_API}/api/${VITE_PATH}/admin/product`
+        let alertMsg = '商品資料新增成功'
+
         if (!this.isNew) {
           httpMethod = 'put'
-          requestUrl = `${VITE_API}/api/${VITE_PATH}/admin/coupon/${this.tempProduct.id}`
-          alertMsg = '優惠卷編輯成功'
+          requestUrl = `${VITE_API}/api/${VITE_PATH}/admin/product/${this.tempProduct.id}`
+          alertMsg = '商品資料編輯成功'
         }
         await this.$http[httpMethod](requestUrl, {
           data: this.tempProduct
         })
         ShowNotification(alertMsg)
-        this.getCoupons()
+        this.getProducts()
       } catch (error) {
-        ShowNotification('優惠卷操作異常')
+        ShowNotification('商品資料編輯異常')
       } finally {
         this.$refs.sModal.closeModal()
       }
     },
-    async deleteCoupon () {
+    async deleteProduct () {
       this.$refs.dModal.closeModal()
       this.$refs.sModal.openModal()
       try {
-        await this.$http.delete(`${VITE_API}/api/${VITE_PATH}/admin/coupon/${this.tempProduct.id}`)
-        ShowNotification('優惠卷刪除成功')
+        await this.$http.delete(`${VITE_API}/api/${VITE_PATH}/admin/product/${this.tempProduct.id}`)
+        ShowNotification('商品刪除成功')
         this.getCoupons()
       } catch (error) {
-        ShowNotification('優惠卷刪除操作異常')
+        ShowNotification('商品刪除操作異常')
       } finally {
         this.$refs.sModal.closeModal()
       }
-    },
-    dataFormatter (date) {
-      return moment.unix(date).format('YYYY-MM-DD hh:mm:ss')
     }
   },
   mounted () {
@@ -184,7 +205,7 @@ export default {
     this.checkAdmin()
   },
   components: {
-    Pagination, SpinnerModal, AdminCouponModal, AdminDeleteModal, AdminHeader
+    Pagination, SpinnerModal, AdminProductModal, AdminDeleteModal, AdminHeader, AdminMultiImageModal
   }
 }
 </script>
