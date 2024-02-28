@@ -45,7 +45,7 @@
             </p>
           </div>
           <div class="introductionContainer-item">
-            <img class="object-fig-cover w-100 introduction-img"
+            <img class="object-fit-cover w-100 introduction-img"
               src="https://images.unsplash.com/photo-1494256997604-768d1f608cac?q=80&w=3029&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               alt="">
           </div>
