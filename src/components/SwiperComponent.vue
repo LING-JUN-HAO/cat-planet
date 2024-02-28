@@ -13,29 +13,38 @@
 </template>
 
 <script>
-// core version + navigation, pagination modules:
 import Swiper from 'swiper'
 import { Autoplay, Navigation, Pagination } from 'swiper/modules'
-// import Swiper and modules styles
 import 'swiper/css'
-import 'swiper/css/navigation'
-import 'swiper/css/pagination'
 
 export default {
   props: ['products'],
-  mounted () {
-    // eslint-disable-next-line no-new
-    new Swiper('.swiper', {
-      modules: [Autoplay, Navigation, Pagination],
-      // Optional parameters
-      loop: true,
-      slidesPerView: '3',
-      spaceBetween: 20,
-      autoplay: {
-        delay: 2500,
-        disableOnInteraction: false
-      }
-    })
+  data () {
+    return {
+      swiperInitialized: false
+    }
+  },
+  methods: {
+    initSwiper () {
+      // eslint-disable-next-line no-new
+      new Swiper('.swiper', {
+        modules: [Autoplay, Navigation, Pagination],
+        // Optional parameters
+        loop: true,
+        slidesPerView: 3,
+        spaceBetween: 20,
+        autoplay: {
+          delay: 3000,
+          disableOnInteraction: false
+        }
+      })
+    }
+  },
+  watch: {
+    // 在 tempProduct 屬性變化時執行
+    products: function (newVal, oldVal) {
+      this.initSwiper()
+    }
   }
 }
 </script>
@@ -48,7 +57,8 @@ export default {
   transition: all .4s ease;
   cursor: pointer;
 }
-.swiper-img:hover{
+
+.swiper-img:hover {
   transform: scale(1.03) translateY(-10px);
   box-shadow: 4px 1px 10px #555;
 }

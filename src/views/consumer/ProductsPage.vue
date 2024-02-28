@@ -87,8 +87,9 @@
             <p class="fs-6">想為您的貓咪帶來不一樣的體驗嗎？</p>
             <p>快来看看我们店長為您推薦的新品吧！</p>
           </div>
+          <!-- <SwiperComponent :products='products' class="w-100"></SwiperComponent> -->
           <div class="col-md-8">
-            <SwiperComponent :products='products'></SwiperComponent>
+            <SwiperComponent :products='products' class="w-100"></SwiperComponent>
           </div>
         </div>
       </section>
