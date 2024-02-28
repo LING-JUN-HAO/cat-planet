@@ -45,6 +45,11 @@ const router = createRouter({
       component: ConsumerLayout,
       children: [
         {
+          path: 'home',
+          name: 'consumerHome',
+          component: ConsumerProducts
+        },
+        {
           path: 'checkout',
           name: 'consumerCheckout',
           component: ConsumerCheckout

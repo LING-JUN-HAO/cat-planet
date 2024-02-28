@@ -10,16 +10,16 @@
       <table class="table table-hover mt-3">
         <thead>
           <tr>
-            <th data-field="title" width="200" class="text-center">
+            <th data-field="title" class="text-center">
               標題
             </th>
-            <th data-field="code" width="200" class="text-center">
+            <th data-field="code" class="text-center">
               識別碼
             </th>
             <th data-field="percent" width="120" class="text-center">
               折扣比例
             </th>
-            <th data-field="due_date" width="120" class="text-center">
+            <th data-field="due_date" width="200" class="text-center">
               到期日期
             </th>
             <th data-field="is_enabled" width="120" class="text-center">

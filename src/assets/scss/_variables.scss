@@ -304,9 +304,10 @@ $success:       #E76952 !default;
 $info:          $cyan !default;
 $warning:       $yellow !default;
 $danger:        $red !default;
-$light:         $gray-100 !default;
+$light:         white !default;
 $dark:          $gray-900 !default;
 $hex:           #6c5c53;
+$gray:          $gray-300;
 // scss-docs-end theme-color-variables
 
 // scss-docs-start theme-colors-map
@@ -320,6 +321,7 @@ $theme-colors: (
   "light":      $light,
   "dark":       $dark,
   "hex":        $hex,
+  "gray":       $gray
 ) !default;
 // scss-docs-end theme-colors-map
 

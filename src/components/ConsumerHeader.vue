@@ -1,8 +1,13 @@
 <template>
   <header class="sticky-top ">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-hex">
       <div class="container-fluid">
-        <router-link class="navbar-brand ps-4" active-class="active" to="/consumer/products">前台使用介面</router-link>
+        <router-link active-class="active" to="/consumer/products">
+          <div>
+            <img class="title-icon me-2" src="../assets/image/logo-cat.svg" alt="">
+            <img src="../assets/image/icon.png" height="45px" alt="喵星球" class="ms-4">
+          </div>
+        </router-link>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
           aria-controls="navbarText" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -10,11 +15,25 @@
         <div class="collapse navbar-collapse" id="navbarText">
           <ul class="navbar-nav mb-2 mb-lg-0 w-100 justify-content-end pe-4">
             <li class="nav-item">
-              <router-link class="nav-link" active-class="active" to="/consumer/products">貓咪用品</router-link>
+              <router-link class="nav-link fs-bold fs-6" active-class="active" to="/consumer/home">
+                <i class="bi bi-award me-1"></i>
+                <span>關於喵星球</span>
+              </router-link>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link fs-bold" active-class="active" to="/consumer/products">
+                <i class="bi bi-shop me-1"></i>
+                貓咪用品
+              </router-link>
             </li>
             <li class="nav-item position-relative">
-              <div class="position-absolute  text-white fs-6 d-flex align-items-center justify-content-center rounded-circle cartNumber">{{ cart.carts.length }}</div>
-              <router-link class="nav-link" active-class="active" to="/consumer/carts">購物車</router-link>
+              <div
+                class="position-absolute  text-white fs-6 d-flex align-items-center justify-content-center rounded-circle cartNumber">
+                {{ cart.carts.length }}</div>
+              <router-link class="nav-link fs-bold" active-class="active" to="/consumer/carts">
+                <i class="bi bi-cart me-1"></i>
+                購物車
+              </router-link>
             </li>
           </ul>
         </div>
@@ -33,10 +52,27 @@ export default {
 }
 </script>
 <style>
-.cartNumber{
+.title-icon{
+  height: 2em;
+  filter: drop-shadow(#fff 32px 0);
+  margin-left: -32px;
+}
+.navbar-brand {
+  height: 40px;
+}
+
+.cartNumber {
   background-color: #ca7658;
   left: 78%;
   height: 20px;
   width: 20px;
+}
+
+.nav-item {
+  transition: all .4s ease;
+}
+
+.nav-item:hover {
+  transform: translateY(-5px);
 }
 </style>

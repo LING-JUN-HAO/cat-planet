@@ -4,7 +4,7 @@
             <div class="container-fluid">
                 <router-link active-class="active" to="/admin/products">
                     <div>
-                        <img src="../assets/image/icon.png" height="45px" alt="後台管理介面">
+                        <img src="../assets/image/icon.png" height="45px" alt="喵星球">
                     </div>
                 </router-link>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
@@ -14,13 +14,22 @@
                 <div class="collapse navbar-collapse" id="navbarText">
                     <ul class="navbar-nav mb-2 mb-lg-0 w-100 justify-content-end pe-4">
                         <li class="nav-item">
-                            <router-link class="nav-link" active-class="active" to="/admin/products">產品管理</router-link>
+                            <router-link class="nav-link" active-class="active" to="/admin/products">
+                                <i class="bi bi-handbag-fill"></i>
+                                產品管理
+                            </router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link class="nav-link" active-class="active" to="/admin/vouchers">優惠卷管理</router-link>
+                            <router-link class="nav-link" active-class="active" to="/admin/vouchers">
+                                <i class="bi bi-ticket"></i>
+                                優惠卷管理
+                            </router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link class="nav-link" active-class="active" to="/admin/orders">訂單管理</router-link>
+                            <router-link class="nav-link" active-class="active" to="/admin/orders">
+                                <i class="bi bi-card-list"></i>
+                                訂單管理
+                            </router-link>
                         </li>
                     </ul>
                 </div>
