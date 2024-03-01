@@ -3,7 +3,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-hex">
       <div class="container-fluid">
         <router-link active-class="active" to="/consumer/products">
-          <div>
+          <div class="ms-5">
             <img class="title-icon me-2" src="../assets/image/logo-cat.svg" alt="">
             <img src="../assets/image/icon.png" height="45px" alt="喵星球" class="ms-4">
           </div>
@@ -21,7 +21,7 @@
               </router-link>
             </li>
             <li class="nav-item">
-              <router-link class="nav-link fs-bold" active-class="active" to="/consumer/products">
+              <router-link class="nav-link fs-bold" active-class="active" to="/consumer/products?category=所有產品&page=1">
                 <i class="bi bi-shop me-1"></i>
                 貓咪用品
               </router-link>

@@ -36,7 +36,7 @@
         <h2 class="text-center py-3 fw-bold">關於貓星球</h2>
         <div class="content-shadow border border-1 bg-white rounded-4 d-flex">
           <div class="introductionContainer-item d-flex justify-content-center align-items-center flex-column p-6">
-            <h2 class="mb-4 fs-2">貓咪王國：愛與冒險的天地</h2>
+            <h2 class="mb-4 fs-2 text-hex">貓咪王國：愛與冒險的天地</h2>
             <p class="lh-lg fs-5 fw-normal">
               歡迎蒞臨喵星球，這是一個專屬於主人和貓咪的小天地！在這裡，我們帶您深入了解與毛絨絨夥伴共度的點滴時光。從貓咪的搞笑瞬間到我們的互動冒險，喵星球是一個充滿愛和貓咪魅力的空間。
             </p>
@@ -51,41 +51,13 @@
           </div>
         </div>
       </section>
-      <!-- <div class="container">
-        <div class="row mt-4 d-flex justify-content-end gap-3">
-          <div v-for="item in products" :key="item.id" class="col-3 mb-4 py-4 card">
-            <div class="overflow-hidden" @click="getProduct(item.id)">
-              <img :src="item.imageUrl" :alt="item.id" class="w-100 object-fit-cover productImg ">
-            </div>
-            <div>
-              <h2 class="fs-6 fw-bold my-3">{{ item.title }} | {{ item.category }}</h2>
-              <p>
-                <span>NT{{ item.price }}</span>
-                <span class="text-decoration-line-through ps-2">原價: {{ item.origin_price }}</span>
-              </p>
-            </div>
-            <div class="btn-group btn-group-sm">
-              <button type="button" class="btn btn-outline-secondary" @click="getProduct(item.id)"
-                :disabled="loadingStatus.loadingItem === item.id || !item.is_enabled">
-                <i class="fas fa-spinner fa-pulse" v-if="loadingStatus.loadingItem === item.id"></i>
-                查看更多
-              </button>
-              <button type="button" class="btn btn-outline-danger" @click="addToCart(item.id)"
-                :disabled="loadingStatus.loadingItem === item.id || !item.is_enabled">
-                <i class="fas fa-spinner fa-pulse" v-if="loadingStatus.loadingItem === item.id"></i>
-                加到購物車
-              </button>
-            </div>
-          </div>
-        </div>
-      </div> -->
       <section class="container container-title pt-3 pb-6 category">
         <h2 class="text-center py-3 fw-bold">熱銷商品</h2>
         <div class="content-shadow row border border-1 bg-white rounded-4 d-flex p-5 container position-relative z-1">
           <div class="col-md-4 d-flex justify-content-center align-items-center flex-column">
-            <h3 class="mb-4 hot-product-title">店長五星級推薦商品!!!!</h3>
-            <p class="fs-6">想為您的貓咪帶來不一樣的體驗嗎？</p>
-            <p>快来看看我们店長為您推薦的新品吧！</p>
+            <h3 class="mb-4 hot-product-title fs-2 text-hex">店長五星級推薦商品!!!!</h3>
+            <p class="fs-5">想為您的貓咪帶來不一樣的體驗嗎？</p>
+            <p class="fs-5">快来看看我们店長為您推薦的新品吧！</p>
           </div>
           <!-- <SwiperComponent :products='products' class="w-100"></SwiperComponent> -->
           <div class="col-md-8">
@@ -105,22 +77,10 @@
         </div>
       </div>
     </footer>
-    <!-- Modal -->
-    <consumer-product :product='product' ref="userProductModal" @add-to-cart='addToCart'></consumer-product>
-    <VueLoading v-model:active="isLoading" :loader="'spinner'" :is-full-page="true">
-      <div class="loadingio-spinner-ripple-wu44vrvts1">
-        <div class="ldio-2gn8nvj94zp">
-          <div></div>
-          <div></div>
-        </div>
-      </div>
-    </VueLoading>
   </div>
 </template>
 
 <script>
-
-import ConsumerProduct from '@/components/ConsumerProduct.vue'
 import SwiperComponent from '@/components/SwiperComponent.vue'
 import ShowNotification from '@/mixin/Swal.js'
 import { cartStore } from '@/store/Store.js'
@@ -142,40 +102,12 @@ export default {
   methods: {
     async getProducts () {
       try {
-        const productsInfo = await this.$http.get(`${VITE_API}/api/${VITE_PATH}/products`)
+        const productsInfo = await this.$http.get(`${VITE_API}/api/${VITE_PATH}/products?page=1`)
         this.products = productsInfo.data.products
         this.isLoading = false
       } catch (error) {
         console.log('error', error)
-      }
-    },
-    async getProduct (id) {
-      try {
-        this.loadingStatus.loadingItem = id
-        const productInfo = await this.$http.get(`${VITE_API}/api/${VITE_PATH}/product/${id}`)
-        this.product = productInfo.data.product
-        this.$refs.userProductModal.openModal()
-      } catch (error) {
-        console.log('error', error)
-      } finally {
-        this.loadingStatus.loadingItem = ''
-      }
-    },
-    async addToCart (id, qty = 1) {
-      this.loadingStatus.loadingItem = id
-      const cart = {
-        product_id: id,
-        qty
-      }
-      try {
-        await this.$http.post(`${VITE_API}/api/${VITE_PATH}/cart`, { data: cart })
-        this.cartStore.getCart()
-        ShowNotification('商品已加入購物車')
-      } catch (error) {
-        console.log('error', error)
-      } finally {
-        this.$refs.userProductModal.hideModal()
-        this.loadingStatus.loadingItem = ''
+        ShowNotification('Oops...請稍後嘗試')
       }
     }
   },
@@ -184,7 +116,7 @@ export default {
     this.cartStore.getCart()
   },
   components: {
-    ConsumerProduct, SwiperComponent
+    SwiperComponent
   }
 }
 </script>

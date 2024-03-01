@@ -6,7 +6,8 @@ import AdminVoucherPage from '@/views/admin/VoucherPage.vue'
 import AdminOrdersPage from '@/views/admin/OrdersPage.vue'
 import ConsumerLayout from '@/views/consumer/ConsumerLayout.vue'
 import ConsumerCheckout from '@/views/consumer/CheckoutPage.vue'
-import ConsumerProducts from '@/views/consumer/ProductsPage.vue'
+import ConsumerHome from '@/views/consumer/HomePage.vue'
+import ConsumerProducts from '@/views/consumer/ProductPage.vue'
 import ConsumerCart from '@/views/consumer/CartPage.vue'
 
 const router = createRouter({
@@ -47,7 +48,7 @@ const router = createRouter({
         {
           path: 'home',
           name: 'consumerHome',
-          component: ConsumerProducts
+          component: ConsumerHome
         },
         {
           path: 'checkout',

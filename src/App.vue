@@ -6,6 +6,9 @@
 
 * {
   font-family: 'Noto Sans TC', sans-serif;
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
 }
 html,
 body {
