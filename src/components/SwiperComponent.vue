@@ -4,7 +4,8 @@
       <div class="swiper-wrapper">
         <template v-for="(item, index) in products" :key="index + '123'">
           <div class="swiper-slide">
-            <div class="w-100 swiper-img" :style="{ backgroundImage: `url(${item.imageUrl})` }"></div>
+            <div class="w-100 swiper-img" :style="{ backgroundImage: `url(${item.imageUrl})` }"
+              @click="moreProduct(item.id)"></div>
           </div>
         </template>
       </div>
@@ -38,7 +39,11 @@ export default {
           disableOnInteraction: false
         }
       })
+    },
+    moreProduct (id) {
+      this.$router.push({ path: '/consumer/productItem', query: { 'productID': id } })
     }
+
   },
   watch: {
     // 在 tempProduct 屬性變化時執行

@@ -6,7 +6,6 @@ const { VITE_API, VITE_PATH } = import.meta.env
 
 export const cartStore = defineStore('cartStore', {
   state: () => ({
-    cartNumber: 0,
     cart: {
       carts: [],
       final_total: 0,

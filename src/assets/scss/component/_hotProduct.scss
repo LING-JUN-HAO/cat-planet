@@ -1,0 +1,20 @@
+.hot-product-title::after,
+.hot-product-title::before {
+  content: "";
+  position: absolute;
+  height: 150px;
+  width: 150px;
+  border: 20px solid #F1b444;
+  top: 0;
+  left: 0;
+  opacity: .8;
+  z-index: -1;
+}
+
+.hot-product-title::before {
+  transform: rotate(15deg) translate(-20%, -20%);
+}
+
+.hot-product-title::after {
+  transform: rotate(25deg) translate(-20%, -20%);
+}

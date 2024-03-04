@@ -1,3 +1,10 @@
 @import "bootstrap/scss/functions";
 @import "./_variables";
 @import "bootstrap/scss/bootstrap.scss";
+
+// component
+@import "./component/_base.scss";
+@import "./component/_banner.scss";
+@import "./component/_category.scss";
+@import "./component/_about.scss";
+@import "./component/_hotProduct.scss";

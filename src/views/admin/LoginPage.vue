@@ -48,12 +48,12 @@ export default {
         const data = res.data
         const { token, expired } = data
         document.cookie = `hexToken=${token}; expireS=${new Date(expired)};`
-        this.$refs.sModal.closeModal()
+        // this.$refs.sModal.closeModal()
         this.$router.push({ name: 'adminProducts' })
       } catch (error) {
         this.user.username = ''
         this.user.password = ''
-        this.$refs.sModal.closeModal()
+        // this.$refs.sModal.closeModal()
         ShowNotification('登入失敗')
       }
     }
@@ -69,7 +69,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: url("../../assets/image/background.jpg") no-repeat center center /cover;
+  background: url("../../assets/image/login-background.jpg") no-repeat center center /cover;
 
   .loginBox {
     width: 40vw;
