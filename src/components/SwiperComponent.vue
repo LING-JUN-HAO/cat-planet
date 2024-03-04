@@ -3,9 +3,12 @@
     <div class="swiper">
       <div class="swiper-wrapper">
         <template v-for="(item, index) in products" :key="index + '123'">
-          <div class="swiper-slide">
-            <div class="w-100 swiper-img" :style="{ backgroundImage: `url(${item.imageUrl})` }"
-              @click="moreProduct(item.id)"></div>
+          <div class="swiper-slide position-relative" @click="moreProduct(item.id)">
+            <div class="w-100 swiper-img" :style="{ backgroundImage: `url(${item.imageUrl})` }">
+            </div>
+            <a class="more position-absolute w-100 bottom-0 text-white text-center bg-hex p-3 text-decoration-none">
+              顯示更多
+            </a>
           </div>
         </template>
       </div>
@@ -59,12 +62,21 @@ export default {
   height: 250px;
   background-size: cover;
   background-position: center center;
-  transition: all .4s ease;
+}
+.swiper-img,
+.more{
+  transition: all .3s ease;
   cursor: pointer;
 }
-
-.swiper-img:hover {
-  transform: scale(1.03) translateY(-10px);
+.swiper-slide:hover .swiper-img{
+  transform: scale(1.03);
   box-shadow: 4px 1px 10px #555;
+}
+.swiper-slide .more{
+  opacity: 0;
+}
+.swiper-slide:hover .more {
+  opacity: 1;
+  transform: scale(1.03);
 }
 </style>
