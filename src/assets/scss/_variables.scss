@@ -299,7 +299,7 @@ $cyans: (
 
 // scss-docs-start theme-color-variables
 $primary:       #A08E84 !default;
-$secondary:     $gray-600 !default;
+$secondary:     #aaa !default;
 $success:       #E76952 !default;
 $info:          $cyan !default;
 $warning:       $yellow !default;
@@ -307,6 +307,7 @@ $danger:        $red !default;
 $light:         white !default;
 $dark:          $gray-900 !default;
 $hex:           #6c5c53;
+$pink:          #ca7658;
 $gray:          $gray-300;
 // scss-docs-end theme-color-variables
 
@@ -321,6 +322,7 @@ $theme-colors: (
   "light":      $light,
   "dark":       $dark,
   "hex":        $hex,
+  "pink":       $pink,
   "gray":       $gray,
 ) !default;
 // scss-docs-end theme-colors-map

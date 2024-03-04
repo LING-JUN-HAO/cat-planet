@@ -13,7 +13,6 @@ import Banner from '@/components/consumer/homepage/Banner.vue'
 import Category from '@/components/consumer/homepage/Category.vue'
 import About from '@/components/consumer/homepage/About.vue'
 import HotProduct from '@/components/consumer/homepage/HotProduct.vue'
-import Loading from '@/components/Loading.vue'
 import { cartStore } from '@/store/Store.js'
 import { mapActions } from 'pinia'
 const { VITE_API, VITE_PATH } = import.meta.env
@@ -44,7 +43,7 @@ export default {
     this.getCart()
   },
   components: {
-    Banner, Category, About, HotProduct, Loading
+    Banner, Category, About, HotProduct
   }
 }
 </script>

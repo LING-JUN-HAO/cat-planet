@@ -65,12 +65,13 @@ export default {
 }
 .swiper-img,
 .more{
-  transition: all .3s ease;
+  transition: all .5s ease;
   cursor: pointer;
 }
 .swiper-slide:hover .swiper-img{
   transform: scale(1.03);
   box-shadow: 4px 1px 10px #555;
+  opacity: .7;
 }
 .swiper-slide .more{
   opacity: 0;
