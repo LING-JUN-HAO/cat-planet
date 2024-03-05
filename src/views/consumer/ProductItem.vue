@@ -7,10 +7,10 @@
         class="product-item-content content-shadow border border-1 bg-white rounded-4 d-flex p-5">
         <div class="row w-100">
           <div class="col-sm-6">
-            <img class="main-img w-100 object-fit-cover" :src="product.imageUrl" :alt="product.id">
+            <img class="main-img w-100 h-100 object-fit-cover rounded-3" :src="product.imageUrl" :alt="product.id">
           </div>
           <div class="col-sm-6 d-flex flex-column">
-            <span class="badge bg-primary rounded-pill p-2 my-3 align-self-start fs-6">{{ product.category }}</span>
+            <span class="badge bg-primary rounded-pill p-2 my-3 align-self-start fs-6 fw-normal">{{ product.category }}</span>
             <h3 class="modal-title" id="exampleModalLabel">
               <span>{{ product.title }}</span>
             </h3>
