@@ -16,7 +16,7 @@
             </h3>
             <div class="h4" v-if="!product.price">{{ product.origin_price }} 元</div>
             <div class="h4 my-3" v-if="product.price">
-              <span class="text-pink">NT${{ product.origin_price }}</span> / <del>{{ product.price }}</del>
+              <span class="text-pink">NT${{ product.price }}</span> / <del>NT${{ product.origin_price }}</del>
             </div>
             <p class="my-3">商品描述：{{ product.description }}</p>
             <p class="my-3">商品內容：{{ product.content }}</p>
