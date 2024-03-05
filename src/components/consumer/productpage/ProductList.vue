@@ -5,7 +5,8 @@
                 <div class="image-container overflow-hidden position-relative" @click="productItemOnclick(item.id)">
                     <img :src="item.imageUrl" :alt="item.id" class="w-100 object-fit-cover productImg ">
                     <div class="w-100 position-absolute top-50 translate-middle-y">
-                        <button type="button" class="btn btn-danger p-3 rounded-2 me-4" @click="productItemOnclick(item.id)">
+                        <button type="button" class="btn btn-danger p-3 rounded-2 me-4"
+                            @click="productItemOnclick(item.id)">
                             <i class="bi bi-search fs-4"></i>
                         </button>
                         <button type="button" class="btn btn-hex p-3 rounded-2" @click.stop="addToCart(item.id)"
@@ -29,26 +30,6 @@
 
 <script>
 export default {
-    props: ['products', 'loadingStatus', 'productItemOnclick' ,'addToCart']
+    props: ['products', 'loadingStatus', 'productItemOnclick', 'addToCart']
 }
 </script>
-
-<style lang="scss">
-// 產品圖片
-.productImg {
-  height: 250px;
-  transition: all ease .3s;
-}
-.image-container:hover .productImg{
-  cursor: pointer;
-  scale: 1.1;
-  opacity: .7;
-}
-.image-container .btn{
-    transition: all .4s ease;
-    opacity: 0;
-}
-.image-container:hover .btn{
-    opacity: .9;
-}
-</style>

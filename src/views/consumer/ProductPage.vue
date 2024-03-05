@@ -6,6 +6,7 @@
       <div class="row">
         <AsideList></AsideList>
         <ProductList :products="products" :loadingStatus="loadingStatus" :productItemOnclick="productItemOnclick" :addToCart="addToCart" ></ProductList>
+        <!-- <Pagination :pages="pages" :getProducts="getProducts"></Pagination> -->
       </div>
     </section>
   </main>
@@ -14,6 +15,7 @@
 <script>
 import AsideList from '@/components/consumer/productpage/AsideList.vue'
 import ProductList from '@/components/consumer/productpage/ProductList.vue'
+import Pagination from '@/components/PaginationComponent.vue'
 import { cartStore } from '@/store/Store.js'
 import { mapActions } from 'pinia'
 const { VITE_API, VITE_PATH } = import.meta.env
@@ -26,6 +28,7 @@ export default {
       },
       loadingMessage: '商品加載中...請稍候',
       isLoading: false,
+      pages: {},
       products: []
     }
   },
@@ -40,6 +43,7 @@ export default {
           productsInfo = await this.$http.get(`${VITE_API}/api/${VITE_PATH}/products?category=${category}&page=${page}`)
         }
         this.products = productsInfo.data.products
+        this.pages = productsInfo.data.pagination
       } catch (error) {
         this.$showNotification('Oops...請稍後嘗試')
       } finally {
@@ -79,7 +83,7 @@ export default {
     '$route.query': 'handleRouteChange'
   },
   components: {
-    AsideList, ProductList
+    AsideList, ProductList, Pagination
   }
 }
 </script>
