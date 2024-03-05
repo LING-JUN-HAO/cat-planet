@@ -1,5 +1,5 @@
 <template>
-  <Loading class="loading-container" :backgroundColor="'#000'" :opacity="'0.3'" :lockScroll="true">
+  <Loading class="loading-container" :backgroundColor="'#000'" :opacity="0.3" :lockScroll="true">
     <div class="text-center">
         <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" class="loadingSvg" viewBox="0 0 512 512">
           <path

@@ -1,36 +1,32 @@
 <template>
   <Loading v-model:active="isLoading" :loadingMessage="loadingMessage"></Loading>
-  <main class="bg-gray">
-    <section class="container container-title py-3 category">
-      <h2 class="text-center py-3 fw-bold">商品分類</h2>
-      <div class="content-shadow border border-1 bg-white rounded-4 d-flex p-5">
-        <div style="flex: 1;">
-          <img :src="product.imageUrl" alt="主要圖片" class="w-100 object-fit-cover">
-        </div>
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-sm-6">
-              <img class="img-fluid" :src="product.imageUrl" :alt="product.id">
+  <main class="product-item-main bg-gray">
+    <section v-if="!isLoading" class="product-item-container container container-title py-3 category">
+      <h2 data-aos="fade-down" data-aos-delay="0" data-aos-duration="900" class="text-center py-3 fw-bold">商品介紹</h2>
+      <div data-aos="fade-up" data-aos-delay="450" data-aos-duration="900"
+        class="product-item-content content-shadow border border-1 bg-white rounded-4 d-flex p-5">
+        <div class="row w-100">
+          <div class="col-sm-6">
+            <img class="main-img w-100 object-fit-cover" :src="product.imageUrl" :alt="product.id">
+          </div>
+          <div class="col-sm-6 d-flex flex-column">
+            <span class="badge bg-primary rounded-pill p-2 my-3 align-self-start fs-6">{{ product.category }}</span>
+            <h3 class="modal-title" id="exampleModalLabel">
+              <span>{{ product.title }}</span>
+            </h3>
+            <div class="h4" v-if="!product.price">{{ product.origin_price }} 元</div>
+            <div class="h4 my-3" v-if="product.price">
+              <span class="text-pink">NT${{ product.origin_price }}</span> / <del>{{ product.price }}</del>
             </div>
-            <div class="col-sm-6">
-              <h5 class="modal-title" id="exampleModalLabel">
-                <span>{{ product.title }}</span>
-              </h5>
-              <span class="badge bg-primary rounded-pill">{{ product.category }}</span>
-              <p class="my-3">商品描述：{{ product.description }}</p>
-              <p class="my-3">商品內容：{{ product.content }}</p>
-              <div class="h5" v-if="!product.price">{{ product.origin_price }} 元</div>
-              <del class="h6 my-3" v-if="product.price">原價 {{ product.origin_price }} 元</del>
-              <div class="h5 my-3" v-if="product.price">現在只要 {{ product.price }} 元</div>
-              <div>
-                <div class="input-group">
-                  <select class="form-select" v-model.number="qty">
-                    <option v-for="i in 20" :key="i" :value="i" selected>{{ i }}</option>
-                  </select>
-                  <button type="button" class="btn btn-primary"
-                    @click="$emit('add-to-cart', product.id, qty)">加入購物車</button>
-                </div>
-              </div>
+            <p class="my-3">商品描述：{{ product.description }}</p>
+            <p class="my-3">商品內容：{{ product.content }}</p>
+            <div class="input-group mt-auto gap-4">
+              <input type="number" class="form-control rounded-2 p-2 text-center col-4 fs-5" v-model.number="qty">
+              <button type="button" class="btn btn-primary rounded-3 p-2 col-8 text-white"
+                @click="addToCart(product.id, qty)">
+                <i class="fas fa-spinner fa-pulse" v-if="isAddCart"></i>
+                加入購物車
+              </button>
             </div>
           </div>
         </div>
@@ -50,6 +46,8 @@ export default {
       product: {},
       loadingMessage: '商品加載中...請稍候',
       isLoading: false,
+      isAddCart: false,
+      qty: '1',
     }
   },
   methods: {
@@ -62,7 +60,22 @@ export default {
         this.$showNotification('Oops...請稍後嘗試')
       } finally {
         this.isLoading = false
-        this.loadingStatus.loadingItem = ''
+      }
+    },
+    async addToCart (id, qty = 1) {
+      const cart = {
+        product_id: id,
+        qty
+      }
+      try {
+        this.isAddCart = true
+        await this.$http.post(`${VITE_API}/api/${VITE_PATH}/cart`, { data: cart })
+        this.getCart()
+        this.$showNotification('商品已加入購物車')
+      } catch (error) {
+        this.$showNotification('Oops...請稍後嘗試')
+      } finally {
+        this.isAddCart = false
       }
     },
     handleRouteChange () {
@@ -77,3 +90,13 @@ export default {
   },
 }
 </script>
+
+<style>
+.product-item-container .main-img {
+  height: 350px;
+}
+
+.product-item-main {
+  min-height: 100vh;
+}
+</style>

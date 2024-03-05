@@ -1,6 +1,6 @@
 <template>
   <section class="container container-title py-3">
-    <h2 data-aos="fade-up" data-aos-delay="0" data-aos-duration="900" class="text-center py-3 fw-bold">關於貓星球</h2>
+    <h2 data-aos="fade-down" data-aos-delay="0" data-aos-duration="900" class="text-center py-3 fw-bold">關於貓星球</h2>
     <div data-aos="fade-up" data-aos-delay="450" data-aos-duration="900" class="introduction-content content-shadow border border-1 bg-white rounded-4 d-flex">
       <div data-aos="fade-left" data-aos-delay="900" data-aos-duration="1350" class="introduction-item d-flex justify-content-center align-items-center flex-column p-6">
         <h2 class="mb-4 fs-2 text-hex">貓咪王國：愛與冒險的天地</h2>

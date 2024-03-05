@@ -1,6 +1,6 @@
 <template>
   <section class="category container container-title py-3">
-    <h2 data-aos="fade-up" data-aos-delay="0" data-aos-duration="900" class="text-center py-3 fw-bold">商品分類</h2>
+    <h2 data-aos="fade-down" data-aos-delay="0" data-aos-duration="900" class="text-center py-3 fw-bold">商品分類</h2>
     <ul data-aos="fade-up" data-aos-delay="450" data-aos-duration="900"
       class="content-shadow border border-1 bg-white rounded-4 d-flex p-5">
       <li class="category-item flex-grow-1 d-flex justify-content-center align-items-center flex-column">
