@@ -16,7 +16,7 @@
             </h3>
             <div class="h4 my-3" v-if="!product.price">{{ product.origin_price }} 元</div>
             <div class="h4 my-3" v-if="product.price">
-              <span class="text-pink">NT${{ product.price }} / {{ product.unit }}</span>
+              <span class="text-pink">NT${{ product.price }}  /  {{ product.unit }}</span>
             </div>
             <del v-if="product.price">NT${{ product.origin_price }}</del>
             <p class="my-3">商品描述：{{ product.description }}</p>
@@ -48,7 +48,7 @@ export default {
       loadingMessage: '商品加載中...請稍候',
       isLoading: false,
       isAddCart: false,
-      qty: '1',
+      qty: 1,
     }
   },
   methods: {
