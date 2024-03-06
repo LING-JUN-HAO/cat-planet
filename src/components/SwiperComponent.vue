@@ -33,7 +33,6 @@ export default {
       // eslint-disable-next-line no-new
       new Swiper('.swiper', {
         modules: [Autoplay, Navigation, Pagination],
-        // Optional parameters
         loop: true,
         slidesPerView: 3,
         spaceBetween: 20,

@@ -10,13 +10,14 @@
             <img class="main-img w-100 h-100 object-fit-cover rounded-3" :src="product.imageUrl" :alt="product.id">
           </div>
           <div class="col-sm-6 d-flex flex-column">
-            <span class="badge bg-primary rounded-pill p-2 my-3 align-self-start fs-6 fw-normal">{{ product.category }}</span>
+            <span class="badge bg-primary rounded-pill p-2 my-3 align-self-start fs-6 fw-normal">{{ product.category
+              }}</span>
             <h3 class="modal-title" id="exampleModalLabel">
               <span>{{ product.title }}</span>
             </h3>
             <div class="h4 my-3" v-if="!product.price">{{ product.origin_price }} 元</div>
             <div class="h4 my-3" v-if="product.price">
-              <span class="text-pink">NT${{ product.price }}  /  {{ product.unit }}</span>
+              <span class="text-pink">NT${{ product.price }} / {{ product.unit }}</span>
             </div>
             <del v-if="product.price">NT${{ product.origin_price }}</del>
             <p class="my-3">商品描述：{{ product.description }}</p>
@@ -91,13 +92,3 @@ export default {
   },
 }
 </script>
-
-<style>
-.product-item-container .main-img {
-  height: 350px;
-}
-
-.product-item-main {
-  min-height: 100vh;
-}
-</style>
