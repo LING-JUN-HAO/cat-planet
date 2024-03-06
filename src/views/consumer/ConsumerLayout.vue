@@ -1,7 +1,9 @@
 <template>
-  <div>
+  <div class="main-container bg-gray d-flex flex-column">
     <ConsumerHeader></ConsumerHeader>
-    <router-view></router-view>
+    <main>
+      <router-view></router-view>
+    </main>
     <ConsumerFooter></ConsumerFooter>
   </div>
 </template>

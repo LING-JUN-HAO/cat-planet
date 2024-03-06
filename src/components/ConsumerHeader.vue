@@ -1,5 +1,5 @@
 <template>
-  <header class="sticky-top ">
+  <header class="sticky-top">
     <nav class="navbar navbar-expand-lg navbar-dark bg-hex">
       <div class="container-fluid">
         <router-link active-class="active" to="/consumer/home">

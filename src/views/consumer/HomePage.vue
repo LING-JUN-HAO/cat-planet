@@ -1,11 +1,9 @@
 <template>
   <Loading v-model:active="isLoading" :loadingMessage="loadingMessage"></Loading>
   <Banner></Banner>
-  <main class="bg-gray">
-    <Category></Category>
-    <About></About>
-    <HotProduct :products="products"></HotProduct>
-  </main>
+  <Category></Category>
+  <About></About>
+  <HotProduct :products="products"></HotProduct>
 </template>
 
 <script>

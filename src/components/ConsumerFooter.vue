@@ -1,5 +1,5 @@
 <template>
-    <footer>
+    <footer class="mt-auto">
         <div class="footerContainer object-fit-cover position-relative" style="height: 400px;">
             <div style="width: 400px;" class="footerContent position-absolute top-50 translate-middle-y me-5">
                 <h1 class="text-hex fs-2 fw-bold mb-3">訂閱獲取貓咪相關資訊</h1>
