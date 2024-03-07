@@ -309,6 +309,7 @@ $dark:          $gray-900 !default;
 $hex:           #6c5c53;
 $pink:          #ca7658;
 $gray:          $gray-300;
+$taupe:         #CAA38D;
 // scss-docs-end theme-color-variables
 
 // scss-docs-start theme-colors-map
@@ -324,6 +325,7 @@ $theme-colors: (
   "hex":        $hex,
   "pink":       $pink,
   "gray":       $gray,
+  "taupe":      $taupe,
 ) !default;
 // scss-docs-end theme-colors-map
 

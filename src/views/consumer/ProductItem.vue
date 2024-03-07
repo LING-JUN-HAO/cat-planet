@@ -1,6 +1,6 @@
 <template>
   <Loading v-model:active="isLoading" :loadingMessage="loadingMessage"></Loading>
-  <section v-if="!isLoading" class="product-item-container container container-title pt-3 pb-6 category">
+  <section v-if="!isLoading" class="product-item-container container container-title py-3 category">
     <h2 data-aos="fade-down" data-aos-delay="0" data-aos-duration="900" class="text-center py-3 fw-bold">商品介紹</h2>
     <div data-aos="fade-up" data-aos-delay="450" data-aos-duration="900"
       class="product-item-content content-shadow border border-1 bg-white rounded-4 d-flex p-5">
@@ -9,7 +9,7 @@
           <img class="main-img w-100 h-100 object-fit-cover rounded-3" :src="product.imageUrl" :alt="product.id">
         </div>
         <div class="col-sm-6 d-flex flex-column">
-          <span class="badge bg-primary rounded-pill p-2 my-3 align-self-start fs-6 fw-normal">{{ product.category
+          <span class="badge bg-pink rounded-pill p-2 my-3 align-self-start fs-6 fw-normal">{{ product.category
             }}</span>
           <h3 class="modal-title" id="exampleModalLabel">
             <span>{{ product.title }}</span>
@@ -23,9 +23,10 @@
           <p class="my-3">商品內容：{{ product.content }}</p>
           <div class="input-group mt-auto gap-4">
             <input type="number" class="form-control rounded-2 p-2 text-center col-4 fs-5" v-model.number="qty">
-            <button type="button" class="btn btn-primary rounded-3 p-2 col-8 text-white"
+            <button type="button" class="btn btn-taupe rounded-3 p-2 col-8 text-white"
               @click="addToCart(product.id, qty)">
               <i class="fas fa-spinner fa-pulse" v-if="isAddCart"></i>
+              <i class="bi bi-cart" v-else></i>
               加入購物車
             </button>
           </div>
@@ -33,6 +34,12 @@
       </div>
     </div>
   </section>
+  <div v-if="!isLoading" class="pt-3 pb-6 text-center" @click="backOnclick">
+    <button type="button" class="btn btn-primary rounded-3 p-2 col-3 text-white">
+      <i class="bi bi-arrow-left"></i>
+      產品頁面
+    </button>
+  </div>
 </template>
 
 <script>
@@ -78,14 +85,14 @@ export default {
         this.isAddCart = false
       }
     },
-    handleRouteChange () {
-      const { productID } = this.$route.query
-      this.getProduct(productID)
+    backOnclick () {
+      this.$router.push({ name: 'consumerProducts', query: { category: '所有產品', page: 1 }})
     },
     ...mapActions(cartStore, ['getCart'])
   },
   mounted () {
-    this.handleRouteChange()
+    const { productID } = this.$route.query
+    this.getProduct(productID)
     this.getCart()
   },
 }
