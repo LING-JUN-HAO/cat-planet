@@ -23,7 +23,7 @@
           <template v-if="cart.carts">
             <tr v-for="item in cart.carts" :key="item.id">
               <td class="text-center">
-                <div @click="backOnclick('product', item.product.id)" class="product-img"
+                <div @click="routerChange('product', item.product.id)" class="product-img"
                   :style="{ backgroundImage: `url(${item.product.imageUrl})` }"></div>
               </td>
               <td class="text-center">
@@ -64,11 +64,11 @@
   </section>
   <div class="pt-3 pb-4 text-center">
     <button v-if="cart.carts.length !== 0" class="btn btn-primary rounded-3 py-2 px-5 text-white" type="button"
-      @click="checkConfirm">
+      @click="routerChange('complete')">
       <i class="bi bi-card-list"></i>
       確認結帳
     </button>
-    <button v-else type="button" class="btn btn-primary rounded-3 py-2 px-5 text-white" @click="backOnclick">
+    <button v-else type="button" class="btn btn-primary rounded-3 py-2 px-5 text-white" @click="routerChange('back')">
       <i class="bi bi-arrow-left"></i>
       商品頁面
     </button>
@@ -140,14 +140,13 @@ export default {
         this.isLoading = false
       }
     },
-    checkConfirm () {
-      this.$router.push({ name: 'consumerCheckout' })
-    },
-    backOnclick (type = 'back', id) {
+    routerChange (type = 'back', id) {
       if (type === 'back') {
         this.$router.push({ name: 'consumerProducts', query: { category: '所有產品', page: 1 } })
-      } else {
+      } else if (type === 'product') {
         this.$router.push({ name: 'consumerProductItem', query: { productID: id } })
+      } else {
+        this.$router.push({ name: 'consumerCheckout' })
       }
     },
     ...mapActions(cartStore, ['getCart'])
@@ -165,24 +164,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-.cart-page table {
-  letter-spacing: .25em;
-}
-
-.cart-page table thead {
-  letter-spacing: .5em;
-}
-
-.cart-page .product-img {
-  height: 80px;
-  background-size: cover;
-  background-position: center center;
-  cursor: pointer;
-}
-
-.delProductItem {
-  cursor: pointer;
-}
-</style>
