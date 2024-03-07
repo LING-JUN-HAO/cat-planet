@@ -20,7 +20,7 @@ export default {
     return {
       products: [],
       isLoading: true,
-      loadingMessage: "資料載入中...請稍候"
+      loadingMessage: '資料載入中...請稍候'
     }
   },
   methods: {

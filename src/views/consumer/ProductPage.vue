@@ -6,7 +6,6 @@
       <AsideList data-aos="fade-left" data-aos-delay="450" data-aos-duration="900"></AsideList>
       <ProductList data-aos="fade-right" data-aos-delay="450" data-aos-duration="900" :products="products"
         :loadingStatus="loadingStatus" :productItemOnclick="productItemOnclick" :addToCart="addToCart"></ProductList>
-      <!-- <Pagination :pages="pages" :getProducts="getProducts"></Pagination> -->
     </div>
   </section>
 </template>
@@ -14,7 +13,6 @@
 <script>
 import AsideList from '@/components/consumer/productpage/AsideList.vue'
 import ProductList from '@/components/consumer/productpage/ProductList.vue'
-import Pagination from '@/components/PaginationComponent.vue'
 import { cartStore } from '@/store/Store.js'
 import { mapActions } from 'pinia'
 const { VITE_API, VITE_PATH } = import.meta.env
@@ -50,7 +48,7 @@ export default {
       }
     },
     productItemOnclick (id) {
-      this.$router.push({ name: 'consumerProductItem', query: { 'productID': id } })
+      this.$router.push({ name: 'consumerProductItem', query: { productID: id } })
     },
     handleRouteChange () {
       const { category, page } = this.$route.query
@@ -65,7 +63,12 @@ export default {
       try {
         await this.$http.post(`${VITE_API}/api/${VITE_PATH}/cart`, { data: cart })
         this.getCart()
-        this.$showNotification('商品已加入購物車')
+        this.$toast.open({
+          message: '商品已成功加入購物車!',
+          type: 'success',
+          position: 'top-right',
+          duration: 1000
+        })
       } catch (error) {
         this.$showNotification('Oops...請稍後嘗試')
       } finally {
@@ -82,7 +85,7 @@ export default {
     '$route.query': 'handleRouteChange'
   },
   components: {
-    AsideList, ProductList, Pagination
+    AsideList, ProductList
   }
 }
 </script>

@@ -5,7 +5,7 @@ import vue from '@vitejs/plugin-vue'
 export default defineConfig({
   base: '/Vue-week1/',
   output: {
-    publicPath: '/Vue-week1/',
+    publicPath: '/Vue-week1/'
   },
   plugins: [vue()],
   resolve: {

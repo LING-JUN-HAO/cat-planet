@@ -12,10 +12,6 @@ import zhTW from '@vee-validate/i18n/dist/locale/zh_TW.json'
 // Pinia
 import { createPinia } from 'pinia'
 import router from './router'
-// 轉址scroll到頂部
-router.afterEach((to, from, failure) => {
-  window.scrollTo(0,0);
-});
 import App from './App.vue'
 import './assets/scss/all.scss'
 // SweetAlert2
@@ -25,6 +21,12 @@ import Loading from '@/components/Loading.vue'
 // AOS
 import AOS from 'aos'
 import 'aos/dist/aos.css'
+import ToastPlugin from 'vue-toast-notification'
+import 'vue-toast-notification/dist/theme-bootstrap.css'
+// 轉址scroll到頂部
+router.afterEach((to, from, failure) => {
+  window.scrollTo(0, 0)
+})
 Object.keys(AllRules).forEach((rule) => {
   defineRule(rule, AllRules[rule])
 })
@@ -52,6 +54,7 @@ app.use({
 app.use(router)
 app.use(VueAxios, axios)
 app.use(pinia)
+app.use(ToastPlugin)
 app.component('VField', Field)
 app.component('VForm', Form)
 app.component('ErrorMessage', ErrorMessage)

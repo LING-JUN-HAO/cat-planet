@@ -34,10 +34,10 @@
       </div>
     </div>
   </section>
-  <div v-if="!isLoading" class="pt-3 pb-6 text-center" @click="backOnclick">
-    <button type="button" class="btn btn-primary rounded-3 p-2 col-3 text-white">
+  <div data-aos="fade-up" data-aos-delay="450" v-if="!isLoading" class="pt-3 pb-4 text-center">
+    <button type="button" class="btn btn-primary rounded-3 py-2 px-5 text-white" @click="backOnclick">
       <i class="bi bi-arrow-left"></i>
-      產品頁面
+      商品頁面
     </button>
   </div>
 </template>
@@ -54,7 +54,7 @@ export default {
       loadingMessage: '商品加載中...請稍候',
       isLoading: false,
       isAddCart: false,
-      qty: 1,
+      qty: 1
     }
   },
   methods: {
@@ -78,7 +78,12 @@ export default {
         this.isAddCart = true
         await this.$http.post(`${VITE_API}/api/${VITE_PATH}/cart`, { data: cart })
         this.getCart()
-        this.$showNotification('商品已加入購物車')
+        this.$toast.open({
+          message: '商品已成功加入購物車!',
+          type: 'success',
+          position: 'top-right',
+          duration: 1000
+        })
       } catch (error) {
         this.$showNotification('Oops...請稍後嘗試')
       } finally {
@@ -86,7 +91,7 @@ export default {
       }
     },
     backOnclick () {
-      this.$router.push({ name: 'consumerProducts', query: { category: '所有產品', page: 1 }})
+      this.$router.push({ name: 'consumerProducts', query: { category: '所有產品', page: 1 } })
     },
     ...mapActions(cartStore, ['getCart'])
   },
@@ -94,6 +99,6 @@ export default {
     const { productID } = this.$route.query
     this.getProduct(productID)
     this.getCart()
-  },
+  }
 }
 </script>

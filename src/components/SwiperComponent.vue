@@ -43,7 +43,7 @@ export default {
       })
     },
     moreProduct (id) {
-      this.$router.push({ path: '/consumer/productItem', query: { 'productID': id } })
+      this.$router.push({ path: '/consumer/productItem', query: { productID: id } })
     }
 
   },
