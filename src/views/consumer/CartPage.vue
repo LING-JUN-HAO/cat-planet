@@ -3,26 +3,7 @@
   <section class="cart-page container container-title py-3">
     <h2 class="text-center py-3 fw-bold">商品確認</h2>
     <div class="content-shadow border border-1 bg-white rounded-4 d-flex p-5 flex-column">
-      <ul class="timeline-container d-flex">
-        <li class="d-flex justify-content-center position-relative active">
-          <div class="timeline-content d-flex flex-column">
-            <span class="timeline-item rounded-circle text-white text-center p-3 mb-2 z-1">1</span>
-            商品確認
-          </div>
-        </li>
-        <li class="d-flex justify-content-center position-relative">
-          <div class="timeline-content d-flex flex-column">
-            <span class="timeline-item rounded-circle text-white text-center p-3 mb-2 z-1">2</span>
-            確認資料
-          </div>
-        </li>
-        <li class="d-flex justify-content-center position-relative">
-          <div class="timeline-content d-flex flex-column">
-            <span class="timeline-item rounded-circle text-white text-center p-3 mb-2 z-1">3</span>
-            訂單成立
-          </div>
-        </li>
-      </ul>
+      <Timeline :active="'productCheck'"></Timeline>
       <button class="btn btn-outline-danger align-self-end" :disabled="cart.total === 0" type="button"
         @click="deleteCartClick">
         <i class="bi bi-trash"></i>
@@ -54,10 +35,10 @@
               </td>
               <td class="text-center">
                 <div class="input-group input-group-sm">
-                  <div class="input-group mb-3">
+                  <div class="input-group my-4">
                     <button type="button" :disabled="item.qty == 1" @click="item.qty--; updateCart(item, item.qty)"
                       class="btn btn-outline-primary">-</button>
-                    <input v-model.number="item.qty" min="1" type="number" class="form-control text-center" readonly>
+                    <input v-model.number="item.qty" min="1" type="number" class="form-control text-center p-0" readonly>
                     <button @click="item.qty++; updateCart(item, item.qty)" type="button"
                       class="btn btn-outline-primary">+</button>
                     <span class="input-group-text" id="basic-addon2">{{ item.product.unit }}</span>
@@ -75,7 +56,7 @@
         </tbody>
         <tfoot>
           <tr class="py-5">
-            <td colspan="5" class="text-center">總計</td>
+            <td colspan="5" class="text-end py-3">總計</td>
             <td class="text-center text-pink">{{ cart.total.toLocaleString() }}</td>
           </tr>
         </tfoot>
@@ -100,6 +81,7 @@
 import { mapState, mapActions } from 'pinia'
 import { cartStore } from '@/store/Store.js'
 import ConsumerCartDeleteModal from '@/components/ConsumerCartDeleteModal.vue'
+import Timeline from '@/components/Timeline.vue'
 
 const { VITE_API, VITE_PATH } = import.meta.env
 
@@ -180,47 +162,7 @@ export default {
     this.isLoading = false
   },
   components: {
-    ConsumerCartDeleteModal
+    ConsumerCartDeleteModal, Timeline
   }
 }
 </script>
-<style lang="scss">
-.timeline-container .timeline-item {
-  height: 56px;
-  width: 56px;
-}
-.timeline-container .timeline-content{
-  color: #E76952;
-}
-.timeline-container li::before,
-.timeline-container .timeline-item{
-  background-color: #E76952;
-}
-.timeline-container li::before{
-  content: '';
-  position: absolute;
-  height: 5px;
-  margin-top: 28px;
-}
-.timeline-container li.active::before,
-.timeline-container li.active .timeline-item{
-  background-color: red;
-}
-.timeline-container li.active .timeline-content{
-  color: red;
-}
-.timeline-container li{
-  flex: 1;
-}
-.timeline-container li:first-child::before{
-  right: 0;
-  width: 50%;
-}
-.timeline-container li:nth-child(2)::before{
-  width: 100%;
-}
-.timeline-container li:last-child::before{
-  left: 0;
-  width: 50%;
-}
-</style>

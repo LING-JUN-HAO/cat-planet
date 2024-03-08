@@ -1,6 +1,12 @@
 .introduction-content{
   .introduction-item{
     flex: 1;
+    &:first-child p{
+      text-indent: 2em;
+    }
+    p {
+      text-align: justify;
+    }
   }
   .introduction-img {
     height: 100%;
