@@ -34,7 +34,7 @@
       </div>
     </div>
   </section>
-  <div data-aos="fade-up" data-aos-delay="450" v-if="!isLoading" class="pt-3 pb-4 text-center">
+  <div v-if="!isLoading" class="pt-3 pb-4 text-center">
     <button type="button" class="btn btn-primary rounded-3 py-2 px-5 text-white" @click="backOnclick">
       <i class="bi bi-arrow-left"></i>
       商品頁面

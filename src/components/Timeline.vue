@@ -1,13 +1,13 @@
 <template>
   <ul class="timeline-container d-flex w-100">
-    <li class="d-flex justify-content-center position-relative" :class="{ active: active === 'productCheck' || active === 'consumerCheck' }">
+    <li class="d-flex justify-content-center position-relative" :class="{ active: active === 'productCheck' || active === 'consumerCheck' || active === 'orderCheck' }">
       <div class="timeline-content d-flex flex-column">
         <span
           class="timeline-item rounded-circle text-white text-center mb-2 z-1 fs-5 d-flex align-items-center justify-content-center fw-bold">1</span>
         商品確認
       </div>
     </li>
-    <li class="d-flex justify-content-center position-relative" :class="{ active: active === 'consumerCheck' }">
+    <li class="d-flex justify-content-center position-relative" :class="{ active: active === 'consumerCheck' || active === 'orderCheck' }">
       <div class="timeline-content d-flex flex-column">
         <span
           class="timeline-item rounded-circle text-white text-center mb-2 z-1 fs-5 d-flex align-items-center justify-content-center fw-bold">2</span>
@@ -18,7 +18,7 @@
       <div class="timeline-content d-flex flex-column">
         <span
           class="timeline-item rounded-circle text-white text-center mb-2 z-1 fs-5 d-flex align-items-center justify-content-center fw-bold">3</span>
-        訂單成立
+        訂單查詢
       </div>
     </li>
   </ul>

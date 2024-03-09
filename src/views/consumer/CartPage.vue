@@ -1,9 +1,10 @@
 <template>
   <Loading v-model:active="isLoading" :loadingMessage="loadingMessage"></Loading>
   <section class="cart-page container container-title py-3">
-    <h2 class="text-center py-3 fw-bold">商品確認</h2>
-    <div class="content-shadow border border-1 bg-white rounded-4 d-flex p-5 flex-column">
+    <h2 data-aos="fade-down" data-aos-delay="0" data-aos-duration="900" class="text-center py-3 fw-bold">商品確認</h2>
+    <div data-aos="fade-up" data-aos-delay="450" data-aos-duration="900" class="content-shadow border border-1 bg-white rounded-4 d-flex p-5 flex-column">
       <Timeline :active="'productCheck'"></Timeline>
+      <img class="shopping-img" src="../../assets/image/addCart.svg" alt="購物車檢視">
       <button class="btn btn-outline-danger align-self-end" :disabled="cart.total === 0" type="button"
         @click="deleteCartClick">
         <i class="bi bi-trash"></i>
@@ -66,11 +67,11 @@
   <div class="pt-3 pb-4 text-center">
     <button v-if="cart.carts.length !== 0" class="btn btn-primary rounded-3 py-2 px-5 text-white" type="button"
       @click="routerChange('complete')">
-      <i class="bi bi-card-list"></i>
       確認結帳
+      <i class="bi bi-caret-right-fill ps-1"></i>
     </button>
     <button v-else type="button" class="btn btn-primary rounded-3 py-2 px-5 text-white" @click="routerChange('back')">
-      <i class="bi bi-arrow-left"></i>
+      <i class="bi bi-caret-left-fill pe-1"></i>
       商品頁面
     </button>
   </div>

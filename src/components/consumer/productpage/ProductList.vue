@@ -18,8 +18,8 @@
         <div class="container">
           <h3 class="fs-5 fw-bold my-3">{{ item.title }}</h3>
           <p>
-            <span class="fs-5 text-pink fw-bold">NT{{ item.price }}</span>
-            <span class="text-decoration-line-through ps-3 fs-6">原價 : NT {{ item.origin_price }}</span>
+            <span class="fs-5 text-pink fw-bold">NT{{ item.origin_price }}</span>
+            <span class="text-decoration-line-through ps-3 fs-6">原價 : NT {{ item.price }}</span>
           </p>
         </div>
       </div>

@@ -10,6 +10,7 @@ import ConsumerHome from '@/views/consumer/HomePage.vue'
 import ConsumerProducts from '@/views/consumer/ProductPage.vue'
 import ConsumerProductItem from '@/views/consumer/ProductItem.vue'
 import ConsumerCart from '@/views/consumer/CartPage.vue'
+import ConsumerOrder from '@/views/consumer/OrderPage.vue'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -52,6 +53,16 @@ const router = createRouter({
           component: ConsumerHome
         },
         {
+          path: 'carts',
+          name: 'consumerCarts',
+          component: ConsumerCart
+        },
+        {
+          path: 'orders',
+          name: 'consumerOrders',
+          component: ConsumerOrder
+        },
+        {
           path: 'checkout',
           name: 'consumerCheckout',
           component: ConsumerCheckout
@@ -65,11 +76,6 @@ const router = createRouter({
           path: 'productItem',
           name: 'consumerProductItem',
           component: ConsumerProductItem
-        },
-        {
-          path: 'carts',
-          name: 'consumerCarts',
-          component: ConsumerCart
         }
       ]
     },
