@@ -1,6 +1,6 @@
 <template>
   <Loading v-model:active="isLoading" :loadingMessage="loadingMessage"></Loading>
-  <section class="cart-page container container-title py-3">
+  <section v-if="cart.carts.length !== 0" class="cart-page container container-title py-3">
     <h2 data-aos="fade-down" data-aos-delay="0" data-aos-duration="900" class="text-center py-3 fw-bold">商品確認</h2>
     <div data-aos="fade-up" data-aos-delay="450" data-aos-duration="900" class="content-shadow border border-1 bg-white rounded-4 d-flex p-5 flex-column">
       <Timeline :active="'productCheck'"></Timeline>
@@ -62,6 +62,12 @@
           </tr>
         </tfoot>
       </table>
+    </div>
+  </section>
+  <section v-else class="container-title">
+    <h2 class="text-center py-3 fw-bold">當前無購物車商品</h2>
+    <div class="py-5 col-3 m-auto">
+      <img src="../../assets/image/empty.png" class="object-fit-cover w-100" alt="">
     </div>
   </section>
   <div class="pt-3 pb-4 text-center">
