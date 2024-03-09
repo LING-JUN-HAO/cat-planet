@@ -2,7 +2,7 @@
   <Loading v-model:active="isLoading" :loadingMessage="loadingMessage"></Loading>
   <VForm ref="orderForm" class="col-md-12 mt-3" v-slot="{ errors }" @submit="createOrder">
     <section class="checkout-page container container-title py-3">
-      <h2 data-aos="fade-down" data-aos-delay="0" data-aos-duration="900" class="text-center py-3 fw-bold">確認資料</h2>
+      <h2 data-aos="fade-down" data-aos-delay="0" data-aos-duration="900" class="text-center py-3 fw-bold">填寫聯絡資訊</h2>
       <div
         data-aos="fade-up" data-aos-delay="450" data-aos-duration="900"
         class="content-shadow border border-1 bg-white rounded-4 d-flex flex-column align-items-center justify-content-center w-100 p-5">

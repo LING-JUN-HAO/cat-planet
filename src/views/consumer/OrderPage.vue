@@ -1,7 +1,7 @@
 <template>
   <Loading v-model:active="isLoading" :loadingMessage="loadingMessage"></Loading>
   <section class="order-page container container-title py-3">
-    <h2 class="text-center py-3 fw-bold">訂單查詢</h2>
+    <h2 class="text-center py-3 fw-bold">查詢訂單</h2>
     <div class="content-shadow border border-1 bg-white rounded-4 d-flex p-5 flex-column">
       <Timeline :active="'orderCheck'"></Timeline>
       <img class="shopping-img" src="../../assets/image/orderFinish.svg" alt="購物完成">

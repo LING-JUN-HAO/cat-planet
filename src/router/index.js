@@ -84,7 +84,15 @@ const router = createRouter({
       name: 'notFount',
       redirect: '/consumer/home'
     }
-  ]
+  ],
+  scrollBehavior () {
+    return { top: 0, behavior: 'smooth' }
+  }
 })
+
+// 轉址scroll到頂部
+// router.afterEach((to, from, failure) => {
+//   window.scrollTo(0, 0)
+// })
 
 export default router

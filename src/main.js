@@ -23,10 +23,6 @@ import AOS from 'aos'
 import 'aos/dist/aos.css'
 import ToastPlugin from 'vue-toast-notification'
 import 'vue-toast-notification/dist/theme-bootstrap.css'
-// 轉址scroll到頂部
-router.afterEach((to, from, failure) => {
-  window.scrollTo(0, 0)
-})
 Object.keys(AllRules).forEach((rule) => {
   defineRule(rule, AllRules[rule])
 })

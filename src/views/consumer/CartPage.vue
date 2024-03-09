@@ -1,8 +1,9 @@
 <template>
   <Loading v-model:active="isLoading" :loadingMessage="loadingMessage"></Loading>
-  <section v-if="cart.carts.length !== 0" class="cart-page container container-title py-3">
-    <h2 data-aos="fade-down" data-aos-delay="0" data-aos-duration="900" class="text-center py-3 fw-bold">商品確認</h2>
-    <div data-aos="fade-up" data-aos-delay="450" data-aos-duration="900" class="content-shadow border border-1 bg-white rounded-4 d-flex p-5 flex-column">
+  <section v-if="cart.carts.length !== 0 && defaultStatus == true" class="cart-page container container-title py-3">
+    <h2 data-aos="fade-down" data-aos-delay="0" data-aos-duration="900" class="text-center py-3 fw-bold">確認商品</h2>
+    <div data-aos="fade-up" data-aos-delay="450" data-aos-duration="900"
+      class="content-shadow border border-1 bg-white rounded-4 d-flex p-5 flex-column">
       <Timeline :active="'productCheck'"></Timeline>
       <img class="shopping-img" src="../../assets/image/addCart.svg" alt="購物車檢視">
       <button class="btn btn-outline-danger align-self-end" :disabled="cart.total === 0" type="button"
@@ -39,7 +40,8 @@
                   <div class="input-group my-4">
                     <button type="button" :disabled="item.qty == 1" @click="item.qty--; updateCart(item, item.qty)"
                       class="btn btn-outline-primary">-</button>
-                    <input v-model.number="item.qty" min="1" type="number" class="form-control text-center p-0" readonly>
+                    <input v-model.number="item.qty" min="1" type="number" class="form-control text-center p-0"
+                      readonly>
                     <button @click="item.qty++; updateCart(item, item.qty)" type="button"
                       class="btn btn-outline-primary">+</button>
                     <span class="input-group-text" id="basic-addon2">{{ item.product.unit }}</span>
@@ -64,16 +66,16 @@
       </table>
     </div>
   </section>
-  <section v-else class="container-title">
-    <h2 class="text-center py-3 fw-bold">當前無購物車商品</h2>
-    <div class="py-5 col-3 m-auto">
-      <img src="../../assets/image/empty.png" class="object-fit-cover w-100" alt="">
+  <section v-if="cart.carts.length === 0 && defaultStatus == true" class="container-title">
+    <h2 data-aos="fade-down" data-aos-delay="0" data-aos-duration="900" class="text-center py-3 fw-bold">當前購物車無商品</h2>
+    <div data-aos="fade-up" data-aos-delay="450" data-aos-duration="900" class="py-5 col-3 m-auto empty-img-box">
+      <img src="../../assets/image/empty.png" class="object-fit-cover w-100 empty-img" alt="空購物車">
     </div>
   </section>
-  <div class="pt-3 pb-4 text-center">
+  <div v-if="defaultStatus == true" class="pt-3 pb-4 text-center">
     <button v-if="cart.carts.length !== 0" class="btn btn-primary rounded-3 py-2 px-5 text-white" type="button"
       @click="routerChange('complete')">
-      確認結帳
+      填寫聯絡資訊
       <i class="bi bi-caret-right-fill ps-1"></i>
     </button>
     <button v-else type="button" class="btn btn-primary rounded-3 py-2 px-5 text-white" @click="routerChange('back')">
@@ -98,8 +100,9 @@ export default {
       loadingStatus: {
         loadingItem: ''
       },
-      loadingMessage: '商品讀取中...請稍後',
-      isLoading: false
+      loadingMessage: '購物車讀取中...請稍後',
+      isLoading: false,
+      defaultStatus: false
     }
   },
   methods: {
@@ -166,6 +169,7 @@ export default {
   async mounted () {
     this.isLoading = true
     await this.getCart()
+    this.defaultStatus = true
     this.isLoading = false
   },
   components: {
@@ -173,3 +177,18 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+.empty-img-box:hover img {
+  animation: shake .2s linear infinite alternate;
+}
+
+@keyframes shake {
+  0% {
+    transform: rotate(5deg)
+  }
+
+  100% {
+    transform: rotate(-5deg)
+  }
+}
+</style>
