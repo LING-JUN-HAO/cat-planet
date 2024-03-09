@@ -72,7 +72,7 @@
       <img src="../../assets/image/empty2.png" class="object-fit-cover w-100 empty-img" alt="空購物車">
     </div>
   </section>
-  <div v-if="defaultStatus == true" class="pt-3 pb-4 text-center">
+  <div v-if="defaultStatus == true" data-aos="zoom-in-up" data-aos-delay="0" data-aos-duration="900" class="pt-3 pb-4 text-center">
     <button v-if="cart.carts.length !== 0" class="btn btn-primary rounded-3 py-2 px-5 text-white" type="button"
       @click="routerChange('complete')">
       填寫聯絡資訊

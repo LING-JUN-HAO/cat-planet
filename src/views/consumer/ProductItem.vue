@@ -34,7 +34,7 @@
       </div>
     </div>
   </section>
-  <div v-if="!isLoading" class="pt-3 pb-4 text-center">
+  <div v-if="!isLoading" data-aos="zoom-in-up" data-aos-delay="0" data-aos-duration="900" class="pt-3 pb-4 text-center">
     <button type="button" class="btn btn-primary rounded-3 py-2 px-5 text-white" @click="backOnclick">
       <i class="bi bi-caret-left-fill ps-1"></i>
       商品頁面

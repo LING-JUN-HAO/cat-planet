@@ -18,7 +18,7 @@
           <div class="mb-3 col-6">
             <label for="tel" class="form-label required">電話號碼</label>
             <VField id="tel" name="電話" type="tel" class="form-control py-2" :class="{ 'is-invalid': errors['電話'] }"
-              placeholder="請輸入電話" rules="required|min:8|max:10" v-model="orderData.user.tel"></VField>
+              placeholder="請輸入電話(0-9)" rules="required|min:8|max:10|numeric:true" v-model="orderData.user.tel"></VField>
             <ErrorMessage name="電話" class="invalid-feedback"></ErrorMessage>
           </div>
           <div class="mb-3 col-6">
@@ -41,7 +41,7 @@
         </div>
       </div>
     </section>
-    <div class="pt-3 pb-4 text-center">
+    <div data-aos="zoom-in-up" data-aos-delay="0" data-aos-duration="900" class="pt-3 pb-4 text-center">
       <button type="submit" class="btn btn-primary rounded-3 py-2 px-5 text-white">
         送出訂單
         <i class="bi bi-caret-right-fill ps-1"></i>
