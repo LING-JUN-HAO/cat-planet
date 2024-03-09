@@ -1,5 +1,6 @@
 <template>
   <div class="w-100">
+    <Loading v-model:active="isLoading" :loadingMessage="loadingMessage"></Loading>
     <AdminHeader></AdminHeader>
     <div class="container overflow-hidden">
       <div class="text-end mt-3 mb-1">
@@ -10,6 +11,9 @@
       <table class="table table-hover mt-3">
         <thead>
           <tr>
+            <th data-field="id" width="80" class="text-center">
+              序號
+            </th>
             <th data-field="category" width="120" class="text-center">
               分類
             </th>
@@ -35,6 +39,9 @@
         </thead>
         <tbody>
           <tr v-for="(item) in products" :key="item.id">
+            <td class="text-center">
+              {{ item.num }}
+            </td>
             <td class="text-center">
               {{ item.category }}
             </td>
@@ -80,7 +87,6 @@
         :isNew="isNew"></AdminProductModal>
       <AdminDeleteModal ref="dModal" :type="'產品'" :temp-Product="tempProduct" :deleteProduct="deleteProduct">
       </AdminDeleteModal>
-      <SpinnerModal ref="sModal" :loadingMessage="loadingMessage"></SpinnerModal>
       <AdminMultiImageModal ref="iModal" :temp-Product="tempProduct" :isMultiImage="isMultiImage"
         @update-temp-product="handleUpdateTempProduct"></AdminMultiImageModal>
     </div>
@@ -90,11 +96,9 @@
 <script>
 import Pagination from '@/components/PaginationComponent.vue'
 import AdminProductModal from '@/components/AdminProductModal.vue'
-import SpinnerModal from '@/components/SpinnerModal.vue'
 import AdminDeleteModal from '@/components/AdminDeleteModal.vue'
 import AdminHeader from '@/components/AdminHeader.vue'
 import AdminMultiImageModal from '@/components/AdminMultiImageModal.vue'
-import ShowNotification from '@/mixin/Swal.js'
 const { VITE_API, VITE_PATH } = import.meta.env
 
 export default {
@@ -106,7 +110,8 @@ export default {
       isNew: false,
       isMultiImage: false,
       pages: {},
-      loadingMessage: '資料載入中...請稍後'
+      loadingMessage: '資料載入中...請稍後',
+      isLoading: false
     }
   },
   methods: {
@@ -120,14 +125,15 @@ export default {
     },
     async getProducts (page = 1) {
       try {
-        this.$refs.sModal.openModal()
+        this.loadingMessage = '資料載入中...請稍候'
+        this.isLoading = true
         const res = await this.$http.get(`${VITE_API}/api/${VITE_PATH}/admin/products?page=${page}`)
         this.products = res.data.products
         this.pages = res.data.pagination
       } catch (error) {
-        ShowNotification('商品資料取得發生異常')
+        this.$showNotification('Oops...請稍後嘗試')
       } finally {
-        this.$refs.sModal.closeModal()
+        this.isLoading = false
       }
     },
     openModal (status, item) {
@@ -163,9 +169,10 @@ export default {
     },
     async updateProduct () {
       try {
+        this.loadingMessage = '資料更新中...請稍候'
+        this.isLoading = true
         this.$refs.pModal.closeModal()
         this.$refs.iModal.closeModal()
-        this.$refs.sModal.openModal()
         let httpMethod = 'post'
         let requestUrl = `${VITE_API}/api/${VITE_PATH}/admin/product`
         let alertMsg = '商品資料新增成功'
@@ -178,25 +185,26 @@ export default {
         await this.$http[httpMethod](requestUrl, {
           data: this.tempProduct
         })
-        ShowNotification(alertMsg)
+        this.$showNotification(alertMsg)
         this.getProducts()
       } catch (error) {
-        ShowNotification('商品資料編輯異常')
+        this.$showNotification('Oops...請稍後嘗試')
       } finally {
-        this.$refs.sModal.closeModal()
+        this.isLoading = false
       }
     },
     async deleteProduct () {
+      this.loadingMessage = '刪除資料中...請稍候'
+      this.isLoading = true
       this.$refs.dModal.closeModal()
-      this.$refs.sModal.openModal()
       try {
         await this.$http.delete(`${VITE_API}/api/${VITE_PATH}/admin/product/${this.tempProduct.id}`)
-        ShowNotification('商品刪除成功')
-        this.getCoupons()
+        this.$showNotification('商品刪除成功')
+        this.getProducts()
       } catch (error) {
-        ShowNotification('商品刪除操作異常')
+        this.$showNotification('Oops...請稍後嘗試')
       } finally {
-        this.$refs.sModal.closeModal()
+        this.isLoading = false
       }
     }
   },
@@ -210,7 +218,7 @@ export default {
     this.checkAdmin()
   },
   components: {
-    Pagination, SpinnerModal, AdminProductModal, AdminDeleteModal, AdminHeader, AdminMultiImageModal
+    Pagination, AdminProductModal, AdminDeleteModal, AdminHeader, AdminMultiImageModal
   }
 }
 </script>

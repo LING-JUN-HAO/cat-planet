@@ -1,4 +1,5 @@
 <template>
+  <Loading v-model:active="isLoading" :loadingMessage="loadingMessage"></Loading>
   <div class="w-100">
     <AdminHeader></AdminHeader>
     <div class="container overflow-hidden">
@@ -10,19 +11,22 @@
       <table class="table table-hover mt-3">
         <thead>
           <tr>
-            <th data-field="title" class="text-center">
+            <th data-field="id" width="80" class="text-center">
+              序號
+            </th>
+            <th data-field="title" width="200" class="text-center">
               標題
             </th>
-            <th data-field="code" class="text-center">
+            <th data-field="code" width="120" class="text-center">
               識別碼
             </th>
             <th data-field="percent" width="120" class="text-center">
               折扣比例
             </th>
-            <th data-field="due_date" width="200" class="text-center">
+            <th data-field="due_date" width="120" class="text-center">
               到期日期
             </th>
-            <th data-field="is_enabled" width="120" class="text-center">
+            <th data-field="is_enabled" width="100" class="text-center">
               啟用
             </th>
             <th data-field="id" width="120" class="text-center">
@@ -32,6 +36,9 @@
         </thead>
         <tbody>
           <tr v-for="(item) in coupons" :key="item.id">
+            <td class="text-center">
+              {{ item.num }}
+            </td>
             <td class="text-center">
               {{ item.title }}
             </td>
@@ -67,7 +74,6 @@
         :isNew="isNew"></AdminCouponModal>
       <AdminDeleteModal ref="dModal" :type="'優惠卷'" :temp-Product="tempProduct" :deleteProduct="deleteCoupon">
       </AdminDeleteModal>
-      <SpinnerModal ref="sModal" :loadingMessage="loadingMessage"></SpinnerModal>
     </div>
   </div>
 </template>
@@ -75,10 +81,8 @@
 <script>
 import Pagination from '@/components/PaginationComponent.vue'
 import AdminCouponModal from '@/components/AdminCouponModal.vue'
-import SpinnerModal from '@/components/SpinnerModal.vue'
 import AdminDeleteModal from '@/components/AdminDeleteModal.vue'
 import AdminHeader from '@/components/AdminHeader.vue'
-import ShowNotification from '@/mixin/Swal.js'
 import moment from 'moment'
 
 const { VITE_API, VITE_PATH } = import.meta.env
@@ -90,7 +94,8 @@ export default {
       tempProduct: {},
       isNew: false,
       pages: {},
-      loadingMessage: '資料載入中...請稍後'
+      loadingMessage: '資料載入中...請稍後',
+      isLoading: false
     }
   },
   methods: {
@@ -104,14 +109,14 @@ export default {
     },
     async getCoupons (page = 1) {
       try {
-        this.$refs.sModal.openModal()
+        this.isLoading = true
         const res = await this.$http.get(`${VITE_API}/api/${VITE_PATH}/admin/coupons?page=${page}`)
         this.coupons = res.data.coupons
         this.pages = res.data.pagination
       } catch (error) {
-        ShowNotification('優惠卷資料取得發生異常')
+        this.$showNotification('Oops...請稍後嘗試')
       } finally {
-        this.$refs.sModal.closeModal()
+        this.isLoading = false
       }
     },
     openModal (status, item) {
@@ -137,7 +142,8 @@ export default {
     async updateProduct () {
       try {
         this.$refs.pModal.closeModal()
-        this.$refs.sModal.openModal()
+        this.loadingMessage = '資料更新中...請稍候'
+        this.isLoading = true
         let httpMethod = 'post'
         let requestUrl = `${VITE_API}/api/${VITE_PATH}/admin/coupon`
         let alertMsg = '優惠卷新增成功'
@@ -149,25 +155,26 @@ export default {
         await this.$http[httpMethod](requestUrl, {
           data: this.tempProduct
         })
-        ShowNotification(alertMsg)
+        this.$showNotification(alertMsg)
         this.getCoupons()
       } catch (error) {
-        ShowNotification('優惠卷操作異常')
+        this.$showNotification('Oops...請稍後嘗試')
       } finally {
-        this.$refs.sModal.closeModal()
+        this.isLoading = false
       }
     },
     async deleteCoupon () {
       this.$refs.dModal.closeModal()
-      this.$refs.sModal.openModal()
+      this.loadingMessage = '優惠卷刪除中...請稍候'
+      this.isLoading = true
       try {
         await this.$http.delete(`${VITE_API}/api/${VITE_PATH}/admin/coupon/${this.tempProduct.id}`)
-        ShowNotification('優惠卷刪除成功')
+        this.$showNotification('優惠卷刪除成功')
         this.getCoupons()
       } catch (error) {
-        ShowNotification('優惠卷刪除操作異常')
+        this.$showNotification('Oops...請稍後嘗試')
       } finally {
-        this.$refs.sModal.closeModal()
+        this.isLoading = false
       }
     },
     dataFormatter (date) {
@@ -184,7 +191,7 @@ export default {
     this.checkAdmin()
   },
   components: {
-    Pagination, SpinnerModal, AdminCouponModal, AdminDeleteModal, AdminHeader
+    Pagination, AdminCouponModal, AdminDeleteModal, AdminHeader
   }
 }
 </script>

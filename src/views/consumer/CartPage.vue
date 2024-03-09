@@ -97,9 +97,6 @@ const { VITE_API, VITE_PATH } = import.meta.env
 export default {
   data () {
     return {
-      loadingStatus: {
-        loadingItem: ''
-      },
       loadingMessage: '購物車讀取中...請稍後',
       isLoading: false,
       defaultStatus: false

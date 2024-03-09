@@ -74,8 +74,6 @@ export default {
     return {
       productModal: null,
       newTemProduct: {},
-      options: ['貓咪玩具', '美容護理', '飲食用品', '貓咪床窩'],
-      uploadStatus: false,
       due_date: '',
       due_time: ''
     }

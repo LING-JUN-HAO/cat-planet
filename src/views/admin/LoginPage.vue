@@ -1,4 +1,5 @@
 <template>
+  <Loading v-model:active="isLoading" :loadingMessage="loadingMessage"></Loading>
   <div class="w-100 loginContainer">
     <div class="container loginBox">
       <div class="row justify-content-center">
@@ -20,13 +21,9 @@
         </div>
       </div>
     </div>
-    <!-- Modal -->
-    <spinner-modal ref="sModal" :loadingMessage="loadingMessage"></spinner-modal>
   </div>
 </template>
 <script>
-import SpinnerModal from '@/components/SpinnerModal.vue'
-import ShowNotification from '@/mixin/Swal.js'
 const { VITE_API } = import.meta.env
 
 export default {
@@ -36,30 +33,27 @@ export default {
         username: '',
         password: ''
       },
-      loadingMessage: '登入中...請稍後'
+      loadingMessage: '登入中...請稍後',
+      isLoading: false
     }
   },
   methods: {
     async login () {
-      this.$refs.sModal.openModal()
       try {
-        // 取得登入權杖並儲存至cookie
+        this.isLoading = true
         const res = await this.$http.post(`${VITE_API}/admin/signin`, this.user)
         const data = res.data
         const { token, expired } = data
         document.cookie = `hexToken=${token}; expireS=${new Date(expired)};`
-        // this.$refs.sModal.closeModal()
         this.$router.push({ name: 'adminProducts' })
       } catch (error) {
         this.user.username = ''
         this.user.password = ''
-        // this.$refs.sModal.closeModal()
-        ShowNotification('登入失敗')
+        this.$showNotification('Oops...請稍後嘗試')
+      } finally {
+        this.isLoading = false
       }
     }
-  },
-  components: {
-    SpinnerModal
   }
 }
 </script>

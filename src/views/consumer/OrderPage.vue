@@ -1,8 +1,8 @@
 <template>
   <Loading v-model:active="isLoading" :loadingMessage="loadingMessage"></Loading>
   <section class="order-page container container-title py-3">
-    <h2 class="text-center py-3 fw-bold">查詢訂單</h2>
-    <div class="content-shadow border border-1 bg-white rounded-4 d-flex p-5 flex-column">
+    <h2 data-aos="fade-down" data-aos-delay="0" data-aos-duration="900" class="text-center py-3 fw-bold">查詢訂單</h2>
+    <div data-aos="fade-up" data-aos-delay="450" data-aos-duration="900"  class="content-shadow border border-1 bg-white rounded-4 d-flex p-5 flex-column">
       <Timeline :active="'orderCheck'"></Timeline>
       <img class="shopping-img" src="../../assets/image/orderFinish.svg" alt="購物完成">
       <div class="order-page-box">
@@ -82,7 +82,7 @@
       </div>
     </div>
   </section>
-  <div class="pt-3 pb-4 text-center">
+  <div data-aos="zoom-in-up" data-aos-delay="0" data-aos-duration="900" class="pt-3 pb-4 text-center">
     <button type="button" class="btn btn-primary rounded-3 py-2 px-5 text-white" @click="routerChange('back')">
       <i class="bi bi-caret-left-fill pe-1"></i>
       商品頁面

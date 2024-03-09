@@ -1,27 +1,37 @@
 <template>
   <div class="w-100">
+    <Loading v-model:active="isLoading" :loadingMessage="loadingMessage"></Loading>
     <AdminHeader></AdminHeader>
     <div class="container overflow-hidden">
-      <table class="table table-hover mt-4">
+      <table class="table table-hover mt-6">
         <thead>
           <tr>
-            <th data-field="category" width="120" class="text-center">
-              分類
+            <th data-field="num" width="80" class="text-center">
+              序號
             </th>
-            <th data-field="title" width="200" class="text-center">
-              產品名稱
+            <th data-field="name" width="120" class="text-center">
+              姓名
             </th>
-            <th data-field="multiImg" width="120" class="text-center">
-              多圖
+            <th data-field="tel" width="200" class="text-center">
+              電話
             </th>
-            <th data-field="origin_price" width="120" class="text-center">
-              原價
+            <th data-field="email" width="200" class="text-center">
+              信箱
             </th>
-            <th data-field="price" width="120" class="text-center">
-              售價
+            <th data-field="message" width="80" class="text-center">
+              備註
             </th>
-            <th data-field="is_enabled" width="100" class="text-center">
-              啟用
+            <th data-field="create_at" width="200" class="text-center">
+              時間
+            </th>
+            <th data-field="productDetail" width="120" class="text-center">
+              產品明細
+            </th>
+            <th data-field="total" width="120" class="text-center">
+              總額
+            </th>
+            <th data-field="is_paid" width="100" class="text-center">
+              付款
             </th>
             <th data-field="id" width="120" class="text-center">
               操作
@@ -31,30 +41,32 @@
         <tbody>
           <tr v-for="(item) in products" :key="item.id">
             <td class="text-center">
-              {{ item.category }}
+              {{ item.num }}
             </td>
             <td class="text-center">
-              {{ item.title }}
+              {{ item.user.name }}
             </td>
             <td class="text-center">
-              <span v-if="item.imagesUrl" class="text-success fw-bold">
-                是
-                <i class="bi bi-pencil-fill" @click="openModal('multiImage', item)"></i>
-              </span>
-              <span v-else>
-                否
-                <i class="bi bi-pencil-fill" @click="openModal('singleImage', item)"></i>
-              </span>
+              {{ item.user.tel }}
             </td>
             <td class="text-center">
-              {{ item.origin_price }}
+              {{ item.user.email }}
             </td>
             <td class="text-center">
-              {{ item.price }}
+              <i class="bi bi-stickies"></i>
             </td>
             <td class="text-center">
-              <span v-if="item.is_enabled" class="text-success fw-bold">啟用</span>
-              <span v-else>未啟用</span>
+              {{ this.dataFormatter(item.create_at) }}
+            </td>
+            <td class="text-center">
+              <i class="bi bi-pencil-fill" @click="openModal('singleImage', item)"></i>
+            </td>
+            <td class="text-center">
+              {{ item.total.toLocaleString() }}
+            </td>
+            <td class="text-center">
+              <span v-if="item.is_paid" class="text-success fw-bold">已付款</span>
+              <span v-else>未付款</span>
             </td>
             <td class="text-center">
               <div class="btn-group">
@@ -69,13 +81,12 @@
           </tr>
         </tbody>
       </table>
-      <Pagination :pages="pages" :get-products="getProducts"></Pagination>
+      <Pagination :pages="pages" :get-products="getOrders"></Pagination>
       <!-- Modal -->
-      <AdminProductModal ref="pModal" :temp-Product="tempProduct" @update-temp-product="handleUpdateTempProduct"
-        :isNew="isNew"></AdminProductModal>
-      <AdminDeleteModal ref="dModal" :type="'產品'" :temp-Product="tempProduct" :deleteProduct="deleteProduct">
+      <AdminOrderModal ref="pModal" :temp-Product="tempProduct" @update-temp-product="handleUpdateTempProduct"
+        :isNew="isNew"></AdminOrderModal>
+      <AdminDeleteModal ref="dModal" :type="'訂單'" :temp-Product="tempProduct" :deleteProduct="deleteProduct">
       </AdminDeleteModal>
-      <SpinnerModal ref="sModal" :loadingMessage="loadingMessage"></SpinnerModal>
       <AdminMultiImageModal ref="iModal" :temp-Product="tempProduct" :isMultiImage="isMultiImage"
         @update-temp-product="handleUpdateTempProduct"></AdminMultiImageModal>
     </div>
@@ -84,12 +95,11 @@
 
 <script>
 import Pagination from '@/components/PaginationComponent.vue'
-import AdminProductModal from '@/components/AdminProductModal.vue'
-import SpinnerModal from '@/components/SpinnerModal.vue'
+import AdminOrderModal from '@/components/AdminOrderModal.vue'
 import AdminDeleteModal from '@/components/AdminDeleteModal.vue'
 import AdminHeader from '@/components/AdminHeader.vue'
 import AdminMultiImageModal from '@/components/AdminMultiImageModal.vue'
-import ShowNotification from '@/mixin/Swal.js'
+import moment from 'moment'
 const { VITE_API, VITE_PATH } = import.meta.env
 
 export default {
@@ -101,28 +111,32 @@ export default {
       isNew: false,
       isMultiImage: false,
       pages: {},
-      loadingMessage: '資料載入中...請稍後'
+      loadingMessage: '資料載入中...請稍後',
+      isLoading: false
     }
   },
   methods: {
     async checkAdmin () {
       try {
         await this.$http.post(`${VITE_API}/api/user/check`, this.user)
-        this.getProducts()
+        this.getOrders()
       } catch (error) {
         this.$router.push({ name: 'adminLogin' })
       }
     },
-    async getProducts (page = 1) {
+    async getOrders (page = 1) {
       try {
-        this.$refs.sModal.openModal()
-        const res = await this.$http.get(`${VITE_API}/api/${VITE_PATH}/admin/products?page=${page}`)
-        this.products = res.data.products
+        console.log('getOrders執行了')
+        this.loadingMessage = '資料載入中...請稍候'
+        this.isLoading = true
+        const res = await this.$http.get(`${VITE_API}/api/${VITE_PATH}/admin/orders?page=${page}`)
+        console.log('getOrders', res)
+        this.products = res.data.orders
         this.pages = res.data.pagination
       } catch (error) {
-        ShowNotification('商品資料取得發生異常')
+        this.$showNotification('Oops...請稍後嘗試')
       } finally {
-        this.$refs.sModal.closeModal()
+        this.isLoading = false
       }
     },
     openModal (status, item) {
@@ -140,8 +154,10 @@ export default {
         this.isNew = false
         this.$refs.pModal.openModal()
       } else if (status === 'delete') {
-        this.tempProduct = item
+        this.tempProduct = { ...item }
+        this.tempProduct.title = item.user.name
         this.$refs.dModal.openModal()
+        console.log('temProduct', this.tempProduct)
       } else if (status === 'singleImage') {
         this.tempProduct = { ...item }
         this.isMultiImage = false
@@ -158,41 +174,39 @@ export default {
     },
     async updateProduct () {
       try {
+        this.loadingMessage = '資料更新中...請稍候'
+        this.isLoading = true
         this.$refs.pModal.closeModal()
         this.$refs.iModal.closeModal()
-        this.$refs.sModal.openModal()
-        let httpMethod = 'post'
-        let requestUrl = `${VITE_API}/api/${VITE_PATH}/admin/product`
-        let alertMsg = '商品資料新增成功'
-
-        if (!this.isNew) {
-          httpMethod = 'put'
-          requestUrl = `${VITE_API}/api/${VITE_PATH}/admin/product/${this.tempProduct.id}`
-          alertMsg = '商品資料編輯成功'
-        }
+        const httpMethod = 'put'
+        const requestUrl = `${VITE_API}/api/${VITE_PATH}/admin/order/${this.tempProduct.id}`
+        const alertMsg = '訂單資料編輯成功'
         await this.$http[httpMethod](requestUrl, {
           data: this.tempProduct
         })
-        ShowNotification(alertMsg)
-        this.getProducts()
+        this.$showNotification(alertMsg)
+        this.getOrders()
       } catch (error) {
-        ShowNotification('商品資料編輯異常')
+        this.$showNotification('Oops...請稍後嘗試')
       } finally {
-        this.$refs.sModal.closeModal()
+        this.isLoading = false
       }
     },
     async deleteProduct () {
+      this.loadingMessage = '刪除資料中...請稍候'
+      this.isLoading = true
       this.$refs.dModal.closeModal()
-      this.$refs.sModal.openModal()
       try {
-        await this.$http.delete(`${VITE_API}/api/${VITE_PATH}/admin/product/${this.tempProduct.id}`)
-        ShowNotification('商品刪除成功')
-        this.getCoupons()
+        await this.$http.delete(`${VITE_API}/api/${VITE_PATH}/admin/order/${this.tempProduct.id}`)
+        this.getOrders()
       } catch (error) {
-        ShowNotification('商品刪除操作異常')
+        this.$showNotification('Oops...請稍後嘗試')
       } finally {
-        this.$refs.sModal.closeModal()
+        this.isLoading = false
       }
+    },
+    dataFormatter (date) {
+      return moment.unix(date).format('YYYY-MM-DD hh:mm:ss')
     }
   },
   mounted () {
@@ -205,7 +219,7 @@ export default {
     this.checkAdmin()
   },
   components: {
-    Pagination, SpinnerModal, AdminProductModal, AdminDeleteModal, AdminHeader, AdminMultiImageModal
+    Pagination, AdminOrderModal, AdminDeleteModal, AdminHeader, AdminMultiImageModal
   }
 }
 </script>
