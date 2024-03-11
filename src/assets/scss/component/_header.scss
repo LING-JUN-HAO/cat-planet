@@ -1,8 +1,13 @@
 .header-container{
-    .title-icon {
-        height: 2em;
-        filter: drop-shadow(#fff 32px 0);
-        margin-left: -32px;
+    .nav-brand-container{
+        .title-icon {
+            height: 2.5em;
+            filter: drop-shadow(#fff 2.5em 0);
+            margin-left: -2.5em;
+        }
+        .title-content{
+            height: 2.5em;
+        }
     }
     .nav-item {
         transition: all .4s ease;
@@ -11,18 +16,19 @@
         }
         .cartNumber{
             background-color: #ca7658;
-            left: 15px;
-            height: 20px;
-            width: 20px;
+            left: 1.25em;
+            top: .25em;
+            height: 1.25em;
+            width: 1.25em;
         }
     }
 }
 
-@media screen and (max-width: 768px){
+@media screen and (max-width: 992px){
     .header-container{
         .nav-item{
             .cartNumber{
-                left: 10px;
+                left: 1em;
             }
         }
     }
