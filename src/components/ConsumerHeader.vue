@@ -3,9 +3,9 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-hex">
       <div class="container-fluid">
         <router-link active-class="active" to="/consumer/home">
-          <div class="nav-brand-container ms-3">
+          <div class="nav-brand-container ms-3 py-2">
             <img class="title-icon me-3" src="../assets/image/logo-cat.svg" alt="喵星球">
-            <img class="title-content ms-4" src="../assets/image/favicon-cat.png" alt="喵星球">
+            <img class="title-content ms-4" src="../assets/image/favicon-cat2.png" alt="喵星球">
           </div>
         </router-link>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
@@ -17,13 +17,13 @@
             <li class="nav-item">
               <router-link class="nav-link fs-bold fs-6" active-class="active" to="/consumer/home">
                 <i class="bi bi-award me-1 fs-4"></i>
-                <span>關於喵星球</span>
+                <span class="fs-6">關於喵星球</span>
               </router-link>
             </li>
             <li class="nav-item">
               <router-link class="nav-link fs-bold" active-class="active" to="/consumer/products?category=所有產品&page=1">
                 <i class="bi bi-shop me-1 fs-4"></i>
-                貓咪用品
+                <span class="fs-6">貓咪用品</span>
               </router-link>
             </li>
             <li class="nav-item position-relative">
@@ -33,7 +33,7 @@
               </div>
               <router-link class="nav-link fs-bold" active-class="active" to="/consumer/carts">
                 <i class="bi bi-cart me-1 fs-4"></i>
-                購物車
+                <span class="fs-6">購物車</span>
               </router-link>
             </li>
           </ul>
