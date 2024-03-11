@@ -88,7 +88,7 @@
 
 <script>
 import { mapState, mapActions } from 'pinia'
-import { cartStore } from '@/store/Store.js'
+import { cartStore } from '@/store/Cart.js'
 import ConsumerCartDeleteModal from '@/components/ConsumerCartDeleteModal.vue'
 import Timeline from '@/components/Timeline.vue'
 

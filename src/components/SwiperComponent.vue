@@ -30,16 +30,18 @@ export default {
   },
   methods: {
     initSwiper () {
-      // eslint-disable-next-line no-new
-      new Swiper('.swiper', {
-        modules: [Autoplay, Navigation, Pagination],
-        loop: true,
-        slidesPerView: 3,
-        spaceBetween: 20,
-        autoplay: {
-          delay: 3000,
-          disableOnInteraction: false
-        }
+      this.$nextTick(() => {
+        // eslint-disable-next-line no-new
+        new Swiper('.swiper', {
+          modules: [Autoplay, Navigation, Pagination],
+          loop: true,
+          slidesPerView: 3,
+          spaceBetween: 20,
+          autoplay: {
+            delay: 3000,
+            disableOnInteraction: false
+          }
+        })
       })
     },
     moreProduct (id) {
@@ -62,19 +64,23 @@ export default {
   background-size: cover;
   background-position: center center;
 }
+
 .swiper-img,
-.more{
+.more {
   transition: all .5s ease;
   cursor: pointer;
 }
-.swiper-slide:hover .swiper-img{
+
+.swiper-slide:hover .swiper-img {
   transform: scale(1.03);
   box-shadow: 4px 1px 10px #555;
   opacity: .7;
 }
-.swiper-slide .more{
+
+.swiper-slide .more {
   opacity: 0;
 }
+
 .swiper-slide:hover .more {
   opacity: 1;
   transform: scale(1.03);

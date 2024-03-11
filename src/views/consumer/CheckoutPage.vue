@@ -52,7 +52,7 @@
 
 <script>
 import { mapActions } from 'pinia'
-import { cartStore } from '@/store/Store.js'
+import { cartStore } from '@/store/Cart.js'
 import Timeline from '@/components/Timeline.vue'
 const { VITE_API, VITE_PATH } = import.meta.env
 

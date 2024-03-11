@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { cartStore } from '@/store/Store.js'
+import { cartStore } from '@/store/Cart.js'
 import { mapActions } from 'pinia'
 const { VITE_API, VITE_PATH } = import.meta.env
 

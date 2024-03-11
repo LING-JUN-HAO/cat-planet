@@ -1,5 +1,5 @@
 <template>
-  <header class="sticky-top">
+  <header class="header-container sticky-top">
     <nav class="navbar navbar-expand-lg navbar-dark bg-hex">
       <div class="container-fluid">
         <router-link active-class="active" to="/consumer/home">
@@ -16,22 +16,23 @@
           <ul class="navbar-nav mb-2 mb-lg-0 w-100 justify-content-end pe-4">
             <li class="nav-item">
               <router-link class="nav-link fs-bold fs-6" active-class="active" to="/consumer/home">
-                <i class="bi bi-award me-1"></i>
+                <i class="bi bi-award me-1 fs-5"></i>
                 <span>關於喵星球</span>
               </router-link>
             </li>
             <li class="nav-item">
               <router-link class="nav-link fs-bold" active-class="active" to="/consumer/products?category=所有產品&page=1">
-                <i class="bi bi-shop me-1"></i>
+                <i class="bi bi-shop me-1 fs-5"></i>
                 貓咪用品
               </router-link>
             </li>
             <li class="nav-item position-relative">
               <div
                 class="position-absolute  text-white fs-6 d-flex align-items-center justify-content-center rounded-circle cartNumber">
-                {{ this.cart.carts.length }}</div>
+                {{ cart.carts.length }}
+              </div>
               <router-link class="nav-link fs-bold" active-class="active" to="/consumer/carts">
-                <i class="bi bi-cart me-1"></i>
+                <i class="bi bi-cart me-1 fs-5"></i>
                 購物車
               </router-link>
             </li>
@@ -43,7 +44,7 @@
 </template>
 <script>
 import { mapState } from 'pinia'
-import { cartStore } from '@/store/Store.js'
+import { cartStore } from '@/store/Cart.js'
 
 export default {
   computed: {
@@ -51,27 +52,3 @@ export default {
   }
 }
 </script>
-<style>
-.title-icon{
-  height: 2em;
-  filter: drop-shadow(#fff 32px 0);
-  margin-left: -32px;
-}
-.navbar-brand {
-  height: 40px;
-}
-
-.cartNumber {
-  background-color: #ca7658;
-  left: 78%;
-  height: 20px;
-  width: 20px;
-}
-
-.nav-item {
-  transition: all .4s ease;
-}
-.nav-item:hover {
-  transform: translateY(-5px);
-}
-</style>

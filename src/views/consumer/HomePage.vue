@@ -7,34 +7,38 @@
 </template>
 
 <script>
+import { mapActions, mapState } from 'pinia'
+import { cartStore } from '@/store/Cart.js'
+import { getProducts } from '@/mixin/Api.js'
+import { loadingStore } from '@/store/Loading.js'
 import Banner from '@/components/consumer/homepage/Banner.vue'
 import Category from '@/components/consumer/homepage/Category.vue'
 import About from '@/components/consumer/homepage/About.vue'
 import HotProduct from '@/components/consumer/homepage/HotProduct.vue'
-import { cartStore } from '@/store/Store.js'
-import { mapActions } from 'pinia'
-const { VITE_API, VITE_PATH } = import.meta.env
 
 export default {
   data () {
     return {
-      products: [],
-      isLoading: true,
-      loadingMessage: '資料載入中...請稍候'
+      products: []
     }
   },
   methods: {
-    async getProducts (category, page = 1) {
+    async getProducts (category, page) {
       try {
-        const productsInfo = await this.$http.get(`${VITE_API}/api/${VITE_PATH}/products?page=${page}`)
-        this.products = productsInfo.data.products
+        this.setLoading(true, '資料載入中...請稍候')
+        const productsInfo = await getProducts(category, page)
+        this.products = productsInfo.products
       } catch (error) {
         this.$showNotification('Oops...請稍後嘗試')
       } finally {
-        this.isLoading = false
+        this.setLoading(false, '')
       }
     },
-    ...mapActions(cartStore, ['getCart'])
+    ...mapActions(cartStore, ['getCart']),
+    ...mapActions(loadingStore, ['setLoading'])
+  },
+  computed: {
+    ...mapState(loadingStore, ['isLoading', 'loadingMessage'])
   },
   mounted () {
     this.getProducts()

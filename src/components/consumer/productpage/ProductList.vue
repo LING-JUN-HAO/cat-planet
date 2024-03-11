@@ -1,5 +1,9 @@
 <template>
   <div class="productList-container col-9 row">
+    <div class="col-12 d-flex justify-content-end py-2" style="height: 3.5em;">
+      <label for="search" class="form-label pe-2 mt-auto">搜尋</label>
+      <input name="search" type="text" class="form-control" style="width: 250px;" @input="$emit('searchValue', $event.target.value)">
+    </div>
     <div v-for="item in products" :key="item.id" class="col-4 mb-4 text-center">
       <div class="image-container border border-1 border-secondary pb-4 rounded-1">
         <div class="overflow-hidden position-relative" @click="productItemOnclick(item.id)">

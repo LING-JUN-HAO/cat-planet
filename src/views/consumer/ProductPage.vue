@@ -5,7 +5,7 @@
     <div class="row">
       <AsideList data-aos="fade-left" data-aos-delay="450" data-aos-duration="900"></AsideList>
       <ProductList data-aos="fade-right" data-aos-delay="450" data-aos-duration="900" :products="products"
-        :loadingStatus="loadingStatus" :productItemOnclick="productItemOnclick" :addToCart="addToCart"></ProductList>
+        :loadingStatus="loadingStatus" :productItemOnclick="productItemOnclick" :addToCart="addToCart" @searchValue="filterProduct"></ProductList>
     </div>
   </section>
 </template>
@@ -13,7 +13,8 @@
 <script>
 import AsideList from '@/components/consumer/productpage/AsideList.vue'
 import ProductList from '@/components/consumer/productpage/ProductList.vue'
-import { cartStore } from '@/store/Store.js'
+import { getProducts } from '@/mixin/Api.js'
+import { cartStore } from '@/store/Cart.js'
 import { mapActions } from 'pinia'
 const { VITE_API, VITE_PATH } = import.meta.env
 
@@ -30,17 +31,12 @@ export default {
     }
   },
   methods: {
-    async getProducts (category, page = 1) {
+    async getProducts (category, page) {
       try {
         this.isLoading = true
-        let productsInfo
-        if (category === '所有產品') {
-          productsInfo = await this.$http.get(`${VITE_API}/api/${VITE_PATH}/products?page=${page}`)
-        } else {
-          productsInfo = await this.$http.get(`${VITE_API}/api/${VITE_PATH}/products?category=${category}&page=${page}`)
-        }
-        this.products = productsInfo.data.products
-        this.pages = productsInfo.data.pagination
+        const productsInfo = await getProducts(category, page)
+        this.products = productsInfo.products
+        this.pages = productsInfo.pagination
       } catch (error) {
         this.$showNotification('Oops...請稍後嘗試')
       } finally {
@@ -74,6 +70,12 @@ export default {
       } finally {
         this.loadingStatus.loadingItem = ''
       }
+    },
+    filterProduct (searchValue) {
+      console.log('searchValue', searchValue)
+      console.log('products', this.products)
+      const test = this.products.filter((x) => x.title === '球形毛絨貓抓球')
+      console.log('test', test)
     },
     ...mapActions(cartStore, ['getCart'])
   },

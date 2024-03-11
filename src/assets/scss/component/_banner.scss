@@ -24,3 +24,13 @@
       }
     }
   }
+
+  @media screen and (max-width: 768px){
+    .header-container{
+        .nav-item{
+            .cartNumber{
+                left: 10px;
+            }
+        }
+    }
+}
