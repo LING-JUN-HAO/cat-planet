@@ -3,9 +3,9 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-hex">
       <div class="container-fluid">
         <router-link active-class="active" to="/consumer/home">
-          <div class="nav-brand-container ms-3 py-2">
+          <div class="nav-brand-container ms-3 py-1">
             <img class="title-icon me-3" src="../assets/image/logo-cat.svg" alt="喵星球">
-            <img class="title-content ms-4" src="../assets/image/favicon-cat2.png" alt="喵星球">
+            <img class="title-content ms-4" src="../assets/image/favicon-cat.png" alt="喵星球">
           </div>
         </router-link>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
