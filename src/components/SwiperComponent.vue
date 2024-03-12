@@ -35,11 +35,22 @@ export default {
         new Swiper('.swiper', {
           modules: [Autoplay, Navigation, Pagination],
           loop: true,
-          slidesPerView: 3,
+          slidesPerView: 1,
           spaceBetween: 20,
           autoplay: {
             delay: 3000,
             disableOnInteraction: false
+          },
+          breakpoints: {
+            992: {
+              slidesPerView: 3
+            },
+            768: {
+              slidesPerView: 2
+            },
+            576: {
+              slidesPerView: 1
+            }
           }
         })
       })
