@@ -5,7 +5,7 @@
     <div data-aos="fade-up" data-aos-delay="450" data-aos-duration="900"
       class="content-shadow border border-1 bg-white rounded-4 d-flex p-5 flex-column">
       <Timeline :active="'productCheck'"></Timeline>
-      <img class="shopping-img" src="../../assets/image/addCart.svg" alt="購物車檢視">
+      <img class="shopping-img my-4" src="../../assets/image/addCart.svg" alt="購物車檢視">
       <button class="btn btn-outline-danger align-self-end" :disabled="cart.total === 0" type="button"
         @click="deleteCartClick">
         <i class="bi bi-trash"></i>
@@ -68,7 +68,7 @@
   </section>
   <section v-if="cart.carts.length === 0 && defaultStatus == true" class="container-title">
     <h2 data-aos="fade-down" data-aos-delay="0" data-aos-duration="900" class="text-center py-3 fw-bold">當前購物車無商品</h2>
-    <div data-aos="fade-up" data-aos-delay="450" data-aos-duration="900" class="py-5 col-3 m-auto empty-img-box">
+    <div data-aos="fade-up" data-aos-delay="450" data-aos-duration="900" class="py-5 col-6 col-md-5 col-lg-4 col-xl-3 m-auto empty-img-box">
       <img src="../../assets/image/empty2.png" class="object-fit-cover w-100 empty-img" alt="空購物車">
     </div>
   </section>

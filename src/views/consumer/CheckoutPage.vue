@@ -7,28 +7,28 @@
         data-aos="fade-up" data-aos-delay="450" data-aos-duration="900"
         class="content-shadow border border-1 bg-white rounded-4 d-flex flex-column align-items-center justify-content-center w-100 p-5">
         <Timeline :active="'consumerCheck'"></Timeline>
-        <img class="shopping-img" src="../../assets/image/contact.svg" alt="聯絡人資訊填寫">
+        <img class="shopping-img my-4" src="../../assets/image/contact.svg" alt="聯絡人資訊填寫">
         <div class="row pb-4">
-          <div class="mb-3 col-6">
+          <div class="mb-3 col-12 col-md-6">
             <label for="name" class="form-label required">姓名</label>
             <VField id="name" name="姓名" type="text" class="form-control py-2" :class="{ 'is-invalid': errors['姓名'] }"
               placeholder="請輸入姓名" rules="required" v-model="orderData.user.name"></VField>
             <ErrorMessage name="姓名" class="invalid-feedback"></ErrorMessage>
           </div>
-          <div class="mb-3 col-6">
+          <div class="mb-3 col-12 col-md-6">
             <label for="tel" class="form-label required">電話號碼</label>
             <VField id="tel" name="電話" type="tel" class="form-control py-2" :class="{ 'is-invalid': errors['電話'] }"
               placeholder="請輸入電話(0-9)" rules="required|min:8|max:10|numeric:true" v-model="orderData.user.tel"></VField>
             <ErrorMessage name="電話" class="invalid-feedback"></ErrorMessage>
           </div>
-          <div class="mb-3 col-6">
+          <div class="mb-3 col-12 col-md-6">
             <label for="email" class="form-label required">電子信箱</label>
             <VField id="email" name="email" type="email" class="form-control py-2"
               :class="{ 'is-invalid': errors['email'] }" placeholder="請輸入 Email" rules="email|required"
               v-model="orderData.user.email"></VField>
             <ErrorMessage name="email" class="invalid-feedback"></ErrorMessage>
           </div>
-          <div class="mb-3 col-6">
+          <div class="mb-3 col-12 col-md-6">
             <label for="address" class="form-label required">配送地址</label>
             <VField id="address" name="地址" type="text" class="form-control py-2" :class="{ 'is-invalid': errors['地址'] }"
               placeholder="請輸入地址" rules="required" v-model="orderData.user.address"></VField>

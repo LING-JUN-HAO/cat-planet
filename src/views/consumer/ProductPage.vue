@@ -2,7 +2,7 @@
   <Loading v-model:active="isLoading" :loadingMessage="loadingMessage"></Loading>
   <section class="container container-title py-3 category">
     <h2 data-aos="fade-down" data-aos-delay="0" data-aos-duration="900" class="text-center py-3 fw-bold">各項精美商品</h2>
-    <div class="row">
+    <div class="row d-flex flex-column flex-xl-row">
       <AsideList data-aos="fade-left" data-aos-delay="450" data-aos-duration="900"></AsideList>
       <ProductList data-aos="fade-right" data-aos-delay="450" data-aos-duration="900" :products="products"
         :loadingStatus="loadingStatus" :productItemOnclick="productItemOnclick" :addToCart="addToCart" @searchValue="filterProduct"></ProductList>
