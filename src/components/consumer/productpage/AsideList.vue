@@ -1,5 +1,5 @@
 <template>
-  <div class="col-12 col-xl-3 p-2 p-xl-0">
+  <div class="col-12 col-xl-3 pt-2 pb-4 p-xl-0">
     <ul class="text-center">
       <li v-for="( categoryItem, index ) in category" :key="index + '123'">
         <router-link :to="{ path: '/consumer/products', query: { category: categoryItem, page: 1 } }"

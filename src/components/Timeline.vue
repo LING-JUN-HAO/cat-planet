@@ -37,6 +37,7 @@ export default {
   width: 56px;
 }
 .timeline-container .timeline-content{
+  white-space: nowrap;
   color: #BEA6A0;
 }
 .timeline-container li::before,

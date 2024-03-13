@@ -14,7 +14,7 @@
       <table class="table align-middle">
         <thead>
           <tr>
-            <th class="text-center">產品</th>
+            <th class="text-center d-none d-lg-block">產品</th>
             <th class="text-center">品名</th>
             <th class="text-center">單價</th>
             <th class="text-center" style="width: 200px">數量/單位</th>
@@ -25,7 +25,7 @@
         <tbody>
           <template v-if="cart.carts">
             <tr v-for="item in cart.carts" :key="item.id">
-              <td class="text-center">
+              <td class="text-center d-none d-lg-block">
                 <div @click="routerChange('product', item.product.id)" class="product-img"
                   :style="{ backgroundImage: `url(${item.product.imageUrl})` }"></div>
               </td>
