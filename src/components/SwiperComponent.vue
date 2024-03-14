@@ -92,6 +92,7 @@ export default {
   opacity: 0;
 }
 
+.swiper-slide:hover .active,
 .swiper-slide:hover .more {
   opacity: 1;
   transform: scale(1.03);
