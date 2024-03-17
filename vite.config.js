@@ -3,9 +3,9 @@ import { fileURLToPath, URL } from 'node:url'
 import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
-  base: '/Vue-week1/',
+  base: '/cat-planet/',
   output: {
-    publicPath: '/Vue-week1/'
+    publicPath: '/cat-planet/'
   },
   plugins: [vue()],
   resolve: {

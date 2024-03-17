@@ -8,13 +8,13 @@
 
 <script>
 import { mapActions, mapState } from 'pinia'
-import { cartStore } from '@/store/Cart.js'
-import { getProducts } from '@/mixin/Api.js'
-import { loadingStore } from '@/store/Loading.js'
 import Banner from '@/components/consumer/homepage/Banner.vue'
 import Category from '@/components/consumer/homepage/Category.vue'
 import About from '@/components/consumer/homepage/About.vue'
 import HotProduct from '@/components/consumer/homepage/HotProduct.vue'
+import { cartStore } from '@/store/Cart.js'
+import { loadingStore } from '@/store/Loading.js'
+import { getProductsApi } from '@/mixin/Api.js'
 
 export default {
   data () {
@@ -26,7 +26,7 @@ export default {
     async getProducts (category, page) {
       try {
         this.setLoading(true, '資料載入中...請稍候')
-        const productsInfo = await getProducts(category, page)
+        const productsInfo = await getProductsApi(category, page)
         this.products = productsInfo.products
       } catch (error) {
         this.$showNotification('Oops...請稍後嘗試')

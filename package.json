@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://ling-jun-hao.github.io/vue-week1",
+  "homepage": "https://ling-jun-hao.github.io/cat-planet",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

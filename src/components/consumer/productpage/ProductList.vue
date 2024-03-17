@@ -6,15 +6,17 @@
     </div> -->
     <div v-for="item in products" :key="item.id" class="col-12 col-sm-6 col-lg-4 mb-4 text-center pe-0">
       <div class="image-container border border-1 border-secondary pb-4 rounded-1">
-        <div class="overflow-hidden position-relative" @click="productItemOnclick(item.id)">
+        <div class="overflow-hidden position-relative"
+          @click="this.$router.push({ name: 'consumerProductItem', query: { productID: item.id } })">
           <img :src="item.imageUrl" :alt="item.id" class="w-100 object-fit-cover productImg ">
           <div class="w-100 position-absolute top-50 translate-middle-y">
-            <button type="button" class="btn btn-danger p-3 rounded-2 me-4" @click="productItemOnclick(item.id)">
+            <button type="button" class="btn btn-danger p-3 rounded-2 me-4"
+              @click="this.$router.push({ name: 'consumerProductItem', query: { productID: item.id } })">
               <i class="bi bi-search fs-4"></i>
             </button>
             <button type="button" class="btn btn-hex p-3 rounded-2" @click.stop="addToCart(item.id)"
-              :disabled="loadingStatus.loadingItem === item.id || !item.is_enabled">
-              <i class="fas fa-spinner fa-pulse" v-if="loadingStatus.loadingItem === item.id"></i>
+              :disabled="loadingItem === item.id || !item.is_enabled">
+              <i class="fas fa-spinner fa-pulse" v-if="loadingItem === item.id"></i>
               <i class="bi bi-cart fs-4" v-else></i>
             </button>
           </div>
@@ -32,7 +34,17 @@
 </template>
 
 <script>
+import { mapActions, mapState } from 'pinia'
+import { cartStore } from '@/store/Cart.js'
+import { loadingStore } from '@/store/Loading.js'
+
 export default {
-  props: ['products', 'loadingStatus', 'productItemOnclick', 'addToCart']
+  props: ['products'],
+  methods: {
+    ...mapActions(cartStore, ['addToCart'])
+  },
+  computed: {
+    ...mapState(loadingStore, ['loadingItem'])
+  }
 }
 </script>

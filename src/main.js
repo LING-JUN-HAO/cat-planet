@@ -16,6 +16,7 @@ import App from './App.vue'
 import './assets/scss/all.scss'
 // SweetAlert2
 import ShowNotification from '@/mixin/Swal.js'
+import ToastNotification from '@/mixin/Toast.js'
 // Loading
 import Loading from '@/components/Loading.vue'
 // AOS
@@ -34,6 +35,7 @@ setLocale('zh_TW')
 const app = createApp(App)
 // 全域註冊
 app.config.globalProperties.$showNotification = ShowNotification
+app.config.globalProperties.$toastNotification = ToastNotification
 const pinia = createPinia()
 app.use({
   install: () => {

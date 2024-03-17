@@ -25,7 +25,7 @@
             <input type="number" class="form-control rounded-2 p-2 text-center col-4 fs-5" v-model.number="qty">
             <button type="button" class="btn btn-taupe rounded-3 p-2 col-8 text-white"
               @click="addToCart(product.id, qty)">
-              <i class="fas fa-spinner fa-pulse" v-if="isAddCart"></i>
+              <i class="fas fa-spinner fa-pulse" v-if="loadingItem !== ''"></i>
               <i class="bi bi-cart" v-else></i>
               加入購物車
             </button>
@@ -35,7 +35,7 @@
     </div>
   </section>
   <div v-if="!isLoading" data-aos="zoom-in-up" data-aos-delay="0" data-aos-duration="900" class="pt-3 pb-4 text-center">
-    <button type="button" class="btn btn-primary rounded-3 py-2 px-5 text-white" @click="backOnclick">
+    <button type="button" class="btn btn-primary rounded-3 py-2 px-5 text-white" @click="this.$router.push({ name: 'consumerProducts', query: { category: '所有產品', page: 1 } })">
       <i class="bi bi-caret-left-fill ps-1"></i>
       商品頁面
     </button>
@@ -43,57 +43,35 @@
 </template>
 
 <script>
+import { mapActions, mapState } from 'pinia'
 import { cartStore } from '@/store/Cart.js'
-import { mapActions } from 'pinia'
-const { VITE_API, VITE_PATH } = import.meta.env
+import { loadingStore } from '@/store/Loading.js'
+import { getProductApi } from '@/mixin/Api.js'
 
 export default {
   data () {
     return {
       product: {},
-      loadingMessage: '商品加載中...請稍候',
-      isLoading: false,
-      isAddCart: false,
       qty: 1
     }
   },
   methods: {
     async getProduct (id) {
       try {
-        this.isLoading = true
-        const productInfo = await this.$http.get(`${VITE_API}/api/${VITE_PATH}/product/${id}`)
-        this.product = productInfo.data.product
+        this.setLoading(true, '商品加載中...請稍候')
+        const productInfo = await getProductApi(id)
+        this.product = productInfo.product
       } catch (error) {
         this.$showNotification('Oops...請稍後嘗試')
       } finally {
-        this.isLoading = false
+        this.setLoading(false, '')
       }
     },
-    async addToCart (id, qty = 1) {
-      const cart = {
-        product_id: id,
-        qty
-      }
-      try {
-        this.isAddCart = true
-        await this.$http.post(`${VITE_API}/api/${VITE_PATH}/cart`, { data: cart })
-        this.getCart()
-        this.$toast.open({
-          message: '商品已成功加入購物車!',
-          type: 'success',
-          position: 'top-right',
-          duration: 1000
-        })
-      } catch (error) {
-        this.$showNotification('Oops...請稍後嘗試')
-      } finally {
-        this.isAddCart = false
-      }
-    },
-    backOnclick () {
-      this.$router.push({ name: 'consumerProducts', query: { category: '所有產品', page: 1 } })
-    },
-    ...mapActions(cartStore, ['getCart'])
+    ...mapActions(loadingStore, ['setLoading']),
+    ...mapActions(cartStore, ['getCart', 'addToCart'])
+  },
+  computed: {
+    ...mapState(loadingStore, ['isLoading', 'loadingMessage', 'loadingItem'])
   },
   mounted () {
     const { productID } = this.$route.query

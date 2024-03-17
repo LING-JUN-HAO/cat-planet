@@ -1,6 +1,6 @@
 <template>
   <Loading v-model:active="isLoading" :loadingMessage="loadingMessage"></Loading>
-  <section v-if="cart.carts.length !== 0 && defaultStatus == true" class="cart-page container container-title py-3">
+  <section v-if="cart.carts.length !== 0" class="cart-page container container-title py-3">
     <h2 data-aos="fade-down" data-aos-delay="0" data-aos-duration="900" class="text-center py-3 fw-bold">確認商品</h2>
     <div data-aos="fade-up" data-aos-delay="450" data-aos-duration="900"
       class="content-shadow border border-1 bg-white rounded-4 d-flex p-5 flex-column">
@@ -66,13 +66,14 @@
       </table>
     </div>
   </section>
-  <section v-if="cart.carts.length === 0 && defaultStatus == true" class="container-title">
+  <section v-if="cart.carts.length === 0 && defaultStatus === true" class="container-title">
     <h2 data-aos="fade-down" data-aos-delay="0" data-aos-duration="900" class="text-center py-3 fw-bold">當前購物車無商品</h2>
-    <div data-aos="fade-up" data-aos-delay="450" data-aos-duration="900" class="py-5 col-8 col-md-5 col-lg-4 col-xl-3 m-auto empty-img-box">
+    <div data-aos="fade-up" data-aos-delay="450" data-aos-duration="900"
+      class="py-5 col-8 col-md-5 col-lg-4 col-xl-3 m-auto empty-img-box">
       <img src="../../assets/image/empty2.png" class="object-fit-cover w-100 empty-img" alt="空購物車">
     </div>
   </section>
-  <div v-if="defaultStatus == true" data-aos="zoom-in-up" data-aos-delay="0" data-aos-duration="900" class="pt-3 pb-4 text-center">
+  <div v-if="defaultStatus === true" data-aos="zoom-in-up" data-aos-delay="0" data-aos-duration="900" class="pt-3 pb-4 text-center">
     <button v-if="cart.carts.length !== 0" class="btn btn-primary rounded-3 py-2 px-5 text-white" type="button"
       @click="routerChange('complete')">
       填寫聯絡資訊
@@ -91,14 +92,14 @@ import { mapState, mapActions } from 'pinia'
 import { cartStore } from '@/store/Cart.js'
 import ConsumerCartDeleteModal from '@/components/ConsumerCartDeleteModal.vue'
 import Timeline from '@/components/Timeline.vue'
+import { loadingStore } from '@/store/Loading.js'
+import { updateCartApi, removeCartItemApi } from '@/mixin/Api.js'
 
 const { VITE_API, VITE_PATH } = import.meta.env
 
 export default {
   data () {
     return {
-      loadingMessage: '購物車讀取中...請稍後',
-      isLoading: false,
       defaultStatus: false
     }
   },
@@ -107,8 +108,7 @@ export default {
       this.$refs.dModal.openModal()
     },
     async deleteAllCarts () {
-      this.loadingMessage = '商品移除中...請稍後'
-      this.isLoading = true
+      this.setLoading(true, '商品移除中...請稍後')
       this.$refs.dModal.closeModal()
       try {
         await this.$http.delete(`${VITE_API}/api/${VITE_PATH}/carts`)
@@ -117,36 +117,34 @@ export default {
       } catch (error) {
         this.$showNotification('Oops...請稍後嘗試')
       } finally {
-        this.isLoading = false
+        this.setLoading(false, '')
       }
     },
     async removeCartItem (id) {
-      this.loadingMessage = '商品移除中...請稍後'
-      this.isLoading = true
+      this.setLoading(true, '商品移除中...請稍後')
       try {
-        await this.$http.delete(`${VITE_API}/api/${VITE_PATH}/cart/${id}`)
-        this.getCart()
+        await removeCartItemApi(id)
         this.$showNotification('商品已移除購物車')
       } catch (error) {
         this.$showNotification('Oops...請稍後嘗試')
       } finally {
-        this.isLoading = false
+        this.getCart()
+        this.setLoading(false, '')
       }
     },
     async updateCart (data, qty = 1) {
-      this.loadingMessage = '資料更改中...請稍後'
-      this.isLoading = true
+      this.setLoading(true, '資料更改中...請稍後')
       const cart = {
         product_id: data.product_id,
         qty: qty
       }
       try {
-        await this.$http.put(`${VITE_API}/api/${VITE_PATH}/cart/${data.id}`, { data: cart })
-        await this.getCart()
+        await updateCartApi(data.id, cart)
       } catch (error) {
         this.$showNotification('Oops...請稍後嘗試')
       } finally {
-        this.isLoading = false
+        this.getCart()
+        this.setLoading(false, '')
       }
     },
     routerChange (type = 'back', id) {
@@ -158,16 +156,18 @@ export default {
         this.$router.push({ name: 'consumerCheckout' })
       }
     },
-    ...mapActions(cartStore, ['getCart'])
+    ...mapActions(cartStore, ['getCart']),
+    ...mapActions(loadingStore, ['setLoading'])
   },
   computed: {
-    ...mapState(cartStore, ['cart'])
+    ...mapState(cartStore, ['cart']),
+    ...mapState(loadingStore, ['isLoading', 'loadingMessage', 'loadingItem'])
   },
   async mounted () {
-    this.isLoading = true
+    this.setLoading(true, '購物車資料載入中')
     await this.getCart()
     this.defaultStatus = true
-    this.isLoading = false
+    this.setLoading(false, '')
   },
   components: {
     ConsumerCartDeleteModal, Timeline
