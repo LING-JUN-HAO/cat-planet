@@ -1,0 +1,16 @@
+.category{
+    .category-item{
+        cursor: pointer;
+        transition: all .4s ease;
+
+        img{
+            height: 7em;
+            width: 7em;
+        }
+
+        &:active,
+        &:hover{
+            transform: scale(1.1);
+        }
+    }
+}

@@ -1,0 +1,11 @@
+.footerContainer{
+    height: 400px;
+    background-image: url('@/assets/image/footer-cat.png');
+    background-position: bottom;
+    background-size: cover;
+    background-repeat: no-repeat;
+
+    .footerContent{
+        right: 0;
+    }
+}

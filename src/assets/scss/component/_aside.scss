@@ -1,0 +1,7 @@
+.category-container{
+    &.active,
+    &:hover{
+        background-color: #6c5c53;
+        color: white;
+    }
+}

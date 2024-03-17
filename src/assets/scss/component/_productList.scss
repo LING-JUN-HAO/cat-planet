@@ -1,0 +1,22 @@
+.image-container {
+    .btn {
+        transition: all .4s ease;
+        opacity: 0;
+    }
+
+    &:hover .btn {
+        opacity: .9;
+    }
+
+    .productImg {
+        cursor: pointer;
+        height: 250px;
+        transition: all ease .3s;
+    }
+
+    &:hover .productImg {
+        scale: 1.1;
+        opacity: .7;
+    }
+
+}

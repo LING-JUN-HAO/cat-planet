@@ -1,0 +1,28 @@
+.introduction-content{
+  .introduction-item{
+    flex: 1;
+    p {
+      text-align: justify;
+      font-size: 1.25em;
+    }
+    h2{
+      font-size: 1.75em;
+    }
+  }
+  .introduction-img {
+    height: 100%;
+    border-radius: 0px 1em 1em 0px;
+  }
+}
+@media screen and (max-width: 576px){
+  .introduction-content{
+    .introduction-item{
+      p {
+          font-size: 1em;
+        }
+      }
+    .introduction-img{
+      border-radius: 0px 0px 1em 1em;
+    }
+  }
+}

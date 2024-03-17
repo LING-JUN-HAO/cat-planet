@@ -1,93 +1,106 @@
 <template>
-  <div>
-    <div class="container">
-      <div class="text-end my-3">
-        <button class="btn btn-outline-danger" :disabled="cart.total === 0" type="button" @click="deleteCartClick">清空購物車
-        </button>
-      </div>
+  <Loading v-model:active="isLoading" :loadingMessage="loadingMessage"></Loading>
+  <section v-if="cart.carts.length !== 0" class="cart-page container container-title py-3">
+    <h2 data-aos="fade-down" data-aos-delay="0" data-aos-duration="900" class="text-center py-3 fw-bold">確認商品</h2>
+    <div data-aos="fade-up" data-aos-delay="450" data-aos-duration="900"
+      class="content-shadow border border-1 bg-white rounded-4 d-flex p-5 flex-column">
+      <Timeline :active="'productCheck'"></Timeline>
+      <img class="shopping-img my-4" src="../../assets/image/addCart.svg" alt="購物車檢視">
+      <button class="btn btn-outline-danger align-self-end" :disabled="cart.total === 0" type="button"
+        @click="deleteCartClick">
+        <i class="bi bi-trash"></i>
+        清空購物車
+      </button>
       <table class="table align-middle">
         <thead>
           <tr>
-            <th></th>
+            <th class="text-center d-none d-lg-block">產品</th>
             <th class="text-center">品名</th>
-            <th class="text-center" style="width: 200px">數量/單位</th>
             <th class="text-center">單價</th>
+            <th class="text-center" style="width: 200px">數量/單位</th>
+            <th class="text-center">小計</th>
+            <th class="text-center"></th>
           </tr>
         </thead>
         <tbody>
           <template v-if="cart.carts">
             <tr v-for="item in cart.carts" :key="item.id">
-              <td>
-                <button type="button" class="btn btn-outline-danger btn-sm" @click="removeCartItem(item.id)"
-                  :disabled="loadingStatus.loadingItem === item.id">
-                  <i class="fas fa-spinner fa-pulse" v-if="loadingStatus.loadingItem === item.id"></i>
-                  x
-                </button>
+              <td class="text-center d-none d-lg-block">
+                <div @click="routerChange('product', item.product.id)" class="product-img"
+                  :style="{ backgroundImage: `url(${item.product.imageUrl})` }"></div>
               </td>
               <td class="text-center">
                 {{ item.product.title }}
-                <div class="text-success" v-if="item.coupon">
-                  已套用優惠券
-                </div>
               </td>
-              <td>
+              <td class="text-center text-pink">
+                $ {{ item.product.price.toLocaleString() }}
+              </td>
+              <td class="text-center">
                 <div class="input-group input-group-sm">
-                  <div class="input-group mb-3">
+                  <div class="input-group my-4">
                     <button type="button" :disabled="item.qty == 1" @click="item.qty--; updateCart(item, item.qty)"
                       class="btn btn-outline-primary">-</button>
-                    <input v-model.number="item.qty" :disabled="loadingStatus.loadingItem === item.id" min="1"
-                      type="number" class="form-control text-center" readonly>
+                    <input v-model.number="item.qty" min="1" type="number" class="form-control text-center p-0"
+                      readonly>
                     <button @click="item.qty++; updateCart(item, item.qty)" type="button"
                       class="btn btn-outline-primary">+</button>
                     <span class="input-group-text" id="basic-addon2">{{ item.product.unit }}</span>
                   </div>
                 </div>
               </td>
+              <td class="text-center text-pink">
+                $ {{ item.final_total.toLocaleString() }}
+              </td>
               <td class="text-center">
-                <small v-if="cart.final_total !== cart.total" class="text-success">折扣價：</small>
-                {{ item.final_total }}
+                <i class="bi bi-trash3-fill delProductItem" @click="removeCartItem(item.id)"></i>
               </td>
             </tr>
           </template>
         </tbody>
         <tfoot>
-          <tr>
-            <td colspan="3" class="text-end">總計</td>
-            <td class="text-end">{{ cart.total }}</td>
-          </tr>
-          <tr v-if="cart.final_total !== cart.total">
-            <td colspan="3" class="text-end text-success">折扣價</td>
-            <td class="text-end text-success">{{ cart.final_total }}</td>
+          <tr class="py-5">
+            <td colspan="5" class="text-end py-3">總計</td>
+            <td class="text-center text-pink">{{ cart.total.toLocaleString() }}</td>
           </tr>
         </tfoot>
       </table>
-      <div class="text-end my-3">
-        <button class="btn btn-outline-primary" :disabled="cart.carts.length === 0" type="button"
-          @click="checkConfirm">確認結帳</button>
-      </div>
     </div>
-    <!-- Modal -->
-    <spinner-modal ref="sModal" :loadingMessage="loadingMessage"></spinner-modal>
-    <consumer-cart-delete-modal ref="dModal" :deleteAllCarts="deleteAllCarts"></consumer-cart-delete-modal>
+  </section>
+  <section v-if="cart.carts.length === 0 && defaultStatus === true" class="container-title">
+    <h2 data-aos="fade-down" data-aos-delay="0" data-aos-duration="900" class="text-center py-3 fw-bold">當前購物車無商品</h2>
+    <div data-aos="fade-up" data-aos-delay="450" data-aos-duration="900"
+      class="py-5 col-8 col-md-5 col-lg-4 col-xl-3 m-auto empty-img-box">
+      <img src="../../assets/image/empty2.png" class="object-fit-cover w-100 empty-img" alt="空購物車">
+    </div>
+  </section>
+  <div v-if="defaultStatus === true" data-aos="zoom-in-up" data-aos-delay="0" data-aos-duration="900" class="pt-3 pb-4 text-center">
+    <button v-if="cart.carts.length !== 0" class="btn btn-primary rounded-3 py-2 px-5 text-white" type="button"
+      @click="routerChange('complete')">
+      填寫聯絡資訊
+      <i class="bi bi-caret-right-fill ps-1"></i>
+    </button>
+    <button v-else type="button" class="btn btn-primary rounded-3 py-2 px-5 text-white" @click="routerChange('back')">
+      <i class="bi bi-caret-left-fill pe-1"></i>
+      商品頁面
+    </button>
   </div>
+  <ConsumerCartDeleteModal ref="dModal" :deleteAllCarts="deleteAllCarts"></ConsumerCartDeleteModal>
 </template>
+
 <script>
-import { mapState } from 'pinia'
+import { mapState, mapActions } from 'pinia'
+import { cartStore } from '@/store/Cart.js'
 import ConsumerCartDeleteModal from '@/components/ConsumerCartDeleteModal.vue'
-import SpinnerModal from '@/components/SpinnerModal.vue'
-import ShowNotification from '@/mixin/Swal.js'
-import { cartStore } from '@/store/Store.js'
+import Timeline from '@/components/Timeline.vue'
+import { loadingStore } from '@/store/Loading.js'
+import { updateCartApi, removeCartItemApi } from '@/mixin/Api.js'
 
 const { VITE_API, VITE_PATH } = import.meta.env
 
 export default {
   data () {
     return {
-      cartStore: cartStore(),
-      loadingStatus: {
-        loadingItem: ''
-      },
-      loadingMessage: '資料操作中...請稍後'
+      defaultStatus: false
     }
   },
   methods: {
@@ -95,59 +108,84 @@ export default {
       this.$refs.dModal.openModal()
     },
     async deleteAllCarts () {
+      this.setLoading(true, '商品移除中...請稍後')
       this.$refs.dModal.closeModal()
-      this.$refs.sModal.openModal()
       try {
         await this.$http.delete(`${VITE_API}/api/${VITE_PATH}/carts`)
-        this.cartStore.getCart()
-        ShowNotification('購物車已清空')
+        this.getCart()
+        this.$showNotification('購物車已清空')
       } catch (error) {
-        ShowNotification('Oops...請稍後嘗試')
+        this.$showNotification('Oops...請稍後嘗試')
       } finally {
-        this.$refs.sModal.closeModal()
+        this.setLoading(false, '')
       }
     },
     async removeCartItem (id) {
-      this.loadingStatus.loadingItem = id
+      this.setLoading(true, '商品移除中...請稍後')
       try {
-        await this.$http.delete(`${VITE_API}/api/${VITE_PATH}/cart/${id}`)
-        this.loadingStatus.loadingItem = ''
-        this.cartStore.getCart()
-        ShowNotification('商品已移除購物車')
+        await removeCartItemApi(id)
+        this.$showNotification('商品已移除購物車')
       } catch (error) {
-        ShowNotification('Oops...請稍後嘗試')
+        this.$showNotification('Oops...請稍後嘗試')
       } finally {
-        this.$refs.sModal.closeModal()
+        this.getCart()
+        this.setLoading(false, '')
       }
     },
     async updateCart (data, qty = 1) {
-      this.loadingStatus.loadingItem = data.id
+      this.setLoading(true, '資料更改中...請稍後')
       const cart = {
         product_id: data.product_id,
         qty: qty
       }
       try {
-        await this.$http.put(`${VITE_API}/api/${VITE_PATH}/cart/${data.id}`, { data: cart })
-        this.loadingStatus.loadingItem = ''
-        this.cartStore.getCart()
+        await updateCartApi(data.id, cart)
       } catch (error) {
-        ShowNotification('Oops...請稍後嘗試')
+        this.$showNotification('Oops...請稍後嘗試')
       } finally {
-        this.loadingStatus.loadingItem = ''
+        this.getCart()
+        this.setLoading(false, '')
       }
     },
-    checkConfirm () {
-      this.$router.push({ name: 'consumerCheckout' })
-    }
+    routerChange (type = 'back', id) {
+      if (type === 'back') {
+        this.$router.push({ name: 'consumerProducts', query: { category: '所有產品', page: 1 } })
+      } else if (type === 'product') {
+        this.$router.push({ name: 'consumerProductItem', query: { productID: id } })
+      } else {
+        this.$router.push({ name: 'consumerCheckout' })
+      }
+    },
+    ...mapActions(cartStore, ['getCart']),
+    ...mapActions(loadingStore, ['setLoading'])
   },
   computed: {
-    ...mapState(cartStore, ['cart'])
+    ...mapState(cartStore, ['cart']),
+    ...mapState(loadingStore, ['isLoading', 'loadingMessage', 'loadingItem'])
   },
-  mounted () {
-    this.cartStore.getCart()
+  async mounted () {
+    this.setLoading(true, '購物車資料載入中')
+    await this.getCart()
+    this.defaultStatus = true
+    this.setLoading(false, '')
   },
   components: {
-    SpinnerModal, ConsumerCartDeleteModal
+    ConsumerCartDeleteModal, Timeline
   }
 }
 </script>
+<style lang="scss" scoped>
+.empty-img-box:hover img {
+  animation: shake .2s linear infinite alternate;
+}
+
+@keyframes shake {
+  0% {
+    transform: rotate(5deg)
+  }
+
+  100% {
+    transform: rotate(-5deg)
+  }
+}
+</style>

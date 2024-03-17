@@ -1,0 +1,20 @@
+.order-page,
+.cart-page {
+    table {
+      letter-spacing: .25em;
+  
+      thead {
+        letter-spacing: .5em;
+      }
+    }
+  
+    .product-img {
+      height: 80px;
+      background-size: cover;
+      background-position: center center;
+      cursor: pointer;
+    }
+    .delProductItem{
+      cursor: pointer;
+    }
+  }

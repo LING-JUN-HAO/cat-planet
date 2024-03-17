@@ -2,56 +2,52 @@
   <div ref="productModal" class="modal fade" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
       <div class="modal-content border-0">
-        <div class="modal-header bg-dark text-white">
+        <div class="modal-header bg-hex text-white">
           <h5 class="modal-title">
-            <span>新增產品</span>
+            <span v-if="isNew === true">新增產品</span>
+            <span v-else>編輯產品</span>
           </h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <div class="row">
-            <div class="col-sm-4">
-              <div class="mb-3">
+            <div class="col-sm-4 d-flex flex-column">
+
+              <div class="flexItem mb-3">
                 <label for="imageUrl" class="form-label">主要圖片</label>
-                <input v-model="newTemProduct.imageUrl" type="text" class="form-control mb-2"
+                <input v-model="newTemProduct.imageUrl" type="text" class="form-control text-truncate mb-2"
                   placeholder="請輸入圖片連結">
-                <img class="img-fluid" :src="newTemProduct.imageUrl" alt="主要圖片">
+                <img class="w-100 object-fit-cover mainImg" :src="newTemProduct.imageUrl" alt="主要圖片">
               </div>
-              <h3 class="mb-3">多圖新增</h3>
-              <div v-if="Array.isArray(newTemProduct.imagesUrl)">
-                <div class="mb-1" v-for="(image, key) in newTemProduct.imagesUrl" :key="key + 123">
-                  <div class="mb-3">
-                    <label :for="``" class="form-label">圖片網址</label>
-                    <input :id="``" v-model="newTemProduct.imagesUrl[key]" type="text" class="form-control"
-                      placeholder="請輸入圖片連結">
-                  </div>
-                  <img class="img-fluid" :src="image">
+
+              <label class="d-flex justify-content-center align-items-center flexItem uploadContainer">
+                <div v-if="uploadStatus === true" class="d-flex justify-content-center align-items-center flex-column">
+                  <i class="bi bi-card-image fs-1"></i>
+                  <div class="fw-normal">照片上傳中...請稍後</div>
                 </div>
-                <div v-if="newTemProduct.imagesUrl.length === 0 ||
-                newTemProduct.imagesUrl[newTemProduct.imagesUrl.length - 1]
-                  ">
-                  <button class="btn btn-outline-primary btn-sm d-block w-100" @click="newTemProduct.imagesUrl.push('')">
-                    新增圖片
-                  </button>
+                <div v-else class="d-flex justify-content-center align-items-center flex-column">
+                  <input type="file" @change="handleFileUpload" @click="this.$refs.inputFile.value = null" ref="inputFile"
+                    accept="image/*" style="display: none">
+                  <i class="bi bi-upload fs-1"></i>
+                  <div class="fw-normal">上傳圖片</div>
+                  <span>(檔案大小限制3MB以下)</span>
                 </div>
-                <div v-else>
-                  <button class="btn btn-outline-danger btn-sm d-block w-100" @click="newTemProduct.imagesUrl.pop()">
-                    刪除圖片
-                  </button>
-                </div>
-              </div>
+              </label>
+
             </div>
             <div class="col-sm-8">
               <div class="mb-3">
                 <label for="title" class="form-label">標題</label>
-                <input id="title" type="text" class="form-control" v-model="newTemProduct.title" placeholder="請輸入標題">
+                <input id="title" type="text" class="form-control text-truncate" v-model="newTemProduct.title"
+                  placeholder="請輸入標題">
               </div>
 
               <div class="row">
                 <div class="mb-3 col-md-6">
                   <label for="category" class="form-label">分類</label>
-                  <input id="category" type="text" class="form-control" v-model="newTemProduct.category"
-                    placeholder="請輸入分類">
+                  <select id="category" class="form-select" v-model.number="newTemProduct.category" placeholder="請輸入分類">
+                    <option v-for="i in options" :key="i + '123'" :value="i" selected>{{ i }}</option>
+                  </select>
                 </div>
                 <div class="mb-3 col-md-6">
                   <label for="unit" class="form-label">單位</label>
@@ -84,7 +80,7 @@
                   placeholder="請輸入說明內容"></textarea>
               </div>
               <div class="mb-3">
-                <div class="form-check">
+                <div class="form-check form-switch">
                   <input id="is_enabled" class="form-check-input" type="checkbox" :true-value="1" :false-value="0"
                     v-model="newTemProduct['is_enabled']">
                   <label class="form-check-label" for="is_enabled">是否啟用</label>
@@ -94,26 +90,30 @@
           </div>
         </div>
         <div class="modal-footer">
+          <button type="button" class="btn btn-primary text-white " @click="updateTempProduct">
+            確認
+          </button>
           <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
             取消
-          </button>
-          <button type="button" class="btn btn-primary" @click="updateTempProduct">
-            確認
           </button>
         </div>
       </div>
     </div>
   </div>
 </template>
-
 <script>
+import ShowNotification from '@/mixin/Swal.js'
+const { VITE_API, VITE_PATH } = import.meta.env
+
 export default {
   emits: ['update-temp-product'],
   props: ['tempProduct', 'isNew'],
   data () {
     return {
       productModal: null,
-      newTemProduct: {}
+      newTemProduct: {},
+      options: ['貓咪玩具', '美容護理', '飲食用品', '貓咪床窩'],
+      uploadStatus: false
     }
   },
   methods: {
@@ -125,6 +125,26 @@ export default {
     },
     updateTempProduct () {
       this.$emit('update-temp-product', this.newTemProduct)
+    },
+    async handleFileUpload (event) {
+      this.uploadStatus = true
+      const file = event.target.files[0]
+      if (!file) return
+      if (file.size > 3 * 1024 * 1024) {
+        ShowNotification('檔案大小超過3MB限制')
+        return
+      }
+      const formdata = new FormData()
+      formdata.append('file-to-upload', file)
+      console.log('file', file)
+      try {
+        const result = await this.$http.post(`${VITE_API}/api/${VITE_PATH}/admin/upload`, formdata)
+        this.newTemProduct.imageUrl = result.data.imageUrl
+      } catch (error) {
+        console.log('error', error)
+      } finally {
+        this.uploadStatus = false
+      }
     }
   },
   watch: {
@@ -139,4 +159,17 @@ export default {
   }
 }
 </script>
-<style scoped></style>
+<style scoped>
+.mainImg {
+  height: 245px;
+}
+
+.flexItem {
+  flex: 1;
+}
+
+.uploadContainer {
+  border: 4px dotted;
+  cursor: pointer;
+}
+</style>
