@@ -9,9 +9,7 @@ Demo Website：https://ling-jun-hao.github.io/cat-planet/#/
 ## 設計理念
 
 * **名稱由來：** 喜歡貓咪的人都是一家人，同在一個星球上
-
 * **主要風格：** 咖啡色搭配灰色系
-
 * **色系搭配：** #6c5c53、#aaa、#6c5c53
 
 ## 使用技術
