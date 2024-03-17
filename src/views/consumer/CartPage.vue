@@ -93,9 +93,7 @@ import { cartStore } from '@/store/Cart.js'
 import ConsumerCartDeleteModal from '@/components/ConsumerCartDeleteModal.vue'
 import Timeline from '@/components/Timeline.vue'
 import { loadingStore } from '@/store/Loading.js'
-import { updateCartApi, removeCartItemApi } from '@/mixin/Api.js'
-
-const { VITE_API, VITE_PATH } = import.meta.env
+import { updateCartApi, removeCartItemApi, deleteCartsApi } from '@/mixin/Api.js'
 
 export default {
   data () {
@@ -111,7 +109,7 @@ export default {
       this.setLoading(true, '商品移除中...請稍後')
       this.$refs.dModal.closeModal()
       try {
-        await this.$http.delete(`${VITE_API}/api/${VITE_PATH}/carts`)
+        await deleteCartsApi()
         this.getCart()
         this.$showNotification('購物車已清空')
       } catch (error) {

@@ -20,13 +20,18 @@ export async function getProductApi (id) {
 
 export async function updateCartApi (id, cart) {
   const { VITE_API, VITE_PATH } = import.meta.env
-  await axios.put(`${VITE_API}/api/${VITE_PATH}/cart/${id}`, { data: cart })
-  const response = await axios.delete(`${VITE_API}/api/${VITE_PATH}/cart/${id}`)
+  const response = await axios.put(`${VITE_API}/api/${VITE_PATH}/cart/${id}`, { data: cart })
   return response.data
 }
 
 export async function removeCartItemApi (id) {
   const { VITE_API, VITE_PATH } = import.meta.env
   const response = await axios.delete(`${VITE_API}/api/${VITE_PATH}/cart/${id}`)
+  return response.data
+}
+
+export async function deleteCartsApi (id) {
+  const { VITE_API, VITE_PATH } = import.meta.env
+  const response = await axios.delete(`${VITE_API}/api/${VITE_PATH}/carts`)
   return response.data
 }
