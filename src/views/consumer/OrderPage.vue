@@ -1,9 +1,9 @@
 <template>
-  <Loading v-model:active="isLoading" :loadingMessage="loadingMessage"></Loading>
+  <LoadingComponent v-model:active="isLoading" :loadingMessage="loadingMessage"></LoadingComponent>
   <section class="order-page container container-title py-3">
     <h2 data-aos="fade-down" data-aos-delay="0" data-aos-duration="900" class="text-center py-3 fw-bold">查詢訂單</h2>
     <div data-aos="fade-up" data-aos-delay="450" data-aos-duration="900"  class="content-shadow border border-1 bg-white rounded-4 d-flex p-5 flex-column">
-      <Timeline :active="'orderCheck'"></Timeline>
+      <TimelineComponent :active="'orderCheck'"></TimelineComponent>
       <img class="shopping-img" src="../../assets/image/orderFinish.svg" alt="購物完成">
       <div class="order-page-box">
         <h3 class="p-2 mb-3 text-bg position-relative z-1 h4">訂單資訊</h3>
@@ -67,7 +67,7 @@
               信箱：{{ orderInfo.user?.email }}
             </div>
           </div>
-          <div class="row p-2 mb-0 mb-md--2">
+          <div class="row p-2 mb-0 mb-md-2">
             <div class="col-12 col-md-6 pb-3 pb-md-0">
               電話：{{ orderInfo.user?.tel }}
             </div>
@@ -93,14 +93,14 @@
 </template>
 
 <script>
-import Timeline from '@/components/Timeline.vue'
-const { VITE_API, VITE_PATH } = import.meta.env
+import { mapActions, mapState } from 'pinia'
+import TimelineComponent from '@/components/utils/TimelineComponent.vue'
+import { loadingStore } from '@/store/Loading.js'
+import { getOrderApi } from '@/mixin/Api.js'
 
 export default {
   data () {
     return {
-      loadingMessage: '商品讀取中...請稍後',
-      isLoading: false,
       products: [],
       orderInfo: {}
     }
@@ -108,16 +108,14 @@ export default {
   methods: {
     async getOrder (id) {
       try {
-        this.isLoading = true
-        const orderInfo = await this.$http.get(`${VITE_API}/api/${VITE_PATH}/order/${id}`)
-        this.products = orderInfo.data.order.products
-        this.orderInfo = orderInfo.data.order
-        console.log('orderInfo', orderInfo)
-        console.log('products', this.products)
+        this.setLoading(true, '商品讀取中...請稍後')
+        const orderInfo = await getOrderApi(id)
+        this.products = orderInfo.order.products
+        this.orderInfo = orderInfo.order
       } catch (error) {
         this.$showNotification('Oops...請稍後嘗試')
       } finally {
-        this.isLoading = false
+        this.setLoading(false, '')
       }
     },
     routerChange (type = 'back', id) {
@@ -125,27 +123,18 @@ export default {
         this.$router.push({ name: 'consumerProducts', query: { category: '所有產品', page: 1 } })
       } else if (type === 'product') {
         this.$router.push({ name: 'consumerProductItem', query: { productID: id } })
-      } else {
-        this.$router.push({ name: 'consumerCheckout' })
       }
-    }
+    },
+    ...mapActions(loadingStore, ['setLoading'])
+  },
+  computed: {
+    ...mapState(loadingStore, ['isLoading', 'loadingMessage'])
   },
   async mounted () {
     await this.getOrder(this.$route.query.orderID)
   },
   components: {
-    Timeline
+    TimelineComponent
   }
 }
 </script>
-<style lang="scss" scoped>
-.text-bg:before {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  height: 50%;
-  width: 100%;
-  background: rgba(238, 238, 238, .6);
-  z-index: -1;
-}
-</style>

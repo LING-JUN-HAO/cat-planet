@@ -1,17 +1,17 @@
 <template>
-  <Loading v-model:active="isLoading" :loadingMessage="loadingMessage"></Loading>
-  <Banner></Banner>
-  <Category></Category>
-  <About></About>
-  <HotProduct :products="products"></HotProduct>
+  <LoadingComponent v-model:active="isLoading" :loadingMessage="loadingMessage"></LoadingComponent>
+  <BannerComponent></BannerComponent>
+  <CategoryComponent></CategoryComponent>
+  <AboutComponent></AboutComponent>
+  <HotProductComponent :products="products"></HotProductComponent>
 </template>
 
 <script>
 import { mapActions, mapState } from 'pinia'
-import Banner from '@/components/consumer/homepage/Banner.vue'
-import Category from '@/components/consumer/homepage/Category.vue'
-import About from '@/components/consumer/homepage/About.vue'
-import HotProduct from '@/components/consumer/homepage/HotProduct.vue'
+import BannerComponent from '@/components/consumer/homePage/BannerComponent.vue'
+import CategoryComponent from '@/components/consumer/homePage/CategoryComponent.vue'
+import AboutComponent from '@/components/consumer/homePage/AboutComponent.vue'
+import HotProductComponent from '@/components/consumer/homePage/HotProductComponent.vue'
 import { cartStore } from '@/store/Cart.js'
 import { loadingStore } from '@/store/Loading.js'
 import { getProductsApi } from '@/mixin/Api.js'
@@ -45,7 +45,7 @@ export default {
     this.getCart()
   },
   components: {
-    Banner, Category, About, HotProduct
+    BannerComponent, CategoryComponent, AboutComponent, HotProductComponent
   }
 }
 </script>

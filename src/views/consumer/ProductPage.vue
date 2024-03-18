@@ -1,5 +1,5 @@
 <template>
-  <Loading v-model:active="isLoading" :loadingMessage="loadingMessage"></Loading>
+  <LoadingComponent v-model:active="isLoading" :loadingMessage="loadingMessage"></LoadingComponent>
   <section class="container container-title py-3 category">
     <h2 data-aos="fade-down" data-aos-delay="0" data-aos-duration="900" class="text-center py-3 fw-bold">各項精美商品</h2>
     <div class="row d-flex flex-column flex-xl-row">
@@ -11,8 +11,8 @@
 
 <script>
 import { mapActions, mapState } from 'pinia'
-import AsideList from '@/components/consumer/productpage/AsideList.vue'
-import ProductList from '@/components/consumer/productpage/ProductList.vue'
+import AsideList from '@/components/consumer/productPage/AsideList.vue'
+import ProductList from '@/components/consumer/productPage/ProductList.vue'
 import { cartStore } from '@/store/Cart.js'
 import { loadingStore } from '@/store/Loading.js'
 import { getProductsApi } from '@/mixin/Api.js'

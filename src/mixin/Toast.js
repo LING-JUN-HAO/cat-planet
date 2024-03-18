@@ -1,4 +1,3 @@
-// import 'vue-toast-notification/dist/theme-default.css'
 import { useToast } from 'vue-toast-notification'
 
 const Toast = useToast()

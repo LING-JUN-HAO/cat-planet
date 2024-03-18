@@ -1,5 +1,14 @@
 .order-page {
   .order-page-box{
     letter-spacing: .25em;
+    .text-bg:before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      height: 50%;
+      width: 100%;
+      background: rgba(238, 238, 238, .6);
+      z-index: -1;
+    }
   }
 }

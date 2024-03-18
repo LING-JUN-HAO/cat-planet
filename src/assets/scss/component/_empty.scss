@@ -1,0 +1,13 @@
+.empty-img-box:hover img {
+    animation: shake .2s linear infinite alternate;
+  }
+  
+  @keyframes shake {
+    0% {
+      transform: rotate(5deg)
+    }
+  
+    100% {
+      transform: rotate(-5deg)
+    }
+  }

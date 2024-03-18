@@ -1,12 +1,12 @@
 <template>
-  <Loading v-model:active="isLoading" :loadingMessage="loadingMessage"></Loading>
+  <LoadingComponent v-model:active="isLoading" :loadingMessage="loadingMessage"></LoadingComponent>
   <VForm ref="orderForm" class="col-md-12 mt-3" v-slot="{ errors }" @submit="createOrder">
     <section class="checkout-page container container-title py-3">
       <h2 data-aos="fade-down" data-aos-delay="0" data-aos-duration="900" class="text-center py-3 fw-bold">填寫聯絡資訊</h2>
       <div
         data-aos="fade-up" data-aos-delay="450" data-aos-duration="900"
         class="content-shadow border border-1 bg-white rounded-4 d-flex flex-column align-items-center justify-content-center w-100 p-5">
-        <Timeline :active="'consumerCheck'"></Timeline>
+        <TimelineComponent :active="'consumerCheck'"></TimelineComponent>
         <img class="shopping-img my-4" src="../../assets/image/contact.svg" alt="聯絡人資訊填寫">
         <div class="row pb-4">
           <div class="mb-3 col-12 col-md-6">
@@ -51,10 +51,12 @@
 </template>
 
 <script>
-import { mapActions } from 'pinia'
+import { mapActions, mapState } from 'pinia'
+import TimelineComponent from '@/components/utils/TimelineComponent.vue'
 import { cartStore } from '@/store/Cart.js'
-import Timeline from '@/components/Timeline.vue'
-const { VITE_API, VITE_PATH } = import.meta.env
+import { loadingStore } from '@/store/Loading.js'
+import ToastNotification from '@/mixin/Toast.js'
+import { createOrderApi } from '@/mixin/Api.js'
 
 export default {
   data () {
@@ -67,47 +69,36 @@ export default {
           address: ''
         },
         message: ''
-      },
-      loadingMessage: '訂單處理中...請稍候',
-      isLoading: false
+      }
     }
   },
   methods: {
     async createOrder () {
       try {
-        this.isLoading = true
-        const data = await this.$http.post(`${VITE_API}/api/${VITE_PATH}/order`, { data: this.orderData })
-        const { orderId } = data.data
+        this.setLoading(true, '訂單處理中...請稍候')
+        const data = await createOrderApi(this.orderData)
+        const { orderId } = data
         this.$refs.orderForm.resetForm()
-        this.$toast.open({
-          message: '訂單已成功送出!',
-          type: 'success',
-          position: 'top-right',
-          duration: 1000
-        })
+        ToastNotification('success', '訂單已成功送出!')
         this.$router.push({ name: 'consumerOrders', query: { orderID: orderId } })
       } catch (error) {
-        console.log('error', error)
+        this.$showNotification('Oops...請稍後嘗試')
       } finally {
-        this.isLoading = false
+        this.setLoading(false, '')
         this.cleanCart()
       }
     },
-    ...mapActions(cartStore, ['getCart', 'cleanCart'])
+    ...mapActions(cartStore, ['getCart', 'cleanCart']),
+    ...mapActions(loadingStore, ['setLoading'])
+  },
+  computed: {
+    ...mapState(loadingStore, ['isLoading', 'loadingMessage'])
   },
   mounted () {
     this.getCart()
   },
   components: {
-    Timeline
+    TimelineComponent
   }
 }
 </script>
-<style>
-.checkout-page label.required::after {
-  content: '*';
-  padding-left: 2px;
-  color: red;
-  opacity: .7;
-}
-</style>

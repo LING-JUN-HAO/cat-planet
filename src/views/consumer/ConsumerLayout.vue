@@ -1,19 +1,19 @@
 <template>
   <div class="main-container bg-gray d-flex flex-column">
-    <ConsumerHeader></ConsumerHeader>
+    <HeaderComponent></HeaderComponent>
     <main>
       <router-view></router-view>
     </main>
-    <ConsumerFooter></ConsumerFooter>
+    <FooterComponent></FooterComponent>
   </div>
 </template>
 <script>
-import ConsumerHeader from '@/components/ConsumerHeader.vue'
-import ConsumerFooter from '@/components/ConsumerFooter.vue'
+import HeaderComponent from '@/components/consumer/HeaderComponent.vue'
+import FooterComponent from '@/components/consumer/FooterComponent.vue'
 
 export default {
   components: {
-    ConsumerHeader, ConsumerFooter
+    HeaderComponent, FooterComponent
   }
 }
 </script>

@@ -4,7 +4,7 @@
 
 以貓咪寵物用品為主題，結合玩具、美容、飲食、床窩用品的電商網站，滿足貓咪的一切需求。
 
-Demo Website：https://ling-jun-hao.github.io/cat-planet/#/
+Demo Website：<https://ling-jun-hao.github.io/cat-planet/#/>
 
 ## 設計理念
 
@@ -52,7 +52,7 @@ npm install
 
 ## 啟動方式
 
-Start the development server on http://localhost:3000:
+Start the development server on <http://localhost:8080>
 
 ```bash=
 npm run dev

@@ -1,5 +1,5 @@
 <template>
-  <Loading v-model:active="isLoading" :loadingMessage="loadingMessage"></Loading>
+  <LoadingComponent v-model:active="isLoading" :loadingMessage="loadingMessage"></LoadingComponent>
   <div class="w-100 loginContainer">
     <div class="container loginBox">
       <div class="row justify-content-center">
@@ -24,7 +24,9 @@
   </div>
 </template>
 <script>
-const { VITE_API } = import.meta.env
+import { mapState, mapActions } from 'pinia'
+import { loadingStore } from '@/store/Loading.js'
+import { signInApi } from '@/mixin/Api.js'
 
 export default {
   data () {
@@ -32,54 +34,29 @@ export default {
       user: {
         username: '',
         password: ''
-      },
-      loadingMessage: '登入中...請稍後',
-      isLoading: false
+      }
     }
   },
   methods: {
     async login () {
       try {
-        this.isLoading = true
-        const res = await this.$http.post(`${VITE_API}/admin/signin`, this.user)
-        const data = res.data
+        this.setLoading(true, '登入中...請稍後')
+        const data = await signInApi(this.user)
         const { token, expired } = data
         document.cookie = `hexToken=${token}; expireS=${new Date(expired)};`
         this.$router.push({ name: 'adminProducts' })
       } catch (error) {
-        this.user.username = ''
-        this.user.password = ''
         this.$showNotification('Oops...請稍後嘗試')
       } finally {
-        this.isLoading = false
+        this.user.username = ''
+        this.user.password = ''
+        this.setLoading(false, '')
       }
-    }
+    },
+    ...mapActions(loadingStore, ['setLoading'])
+  },
+  computed: {
+    ...mapState(loadingStore, ['isLoading', 'loadingMessage'])
   }
 }
 </script>
-<style lang="scss" scoped>
-.loginContainer {
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: url("../../assets/image/login-background.jpg") no-repeat center center /cover;
-
-  .loginBox {
-    width: 80vw;
-    max-width: 550px;
-    background-color: rgb(255, 255, 255, 0.6);
-    backdrop-filter: blur(5px);
-    border: 10px solid white;
-    border-radius: 20px;
-    box-shadow: 0 0 50px #000;
-    padding: 0 15px 30px 15px;
-    text-align: center;
-    letter-spacing: .125em;
-  }
-
-  h1 {
-    border-bottom: 1px solid rgb(0, 0, 0, 0.6);
-  }
-}
-</style>
