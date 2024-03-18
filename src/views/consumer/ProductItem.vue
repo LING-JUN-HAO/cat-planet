@@ -1,5 +1,5 @@
 <template>
-  <Loading v-model:active="isLoading" :loadingMessage="loadingMessage"></Loading>
+  <LoadingComponent v-model:active="isLoading" :loadingMessage="loadingMessage"></LoadingComponent>
   <section v-if="!isLoading" class="product-item-container container container-title py-3 category">
     <h2 data-aos="fade-down" data-aos-delay="0" data-aos-duration="900" class="text-center py-3 fw-bold">商品介紹</h2>
     <div data-aos="fade-up" data-aos-delay="450" data-aos-duration="900"

@@ -1,13 +1,13 @@
 <template>
-  <div class="w-100">
-    <Loading v-model:active="isLoading" :loadingMessage="loadingMessage"></Loading>
-    <AdminHeader></AdminHeader>
-    <div class="container overflow-auto">
-      <div class="text-end mt-3 mb-1">
-        <button class="btn btn-primary text-white" @click="openModal('new')">
-          建立新的產品
-        </button>
-      </div>
+  <LoadingComponent v-model:active="isLoading" :loadingMessage="loadingMessage"></LoadingComponent>
+  <AdminHeader></AdminHeader>
+  <div class="admin-product-page container overflow-auto">
+    <div class="text-end mt-3 mb-1">
+      <button class="btn btn-primary text-white" @click="openModal('new')">
+        建立新的產品
+      </button>
+    </div>
+    <div class="table-container">
       <table class="table table-hover mt-3">
         <thead>
           <tr>
@@ -81,25 +81,27 @@
           </tr>
         </tbody>
       </table>
-      <Pagination :pages="pages" :get-products="getProducts"></Pagination>
-      <!-- Modal -->
-      <AdminProductModal ref="pModal" :temp-Product="tempProduct" @update-temp-product="handleUpdateTempProduct"
-        :isNew="isNew"></AdminProductModal>
-      <AdminDeleteModal ref="dModal" :type="'產品'" :temp-Product="tempProduct" :deleteProduct="deleteProduct">
-      </AdminDeleteModal>
-      <AdminMultiImageModal ref="iModal" :temp-Product="tempProduct" :isMultiImage="isMultiImage"
-        @update-temp-product="handleUpdateTempProduct"></AdminMultiImageModal>
     </div>
+    <Pagination :pages="pages" :get-products="getProducts"></Pagination>
+    <!-- Modal -->
+    <AdminProductModal ref="pModal" :temp-Product="tempProduct" @update-temp-product="handleUpdateTempProduct"
+      :isNew="isNew"></AdminProductModal>
+    <AdminDeleteModal ref="dModal" :type="'產品'" :temp-Product="tempProduct" :deleteProduct="deleteProduct">
+    </AdminDeleteModal>
+    <AdminMultiImageModal ref="iModal" :temp-Product="tempProduct" :isMultiImage="isMultiImage"
+      @update-temp-product="handleUpdateTempProduct"></AdminMultiImageModal>
   </div>
 </template>
 
 <script>
+import { mapState, mapActions } from 'pinia'
 import Pagination from '@/components/PaginationComponent.vue'
+import AdminHeader from '@/components/admin/AdminHeader.vue'
 import AdminProductModal from '@/components/AdminProductModal.vue'
 import AdminDeleteModal from '@/components/AdminDeleteModal.vue'
-import AdminHeader from '@/components/AdminHeader.vue'
 import AdminMultiImageModal from '@/components/AdminMultiImageModal.vue'
-const { VITE_API, VITE_PATH } = import.meta.env
+import { loadingStore } from '@/store/Loading.js'
+import { checkAdminApi, getProductsApi, deleteProductApi, createProductApi, updateProductApi } from '@/mixin/Api.js'
 
 export default {
   data () {
@@ -109,31 +111,28 @@ export default {
       tempProduct: {},
       isNew: false,
       isMultiImage: false,
-      pages: {},
-      loadingMessage: '資料載入中...請稍後',
-      isLoading: false
+      pages: {}
     }
   },
   methods: {
     async checkAdmin () {
       try {
-        await this.$http.post(`${VITE_API}/api/user/check`, this.user)
+        await checkAdminApi({})
         this.getProducts()
       } catch (error) {
         this.$router.push({ name: 'adminLogin' })
       }
     },
-    async getProducts (page = 1) {
+    async getProducts (page) {
       try {
-        this.loadingMessage = '資料載入中...請稍候'
-        this.isLoading = true
-        const res = await this.$http.get(`${VITE_API}/api/${VITE_PATH}/admin/products?page=${page}`)
-        this.products = res.data.products
-        this.pages = res.data.pagination
+        this.setLoading(true, '資料載入中...請稍候')
+        const res = await getProductsApi('', page)
+        this.products = res.products
+        this.pages = res.pagination
       } catch (error) {
         this.$showNotification('Oops...請稍後嘗試')
       } finally {
-        this.isLoading = false
+        this.setLoading(false, '')
       }
     },
     openModal (status, item) {
@@ -169,44 +168,41 @@ export default {
     },
     async updateProduct () {
       try {
-        this.loadingMessage = '資料更新中...請稍候'
-        this.isLoading = true
+        this.setLoading(true, '資料更新中...請稍候')
         this.$refs.pModal.closeModal()
         this.$refs.iModal.closeModal()
-        let httpMethod = 'post'
-        let requestUrl = `${VITE_API}/api/${VITE_PATH}/admin/product`
         let alertMsg = '商品資料新增成功'
-
         if (!this.isNew) {
-          httpMethod = 'put'
-          requestUrl = `${VITE_API}/api/${VITE_PATH}/admin/product/${this.tempProduct.id}`
+          await updateProductApi(this.tempProduct.id, this.tempProduct)
           alertMsg = '商品資料編輯成功'
+        } else {
+          await createProductApi(this.tempProduct)
         }
-        await this.$http[httpMethod](requestUrl, {
-          data: this.tempProduct
-        })
         this.$showNotification(alertMsg)
         this.getProducts()
       } catch (error) {
         this.$showNotification('Oops...請稍後嘗試')
       } finally {
-        this.isLoading = false
+        this.setLoading(false, '')
       }
     },
     async deleteProduct () {
-      this.loadingMessage = '刪除資料中...請稍候'
-      this.isLoading = true
+      this.setLoading(true, '刪除資料中...請稍候')
       this.$refs.dModal.closeModal()
       try {
-        await this.$http.delete(`${VITE_API}/api/${VITE_PATH}/admin/product/${this.tempProduct.id}`)
+        await deleteProductApi(this.tempProduct.id)
         this.$showNotification('商品刪除成功')
         this.getProducts()
       } catch (error) {
         this.$showNotification('Oops...請稍後嘗試')
       } finally {
-        this.isLoading = false
+        this.setLoading(false, '')
       }
-    }
+    },
+    ...mapActions(loadingStore, ['setLoading'])
+  },
+  computed: {
+    ...mapState(loadingStore, ['isLoading', 'loadingMessage'])
   },
   mounted () {
     const hexCookie = document.cookie.replace(
@@ -218,26 +214,7 @@ export default {
     this.checkAdmin()
   },
   components: {
-    Pagination, AdminProductModal, AdminDeleteModal, AdminHeader, AdminMultiImageModal
+    Pagination, AdminHeader, AdminProductModal, AdminDeleteModal, AdminMultiImageModal
   }
 }
 </script>
-
-<style lang="scss" scoped>
-img {
-  object-fit: contain;
-  max-width: 100%;
-}
-
-.primary-image {
-  height: 300px;
-}
-
-.images {
-  height: 150px;
-}
-
-.bi-pencil-fill {
-  cursor: pointer;
-}
-</style>

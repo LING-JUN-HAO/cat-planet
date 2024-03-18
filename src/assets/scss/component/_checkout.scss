@@ -1,0 +1,6 @@
+.checkout-page label.required::after {
+    content: '*';
+    padding-left: 2px;
+    color: red;
+    opacity: .7;
+  }

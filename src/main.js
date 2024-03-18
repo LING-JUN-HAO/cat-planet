@@ -16,14 +16,16 @@ import App from './App.vue'
 import './assets/scss/all.scss'
 // SweetAlert2
 import ShowNotification from '@/mixin/Swal.js'
+// vue-toast-notification
+import ToastPlugin from 'vue-toast-notification'
+import 'vue-toast-notification/dist/theme-bootstrap.css'
 import ToastNotification from '@/mixin/Toast.js'
 // Loading
-import Loading from '@/components/Loading.vue'
+import LoadingComponent from '@/components/utils/LoadingComponent.vue'
 // AOS
 import AOS from 'aos'
 import 'aos/dist/aos.css'
-import ToastPlugin from 'vue-toast-notification'
-import 'vue-toast-notification/dist/theme-bootstrap.css'
+
 Object.keys(AllRules).forEach((rule) => {
   defineRule(rule, AllRules[rule])
 })
@@ -32,11 +34,14 @@ configure({
   validateOnInput: true
 })
 setLocale('zh_TW')
+
 const app = createApp(App)
+const pinia = createPinia()
+
 // 全域註冊
 app.config.globalProperties.$showNotification = ShowNotification
 app.config.globalProperties.$toastNotification = ToastNotification
-const pinia = createPinia()
+
 app.use({
   install: () => {
     AOS.init({
@@ -56,5 +61,5 @@ app.use(ToastPlugin)
 app.component('VField', Field)
 app.component('VForm', Form)
 app.component('ErrorMessage', ErrorMessage)
-app.component('Loading', Loading)
+app.component('LoadingComponent', LoadingComponent)
 app.mount('#app')

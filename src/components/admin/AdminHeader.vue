@@ -1,10 +1,10 @@
 <template>
-    <header>
+    <header class="sticky-top">
         <nav class="navbar navbar-expand-lg navbar-dark bg-hex">
             <div class="container-fluid">
                 <router-link active-class="active" to="/admin/products">
                     <div>
-                        <img src="../assets/image/favicon-cat.png" height="28px" alt="喵星球">
+                        <img src="@/assets/image/favicon-cat.png" height="28px" alt="喵星球">
                     </div>
                 </router-link>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"

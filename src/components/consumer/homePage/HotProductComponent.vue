@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import SwiperComponent from '@/components/SwiperComponent.vue'
+import SwiperComponent from '@/components/utils/SwiperComponent.vue'
 export default {
   props: ['products'],
   components: {

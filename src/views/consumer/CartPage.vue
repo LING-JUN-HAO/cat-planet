@@ -1,10 +1,10 @@
 <template>
-  <Loading v-model:active="isLoading" :loadingMessage="loadingMessage"></Loading>
+  <LoadingComponent v-model:active="isLoading" :loadingMessage="loadingMessage"></LoadingComponent>
   <section v-if="cart.carts.length !== 0" class="cart-page container container-title py-3">
     <h2 data-aos="fade-down" data-aos-delay="0" data-aos-duration="900" class="text-center py-3 fw-bold">確認商品</h2>
     <div data-aos="fade-up" data-aos-delay="450" data-aos-duration="900"
       class="content-shadow border border-1 bg-white rounded-4 d-flex p-5 flex-column">
-      <Timeline :active="'productCheck'"></Timeline>
+      <TimelineComponent :active="'productCheck'"></TimelineComponent>
       <img class="shopping-img my-4" src="../../assets/image/addCart.svg" alt="購物車檢視">
       <button class="btn btn-outline-danger align-self-end" :disabled="cart.total === 0" type="button"
         @click="deleteCartClick">
@@ -18,7 +18,7 @@
               <th class="text-center d-none d-lg-block">產品</th>
               <th class="text-center">品名</th>
               <th class="text-center">單價</th>
-              <th class="text-center" style="min-width: 200px">數量/單位</th>
+              <th class="text-center" style="width: 200px">數量/單位</th>
               <th class="text-center">小計</th>
               <th class="text-center"></th>
             </tr>
@@ -36,9 +36,8 @@
                 <td class="text-center text-pink">
                   $ {{ item.product.price.toLocaleString() }}
                 </td>
-                <td class="text-center" style="min-width: 200px">
-                  <div class="input-group input-group-sm">
-                    <div class="input-group my-4">
+                <td class="text-center" style="width: 200px">
+                  <div class="input-group my-4">
                       <button type="button" :disabled="item.qty == 1" @click="item.qty--; updateCart(item, item.qty)"
                         class="btn btn-outline-primary">-</button>
                       <input v-model.number="item.qty" min="1" type="number" class="form-control text-center p-0"
@@ -47,7 +46,6 @@
                         class="btn btn-outline-primary">+</button>
                       <span class="input-group-text" id="basic-addon2">{{ item.product.unit }}</span>
                     </div>
-                  </div>
                 </td>
                 <td class="text-center text-pink">
                   $ {{ item.final_total.toLocaleString() }}
@@ -68,13 +66,7 @@
       </div>
     </div>
   </section>
-  <section v-if="cart.carts.length === 0 && defaultStatus === true" class="container-title">
-    <h2 data-aos="fade-down" data-aos-delay="0" data-aos-duration="900" class="text-center py-3 fw-bold">當前購物車無商品</h2>
-    <div data-aos="fade-up" data-aos-delay="450" data-aos-duration="900"
-      class="py-5 col-8 col-md-5 col-lg-4 col-xl-3 m-auto empty-img-box">
-      <img src="../../assets/image/empty2.png" class="object-fit-cover w-100 empty-img" alt="空購物車">
-    </div>
-  </section>
+  <EmptyComponent v-if="cart.carts.length === 0 && defaultStatus === true"  :cart="cart" :defaultStatus="defaultStatus"></EmptyComponent>
   <div v-if="defaultStatus === true" data-aos="zoom-in-up" data-aos-delay="0" data-aos-duration="900"
     class="pt-3 pb-4 text-center">
     <button v-if="cart.carts.length !== 0" class="btn btn-primary rounded-3 py-2 px-5 text-white" type="button"
@@ -87,14 +79,15 @@
       商品頁面
     </button>
   </div>
-  <ConsumerCartDeleteModal ref="dModal" :deleteAllCarts="deleteAllCarts"></ConsumerCartDeleteModal>
+  <CartDeleteModal ref="dModal" :deleteAllCarts="deleteAllCarts"></CartDeleteModal>
 </template>
 
 <script>
 import { mapState, mapActions } from 'pinia'
+import CartDeleteModal from '@/components/consumer/cartPage/CartDeleteModal.vue'
+import EmptyComponent from '@/components/consumer/cartPage/EmptyComponent.vue'
+import TimelineComponent from '@/components/utils/TimelineComponent.vue'
 import { cartStore } from '@/store/Cart.js'
-import ConsumerCartDeleteModal from '@/components/ConsumerCartDeleteModal.vue'
-import Timeline from '@/components/Timeline.vue'
 import { loadingStore } from '@/store/Loading.js'
 import { updateCartApi, removeCartItemApi, deleteCartsApi } from '@/mixin/Api.js'
 
@@ -137,7 +130,7 @@ export default {
       this.setLoading(true, '資料更改中...請稍後')
       const cart = {
         product_id: data.product_id,
-        qty: qty
+        qty
       }
       try {
         await updateCartApi(data.id, cart)
@@ -171,22 +164,7 @@ export default {
     this.setLoading(false, '')
   },
   components: {
-    ConsumerCartDeleteModal, Timeline
+    CartDeleteModal, TimelineComponent, EmptyComponent
   }
 }
 </script>
-<style lang="scss" scoped>
-.empty-img-box:hover img {
-  animation: shake .2s linear infinite alternate;
-}
-
-@keyframes shake {
-  0% {
-    transform: rotate(5deg)
-  }
-
-  100% {
-    transform: rotate(-5deg)
-  }
-}
-</style>

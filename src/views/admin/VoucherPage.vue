@@ -1,13 +1,13 @@
 <template>
-  <Loading v-model:active="isLoading" :loadingMessage="loadingMessage"></Loading>
-  <div class="w-100">
-    <AdminHeader></AdminHeader>
-    <div class="container overflow-auto">
-      <div class="text-end mt-3 mb-1">
-        <button class="btn btn-primary text-white" @click="openModal('new')">
-          建立新的優惠卷
-        </button>
-      </div>
+  <LoadingComponent v-model:active="isLoading" :loadingMessage="loadingMessage"></LoadingComponent>
+  <AdminHeader></AdminHeader>
+  <div class="admin-voucher-page container overflow-auto">
+    <div class="text-end mt-3 mb-1">
+      <button class="btn btn-primary text-white" @click="openModal('new')">
+        建立新的優惠卷
+      </button>
+    </div>
+    <div class="table-container">
       <table class="table table-hover mt-3">
         <thead>
           <tr>
@@ -68,24 +68,25 @@
           </tr>
         </tbody>
       </table>
-      <Pagination :pages="pages" :get-products="getCoupons"></Pagination>
-      <!-- Modal -->
-      <AdminCouponModal ref="pModal" :temp-Product="tempProduct" @update-temp-product="handleUpdateTempProduct"
-        :isNew="isNew"></AdminCouponModal>
-      <AdminDeleteModal ref="dModal" :type="'優惠卷'" :temp-Product="tempProduct" :deleteProduct="deleteCoupon">
-      </AdminDeleteModal>
     </div>
+    <Pagination :pages="pages" :get-products="getCoupons"></Pagination>
+    <!-- Modal -->
+    <AdminCouponModal ref="pModal" :temp-Product="tempProduct" @update-temp-product="handleUpdateTempProduct"
+      :isNew="isNew"></AdminCouponModal>
+    <AdminDeleteModal ref="dModal" :type="'優惠卷'" :temp-Product="tempProduct" :deleteProduct="deleteCoupon">
+    </AdminDeleteModal>
   </div>
 </template>
 
 <script>
+import { mapState, mapActions } from 'pinia'
+import moment from 'moment'
 import Pagination from '@/components/PaginationComponent.vue'
+import AdminHeader from '@/components/admin/AdminHeader.vue'
 import AdminCouponModal from '@/components/AdminCouponModal.vue'
 import AdminDeleteModal from '@/components/AdminDeleteModal.vue'
-import AdminHeader from '@/components/AdminHeader.vue'
-import moment from 'moment'
-
-const { VITE_API, VITE_PATH } = import.meta.env
+import { loadingStore } from '@/store/Loading.js'
+import { checkAdminApi, getCouponsApi, deleteCouponApi, CreateCouponApi, updateCouponApi } from '@/mixin/Api.js'
 
 export default {
   data () {
@@ -93,30 +94,28 @@ export default {
       coupons: [],
       tempProduct: {},
       isNew: false,
-      pages: {},
-      loadingMessage: '資料載入中...請稍後',
-      isLoading: false
+      pages: {}
     }
   },
   methods: {
     async checkAdmin () {
       try {
-        await this.$http.post(`${VITE_API}/api/user/check`, this.user)
+        await checkAdminApi({})
         this.getCoupons()
       } catch (error) {
         this.$router.push({ name: 'adminLogin' })
       }
     },
-    async getCoupons (page = 1) {
+    async getCoupons (page) {
       try {
-        this.isLoading = true
-        const res = await this.$http.get(`${VITE_API}/api/${VITE_PATH}/admin/coupons?page=${page}`)
-        this.coupons = res.data.coupons
-        this.pages = res.data.pagination
+        this.setLoading(true, '資料載入中...請稍候')
+        const res = await getCouponsApi(page)
+        this.coupons = res.coupons
+        this.pages = res.pagination
       } catch (error) {
         this.$showNotification('Oops...請稍後嘗試')
       } finally {
-        this.isLoading = false
+        this.setLoading(false, '')
       }
     },
     openModal (status, item) {
@@ -141,45 +140,43 @@ export default {
     },
     async updateProduct () {
       try {
+        this.setLoading(true, '資料更新中...請稍候')
         this.$refs.pModal.closeModal()
-        this.loadingMessage = '資料更新中...請稍候'
-        this.isLoading = true
-        let httpMethod = 'post'
-        let requestUrl = `${VITE_API}/api/${VITE_PATH}/admin/coupon`
         let alertMsg = '優惠卷新增成功'
         if (!this.isNew) {
-          httpMethod = 'put'
-          requestUrl = `${VITE_API}/api/${VITE_PATH}/admin/coupon/${this.tempProduct.id}`
+          await updateCouponApi(this.tempProduct.id, this.tempProduct)
           alertMsg = '優惠卷編輯成功'
+        } else {
+          await CreateCouponApi(this.tempProduct)
         }
-        await this.$http[httpMethod](requestUrl, {
-          data: this.tempProduct
-        })
         this.$showNotification(alertMsg)
         this.getCoupons()
       } catch (error) {
         this.$showNotification('Oops...請稍後嘗試')
       } finally {
-        this.isLoading = false
+        this.setLoading(false, '')
       }
     },
     async deleteCoupon () {
       this.$refs.dModal.closeModal()
-      this.loadingMessage = '優惠卷刪除中...請稍候'
-      this.isLoading = true
+      this.setLoading(true, '優惠卷刪除中...請稍候')
       try {
-        await this.$http.delete(`${VITE_API}/api/${VITE_PATH}/admin/coupon/${this.tempProduct.id}`)
+        await deleteCouponApi(this.tempProduct.id)
         this.$showNotification('優惠卷刪除成功')
         this.getCoupons()
       } catch (error) {
         this.$showNotification('Oops...請稍後嘗試')
       } finally {
-        this.isLoading = false
+        this.setLoading(false, '優惠卷刪除中...請稍候')
       }
     },
     dataFormatter (date) {
       return moment.unix(date).format('YYYY-MM-DD hh:mm:ss')
-    }
+    },
+    ...mapActions(loadingStore, ['setLoading'])
+  },
+  computed: {
+    ...mapState(loadingStore, ['isLoading', 'loadingMessage'])
   },
   mounted () {
     const hexCookie = document.cookie.replace(
@@ -195,22 +192,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-img {
-  object-fit: contain;
-  max-width: 100%;
-}
-
-.primary-image {
-  height: 300px;
-}
-
-.images {
-  height: 150px;
-}
-
-.bi-pencil-fill {
-  cursor: pointer;
-}
-</style>

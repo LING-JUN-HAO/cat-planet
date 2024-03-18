@@ -37,7 +37,6 @@ export const cartStore = defineStore('cartStore', {
       } catch (error) {
         ShowNotification('Oops...請重新嘗試')
       } finally {
-        console.log('執行finally了')
         loadingStoreInstance.loadingItem = ''
       }
     },
