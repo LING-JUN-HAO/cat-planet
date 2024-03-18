@@ -66,7 +66,7 @@ export default {
   background: url("../../assets/image/login-background.jpg") no-repeat center center /cover;
 
   .loginBox {
-    width: 40vw;
+    width: 80vw;
     max-width: 550px;
     background-color: rgb(255, 255, 255, 0.6);
     backdrop-filter: blur(5px);

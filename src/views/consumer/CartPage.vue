@@ -11,59 +11,61 @@
         <i class="bi bi-trash"></i>
         清空購物車
       </button>
-      <table class="table align-middle">
-        <thead>
-          <tr>
-            <th class="text-center d-none d-lg-block">產品</th>
-            <th class="text-center">品名</th>
-            <th class="text-center">單價</th>
-            <th class="text-center" style="width: 200px">數量/單位</th>
-            <th class="text-center">小計</th>
-            <th class="text-center"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <template v-if="cart.carts">
-            <tr v-for="item in cart.carts" :key="item.id">
-              <td class="text-center d-none d-lg-block">
-                <div @click="routerChange('product', item.product.id)" class="product-img"
-                  :style="{ backgroundImage: `url(${item.product.imageUrl})` }"></div>
-              </td>
-              <td class="text-center">
-                {{ item.product.title }}
-              </td>
-              <td class="text-center text-pink">
-                $ {{ item.product.price.toLocaleString() }}
-              </td>
-              <td class="text-center">
-                <div class="input-group input-group-sm">
-                  <div class="input-group my-4">
-                    <button type="button" :disabled="item.qty == 1" @click="item.qty--; updateCart(item, item.qty)"
-                      class="btn btn-outline-primary">-</button>
-                    <input v-model.number="item.qty" min="1" type="number" class="form-control text-center p-0"
-                      readonly>
-                    <button @click="item.qty++; updateCart(item, item.qty)" type="button"
-                      class="btn btn-outline-primary">+</button>
-                    <span class="input-group-text" id="basic-addon2">{{ item.product.unit }}</span>
-                  </div>
-                </div>
-              </td>
-              <td class="text-center text-pink">
-                $ {{ item.final_total.toLocaleString() }}
-              </td>
-              <td class="text-center">
-                <i class="bi bi-trash3-fill delProductItem" @click="removeCartItem(item.id)"></i>
-              </td>
+      <div style="overflow: auto; white-space: nowrap;">
+        <table class="table align-middle">
+          <thead>
+            <tr>
+              <th class="text-center d-none d-lg-block">產品</th>
+              <th class="text-center">品名</th>
+              <th class="text-center">單價</th>
+              <th class="text-center" style="min-width: 200px">數量/單位</th>
+              <th class="text-center">小計</th>
+              <th class="text-center"></th>
             </tr>
-          </template>
-        </tbody>
-        <tfoot>
-          <tr class="py-5">
-            <td colspan="5" class="text-end py-3">總計</td>
-            <td class="text-center text-pink">{{ cart.total.toLocaleString() }}</td>
-          </tr>
-        </tfoot>
-      </table>
+          </thead>
+          <tbody>
+            <template v-if="cart.carts">
+              <tr v-for="item in cart.carts" :key="item.id">
+                <td class="text-center d-none d-lg-block">
+                  <div @click="routerChange('product', item.product.id)" class="product-img"
+                    :style="{ backgroundImage: `url(${item.product.imageUrl})` }"></div>
+                </td>
+                <td class="text-center">
+                  {{ item.product.title }}
+                </td>
+                <td class="text-center text-pink">
+                  $ {{ item.product.price.toLocaleString() }}
+                </td>
+                <td class="text-center" style="min-width: 200px">
+                  <div class="input-group input-group-sm">
+                    <div class="input-group my-4">
+                      <button type="button" :disabled="item.qty == 1" @click="item.qty--; updateCart(item, item.qty)"
+                        class="btn btn-outline-primary">-</button>
+                      <input v-model.number="item.qty" min="1" type="number" class="form-control text-center p-0"
+                        readonly>
+                      <button @click="item.qty++; updateCart(item, item.qty)" type="button"
+                        class="btn btn-outline-primary">+</button>
+                      <span class="input-group-text" id="basic-addon2">{{ item.product.unit }}</span>
+                    </div>
+                  </div>
+                </td>
+                <td class="text-center text-pink">
+                  $ {{ item.final_total.toLocaleString() }}
+                </td>
+                <td class="text-center">
+                  <i class="bi bi-trash3-fill delProductItem" @click="removeCartItem(item.id)"></i>
+                </td>
+              </tr>
+            </template>
+          </tbody>
+          <tfoot>
+            <tr class="py-5">
+              <td colspan="5" class="text-end py-3">總計</td>
+              <td class="text-center text-pink">{{ cart.total.toLocaleString() }}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
     </div>
   </section>
   <section v-if="cart.carts.length === 0 && defaultStatus === true" class="container-title">
@@ -73,7 +75,8 @@
       <img src="../../assets/image/empty2.png" class="object-fit-cover w-100 empty-img" alt="空購物車">
     </div>
   </section>
-  <div v-if="defaultStatus === true" data-aos="zoom-in-up" data-aos-delay="0" data-aos-duration="900" class="pt-3 pb-4 text-center">
+  <div v-if="defaultStatus === true" data-aos="zoom-in-up" data-aos-delay="0" data-aos-duration="900"
+    class="pt-3 pb-4 text-center">
     <button v-if="cart.carts.length !== 0" class="btn btn-primary rounded-3 py-2 px-5 text-white" type="button"
       @click="routerChange('complete')">
       填寫聯絡資訊

@@ -2,7 +2,7 @@
   <Loading v-model:active="isLoading" :loadingMessage="loadingMessage"></Loading>
   <div class="w-100">
     <AdminHeader></AdminHeader>
-    <div class="container overflow-hidden">
+    <div class="container overflow-auto">
       <div class="text-end mt-3 mb-1">
         <button class="btn btn-primary text-white" @click="openModal('new')">
           建立新的優惠卷

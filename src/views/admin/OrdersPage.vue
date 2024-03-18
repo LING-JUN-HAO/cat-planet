@@ -2,7 +2,7 @@
   <div class="w-100">
     <Loading v-model:active="isLoading" :loadingMessage="loadingMessage"></Loading>
     <AdminHeader></AdminHeader>
-    <div class="container overflow-hidden">
+    <div class="container overflow-auto">
       <table class="table table-hover mt-6">
         <thead>
           <tr>

@@ -20,7 +20,8 @@
       </div>
       <div class="order-page-box">
         <h3 class="p-2 mb-3 text-bg position-relative z-1 h4">商品資訊</h3>
-        <table class="table align-middle">
+        <div style="overflow: auto; white-space: nowrap;">
+          <table class="table align-middle">
           <thead>
             <tr>
               <th class="text-center d-none d-lg-block">產品</th>
@@ -53,6 +54,7 @@
             </template>
           </tbody>
         </table>
+        </div>
       </div>
       <div class="order-page-box">
         <h3 class="p-2 mb-3 text-bg position-relative z-1 h4">購物人資訊</h3>
