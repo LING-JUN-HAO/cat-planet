@@ -6,6 +6,7 @@
       <AsideList data-aos="fade-left" data-aos-delay="450" data-aos-duration="900"></AsideList>
       <ProductList data-aos="fade-right" data-aos-delay="450" data-aos-duration="900" :products="products"></ProductList>
     </div>
+    <QueryPagination :pages="pages"></QueryPagination>
   </section>
 </template>
 
@@ -13,6 +14,7 @@
 import { mapActions, mapState } from 'pinia'
 import AsideList from '@/components/consumer/productPage/AsideList.vue'
 import ProductList from '@/components/consumer/productPage/ProductList.vue'
+import QueryPagination from '@/components/utils/QueryPagination.vue'
 import { cartStore } from '@/store/Cart.js'
 import { loadingStore } from '@/store/Loading.js'
 import { getProductsApi } from '@/mixin/Api.js'
@@ -55,7 +57,7 @@ export default {
     '$route.query': 'onRouteChange'
   },
   components: {
-    AsideList, ProductList
+    AsideList, ProductList, QueryPagination
   }
 }
 </script>
