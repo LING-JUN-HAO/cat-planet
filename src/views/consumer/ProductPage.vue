@@ -12,8 +12,8 @@
 
 <script>
 import { mapActions, mapState } from 'pinia'
-import AsideList from '@/components/consumer/productPage/AsideList.vue'
-import ProductList from '@/components/consumer/productPage/ProductList.vue'
+import AsideList from '@/components/consumer/productListPage/AsideList.vue'
+import ProductList from '@/components/consumer/productListPage/ProductList.vue'
 import QueryPagination from '@/components/utils/QueryPagination.vue'
 import { cartStore } from '@/store/Cart.js'
 import { loadingStore } from '@/store/Loading.js'
