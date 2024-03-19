@@ -9,12 +9,15 @@
     }
   
     .product-img {
-      height: 80px;
+      height: 103px;
       background-size: cover;
       background-position: center center;
       cursor: pointer;
     }
     .delProductItem{
+      cursor: pointer;
+    }
+    .voucher-text{
       cursor: pointer;
     }
   }

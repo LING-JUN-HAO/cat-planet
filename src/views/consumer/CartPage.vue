@@ -27,7 +27,7 @@
             <template v-if="cart.carts">
               <tr v-for="item in cart.carts" :key="item.id">
                 <td class="text-center d-none d-lg-block">
-                  <div @click="routerChange('product', item.product.id)" class="product-img"
+                  <div @click="routerChange('product', item.product.id)" class="product-img object-fit w-100"
                     :style="{ backgroundImage: `url(${item.product.imageUrl})` }"></div>
                 </td>
                 <td class="text-center">
@@ -58,7 +58,11 @@
           </tbody>
           <tfoot>
             <tr class="py-5">
-              <td colspan="5" class="text-end py-3">總計</td>
+              <td class="text-start">
+                <span v-if="!isVoucher" @click="isVoucher = true" class="voucher-text text-decoration-none text-pink">使用優惠券</span>
+                <input v-if="isVoucher" type="text" style="width: 103px;">
+              </td>
+              <td colspan="4" class="text-end py-3">總計</td>
               <td class="text-center text-pink">{{ cart.total.toLocaleString() }}</td>
             </tr>
           </tfoot>
@@ -66,8 +70,8 @@
       </div>
     </div>
   </section>
-  <EmptyComponent v-if="cart.carts.length === 0 && defaultStatus === true"  :cart="cart" :defaultStatus="defaultStatus"></EmptyComponent>
-  <div v-if="defaultStatus === true"
+  <EmptyComponent v-if="cart.carts.length === 0 && isDefault === true"  :cart="cart" :isDefault="isDefault"></EmptyComponent>
+  <div v-if="isDefault === true"
     class="pt-3 pb-4 text-center">
     <button v-if="cart.carts.length !== 0" class="btn btn-primary rounded-3 py-2 px-5 text-white" type="button"
       @click="routerChange('complete')">
@@ -94,7 +98,8 @@ import { updateCartApi, removeCartItemApi, deleteCartsApi } from '@/mixin/Api.js
 export default {
   data () {
     return {
-      defaultStatus: false
+      isDefault: false,
+      isVoucher: false
     }
   },
   methods: {
@@ -160,7 +165,7 @@ export default {
   async mounted () {
     this.setLoading(true, '購物車資料載入中')
     await this.getCart()
-    this.defaultStatus = true
+    this.isDefault = true
     this.setLoading(false, '')
   },
   components: {

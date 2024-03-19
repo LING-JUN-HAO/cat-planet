@@ -1,6 +1,6 @@
 <template>
   <nav aria-label="...">
-    <ul class="pagination justify-content-end">
+    <ul class="pagination justify-content-end bg-gray">
       <li class="page-item" :class="{
         disabled: !pages.has_pre
       }">
