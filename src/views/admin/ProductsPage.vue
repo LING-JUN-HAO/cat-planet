@@ -95,11 +95,11 @@
 
 <script>
 import { mapState, mapActions } from 'pinia'
-import Pagination from '@/components/PaginationComponent.vue'
+import Pagination from '@/components/utils/PaginationComponent.vue'
 import AdminHeader from '@/components/admin/AdminHeader.vue'
-import AdminProductModal from '@/components/AdminProductModal.vue'
-import AdminDeleteModal from '@/components/AdminDeleteModal.vue'
-import AdminMultiImageModal from '@/components/AdminMultiImageModal.vue'
+import AdminProductModal from '@/components/admin/AdminProductModal.vue'
+import AdminDeleteModal from '@/components/admin/AdminDeleteModal.vue'
+import AdminMultiImageModal from '@/components/admin/AdminMultiImageModal.vue'
 import { loadingStore } from '@/store/Loading.js'
 import { checkAdminApi, getProductsApi, deleteProductApi, createProductApi, updateProductApi } from '@/mixin/Api.js'
 
