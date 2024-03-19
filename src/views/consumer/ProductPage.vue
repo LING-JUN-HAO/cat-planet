@@ -6,7 +6,7 @@
       <AsideList data-aos="fade-left" data-aos-delay="450" data-aos-duration="900"></AsideList>
       <ProductList data-aos="fade-right" data-aos-delay="450" data-aos-duration="900" :products="products"></ProductList>
     </div>
-    <QueryPagination :pages="pages"></QueryPagination>
+    <QueryPagination data-aos="fade-right" data-aos-delay="450" data-aos-duration="900" :pages="pages"></QueryPagination>
   </section>
 </template>
 

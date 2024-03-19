@@ -10,7 +10,7 @@
         <div>
           <div class="row p-2 mb-2">
             <div class="col-12 col-md-6 pb-3 pb-md-0 order-text">
-              訂單編號：{{ orderInfo.create_at }}
+              訂單編號：{{ orderInfo.id }}
             </div>
             <div class="col-12 col-md-6">
               總金額：{{ orderInfo.total?.toLocaleString() }}
@@ -84,7 +84,7 @@
       </div>
     </div>
   </section>
-  <div data-aos="zoom-in-up" data-aos-delay="0" data-aos-duration="900" class="pt-3 pb-4 text-center">
+  <div class="pt-3 pb-4 text-center">
     <button type="button" class="btn btn-primary rounded-3 py-2 px-5 text-white" @click="routerChange('back')">
       <i class="bi bi-caret-left-fill pe-1"></i>
       商品頁面
