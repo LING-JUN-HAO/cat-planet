@@ -35,12 +35,6 @@ export async function deleteProductApi (id) {
   return response.data
 }
 
-export async function createOrderApi (orderData) {
-  const { VITE_API, VITE_PATH } = import.meta.env
-  const response = await axios.post(`${VITE_API}/api/${VITE_PATH}/order`, { data: orderData })
-  return response.data
-}
-
 export async function updateCartApi (id, cart) {
   const { VITE_API, VITE_PATH } = import.meta.env
   const response = await axios.put(`${VITE_API}/api/${VITE_PATH}/cart/${id}`, { data: cart })
@@ -59,9 +53,33 @@ export async function deleteCartsApi (id) {
   return response.data
 }
 
+export async function createOrderApi (orderData) {
+  const { VITE_API, VITE_PATH } = import.meta.env
+  const response = await axios.post(`${VITE_API}/api/${VITE_PATH}/order`, { data: orderData })
+  return response.data
+}
+
 export async function getOrderApi (id) {
   const { VITE_API, VITE_PATH } = import.meta.env
   const response = await axios.get(`${VITE_API}/api/${VITE_PATH}/order/${id}`)
+  return response.data
+}
+
+export async function getOrdersApi (page = 1) {
+  const { VITE_API, VITE_PATH } = import.meta.env
+  const response = await axios.get(`${VITE_API}/api/${VITE_PATH}/admin/orders?page=${page}`)
+  return response.data
+}
+
+export async function updateOrdersApi (id, orderInfo) {
+  const { VITE_API, VITE_PATH } = import.meta.env
+  const response = await axios.put(`${VITE_API}/api/${VITE_PATH}/admin/order/${id}`, { data: orderInfo })
+  return response.data
+}
+
+export async function deleteOrderApi (id) {
+  const { VITE_API, VITE_PATH } = import.meta.env
+  const response = await axios.delete(`${VITE_API}/api/${VITE_PATH}/admin/order/${id}`)
   return response.data
 }
 
@@ -77,7 +95,7 @@ export async function checkAdminApi (userInfo) {
   return response.data
 }
 
-export async function CreateCouponApi (couponInfo) {
+export async function createCouponApi (couponInfo) {
   const { VITE_API, VITE_PATH } = import.meta.env
   const response = await axios.post(`${VITE_API}/api/${VITE_PATH}/admin/coupon`, { data: couponInfo })
   return response.data

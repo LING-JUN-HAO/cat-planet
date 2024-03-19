@@ -81,12 +81,12 @@
 <script>
 import { mapState, mapActions } from 'pinia'
 import moment from 'moment'
-import Pagination from '@/components/PaginationComponent.vue'
+import Pagination from '@/components/utils/PaginationComponent.vue'
 import AdminHeader from '@/components/admin/AdminHeader.vue'
-import AdminCouponModal from '@/components/AdminCouponModal.vue'
-import AdminDeleteModal from '@/components/AdminDeleteModal.vue'
+import AdminCouponModal from '@/components/admin/AdminCouponModal.vue'
+import AdminDeleteModal from '@/components/admin/AdminDeleteModal.vue'
 import { loadingStore } from '@/store/Loading.js'
-import { checkAdminApi, getCouponsApi, deleteCouponApi, CreateCouponApi, updateCouponApi } from '@/mixin/Api.js'
+import { checkAdminApi, getCouponsApi, deleteCouponApi, createCouponApi, updateCouponApi } from '@/mixin/Api.js'
 
 export default {
   data () {
@@ -147,7 +147,7 @@ export default {
           await updateCouponApi(this.tempProduct.id, this.tempProduct)
           alertMsg = '優惠卷編輯成功'
         } else {
-          await CreateCouponApi(this.tempProduct)
+          await createCouponApi(this.tempProduct)
         }
         this.$showNotification(alertMsg)
         this.getCoupons()
