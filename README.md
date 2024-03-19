@@ -52,7 +52,7 @@ npm install
 
 ## 啟動方式
 
-Start the development server on <http://localhost:8080>
+Start the development server on <http://localhost:3000>
 
 ```bash=
 npm run dev
