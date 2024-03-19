@@ -14,7 +14,7 @@
       <li class="page-item" :class="{
         disabled: !pages.has_next
       }">
-        <button type="button" class="page-link" @click="this.routerChange(pages.current_page - 1)">下一頁</button>
+        <button type="button" class="page-link" @click="this.routerChange(pages.current_page + 1)">下一頁</button>
       </li>
     </ul>
   </nav>

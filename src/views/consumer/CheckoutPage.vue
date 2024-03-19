@@ -41,7 +41,7 @@
         </div>
       </div>
     </section>
-    <div data-aos="zoom-in-up" data-aos-delay="0" data-aos-duration="900" class="pt-3 pb-4 text-center">
+    <div class="pt-3 pb-4 text-center">
       <button type="submit" class="btn btn-primary rounded-3 py-2 px-5 text-white">
         送出訂單
         <i class="bi bi-caret-right-fill ps-1"></i>
