@@ -56,17 +56,24 @@
               </tr>
             </template>
           </tbody>
-          <tfoot>
+          <!-- <tfoot>
             <tr class="py-5">
               <td class="text-start">
-                <span v-if="!isVoucher" @click="isVoucher = true" class="voucher-text text-decoration-none text-pink">使用優惠券</span>
-                <input v-if="isVoucher" type="text" style="width: 103px;">
+                <span class="voucher-text text-decoration-none text-pink">使用優惠券</span>
+                <span><input type="text"></span>
               </td>
               <td colspan="4" class="text-end py-3">總計</td>
               <td class="text-center text-pink">{{ cart.total.toLocaleString() }}</td>
             </tr>
-          </tfoot>
+          </tfoot> -->
         </table>
+        <div class="total-container row align-items-center py-2">
+          <div class="col-2">
+            <span  v-if="isVoucher != true" @click="this.isVoucher = true" class="voucher-text text-decoration-none text-pink">使用優惠券</span>
+            <span v-if="isVoucher === true" ><input type="text"></span>
+          </div>
+          <div class="col-10 text-end text-pink">總計 ${{ cart.total.toLocaleString() }}</div>
+        </div>
       </div>
     </div>
   </section>
