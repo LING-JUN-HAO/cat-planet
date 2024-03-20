@@ -1,10 +1,19 @@
 .order-page,
 .cart-page {
+  .total-container{
+    letter-spacing: .25em;
+  }
     table {
       letter-spacing: .25em;
   
       thead {
         letter-spacing: .5em;
+      }
+      .input-group{
+        flex-wrap: nowrap;
+        input{
+          min-width: 50px;
+        }
       }
     }
   

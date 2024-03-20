@@ -101,6 +101,12 @@ export async function createCouponApi (couponInfo) {
   return response.data
 }
 
+export async function useCouponsApi (id) {
+  const { VITE_API, VITE_PATH } = import.meta.env
+  const response = await axios.post(`${VITE_API}/api/${VITE_PATH}/coupon`, { data: { code: id } })
+  return response.data
+}
+
 export async function getCouponsApi (page = 1) {
   const { VITE_API, VITE_PATH } = import.meta.env
   const response = await axios.get(`${VITE_API}/api/${VITE_PATH}/admin/coupons?page=${page}`)
