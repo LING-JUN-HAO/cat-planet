@@ -10,6 +10,9 @@ export const loadingStore = defineStore('loadingStore', {
     setLoading (isLoading, loadingMessage) {
       this.isLoading = isLoading
       this.loadingMessage = loadingMessage
+    },
+    setLoadItem (visible) {
+      this.loadingItem = visible
     }
   }
 })

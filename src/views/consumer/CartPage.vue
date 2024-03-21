@@ -63,11 +63,15 @@
               class="voucher-text text-decoration-none text-pink">使用優惠券</span>
             <div v-if="isVoucher === true" class="input-group">
               <input placeholder="請輸入love_888" type="text" class="form-control" v-model="couponCode">
-              <button @click="this.getCoupons()" class="btn btn-primary text-white p-2 fs-6">使用</button>
+              <button @click="this.getCoupons()" class="btn btn-primary text-white p-2 fs-6">
+                <span v-if="loadingItem !== ''"><i class="fas fa-spinner fa-pulse"></i></span>
+                <span v-else>使用</span>
+              </button>
             </div>
           </div>
           <div v-if="!isCoupon" class="col-5 col-md-9 text-end text-pink">總計 ${{ cart.total.toLocaleString() }}</div>
-          <div v-if="isCoupon" class="col-5 col-md-9 text-end text-pink">總計 ${{ this.finalTotal }}/<span class="text-decoration-line-through">${{ cart.total.toLocaleString() }}</span></div>
+          <div v-if="isCoupon" class="col-5 col-md-9 text-end text-pink">總計 ${{ this.finalTotal }}/<span
+              class="text-decoration-line-through">${{ cart.total.toLocaleString() }}</span></div>
         </div>
       </div>
     </div>
@@ -109,15 +113,16 @@ export default {
   },
   methods: {
     async getCoupons () {
-      this.setLoading(true, '套用優惠卷中...請稍後')
+      this.setLoadItem('spinner')
       try {
         const data = await useCouponsApi(this.couponCode)
         this.finalTotal = data.data.final_total
         this.isCoupon = true
+        this.$toastNotification('success', '已套用優惠卷')
       } catch (error) {
-        this.$showNotification('Oops...請稍後嘗試')
+        this.$toastNotification('error', '查無此優惠卷')
       } finally {
-        this.setLoading(false, '')
+        this.setLoadItem('')
       }
     },
     deleteCartClick () {
@@ -172,7 +177,7 @@ export default {
       }
     },
     ...mapActions(cartStore, ['getCart']),
-    ...mapActions(loadingStore, ['setLoading'])
+    ...mapActions(loadingStore, ['setLoading', 'setLoadItem'])
   },
   computed: {
     ...mapState(cartStore, ['cart']),
