@@ -1,78 +1,72 @@
 <template>
   <div class="container">
-    <div class="swiper">
-      <div class="swiper-wrapper">
-        <template v-for="(item, index) in products" :key="index + '123'">
-          <div class="swiper-slide position-relative" @click="moreProduct(item.id)">
-            <div class="w-100 swiper-img" :style="{ backgroundImage: `url(${item.imageUrl})` }">
-            </div>
-            <a class="more position-absolute w-100 bottom-0 text-white text-center bg-hex p-3 text-decoration-none">
-              顯示更多
-            </a>
-          </div>
-        </template>
-      </div>
-    </div>
+      <swiper
+      :modules="modules"
+      :slides-per-view="1"
+      :space-between="20"
+      :breakpoints="swiperOption"
+      :autoplay="{
+      delay: 3000,
+      disableOnInteraction: true
+      }"
+      >
+      <template v-for="(item, index) in products" :key="index + '123'">
+          <swiper-slide>
+              <div class="swiper-slide position-relative" @click="moreProduct(item.id)">
+                  <div class="w-100 swiper-img" :style="{ backgroundImage: `url(${item.imageUrl})` }">
+              </div>
+              <a class="more position-absolute w-100 bottom-0 text-white text-center bg-hex p-3 text-decoration-none">
+                  顯示更多
+              </a>
+              </div>
+          </swiper-slide>
+          
+      </template>
+      </swiper>
   </div>
 </template>
 
 <script>
-import Swiper from 'swiper'
-import { Autoplay, Navigation, Pagination } from 'swiper/modules'
-import 'swiper/css'
+// import Swiper core and required modules
+import { Autoplay } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/vue';
 
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
+
+// Import Swiper styles
 export default {
   props: ['products'],
   data () {
-    return {
-      swiperInitialized: false
-    }
+      return {
+          modules: [Autoplay],
+          swiperOption: {
+              992: {
+                  slidesPerView: 3
+              },
+              768: {
+                  slidesPerView: 2
+              },
+              576: {
+                  slidesPerView: 1
+              }
+          }
+      }
   },
   methods: {
-    initSwiper () {
-      this.$nextTick(() => {
-        this.swiperInitialized = true
-        // eslint-disable-next-line no-new
-        new Swiper('.swiper', {
-          modules: [Autoplay, Navigation, Pagination],
-          loop: true,
-          slidesPerView: 1,
-          spaceBetween: 20,
-          autoplay: {
-            delay: 3000,
-            disableOnInteraction: false
-          },
-          breakpoints: {
-            992: {
-              slidesPerView: 3
-            },
-            768: {
-              slidesPerView: 2
-            },
-            576: {
-              slidesPerView: 1
-            }
-          }
-        })
-      })
-    },
-    moreProduct (id) {
-      this.$router.push({ path: '/consumer/productItem', query: { productID: id } })
-    }
-
-  },
-  watch: {
-    // 在 tempProduct 屬性變化時執行
-    products: function (newVal, oldVal) {
-      console.log('newVal', newVal)
-      if(!this.swiperInitialized){
-        this.initSwiper()
+      moreProduct (id) {
+          this.$router.push({ path: '/consumer/productItem', query: { productID: id } })
       }
-    }
-  }
-}
+  },
+  components: {
+      Swiper,
+      SwiperSlide
+  },
+};
 </script>
-
 <style>
 .swiper-img {
   height: 250px;

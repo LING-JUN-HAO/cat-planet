@@ -1,6 +1,6 @@
-<template>
+<template v-if="!isLoading">
   <LoadingComponent v-model:active="isLoading" :loadingMessage="loadingMessage"></LoadingComponent>
-  <section v-if="!isLoading" class="product-item-container container container-title py-3 category">
+  <section class="product-item-container container container-title py-3 category">
     <h2 data-aos="fade-down" data-aos-delay="0" data-aos-duration="900" class="text-center py-3 fw-bold">商品介紹</h2>
     <div data-aos="fade-up" data-aos-delay="450" data-aos-duration="900"
       class="product-item-content content-shadow border border-1 bg-white rounded-4 d-flex p-5">
@@ -35,7 +35,7 @@
     </div>
   </section>
   <HotProductComponent :products="products"></HotProductComponent>
-  <div v-if="!isLoading" class="pt-3 pb-4 text-center">
+  <div class="pt-3 pb-4 text-center">
     <button type="button" class="btn btn-primary rounded-3 py-2 px-5 text-white"
       @click="this.$router.push({ name: 'consumerProducts', query: { category: '所有產品', page: 1 } })">
       <i class="bi bi-caret-left-fill ps-1"></i>
@@ -83,10 +83,10 @@ export default {
       }
     },
     async onRouteChange () {
+      this.getProducts()
       const { productID } = this.$route.query
       this.getProduct(productID)
       this.getCart()
-      await this.getProducts()
     },
     ...mapActions(loadingStore, ['setLoading']),
     ...mapActions(cartStore, ['getCart', 'addToCart'])
