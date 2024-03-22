@@ -5,10 +5,10 @@
     <div data-aos="fade-up" data-aos-delay="450" data-aos-duration="900"
       class="product-item-content content-shadow border border-1 bg-white rounded-4 d-flex p-5">
       <div class="row w-100 ms-0">
-        <div class="col-sm-6">
+        <div class="col-12 col-md-6">
           <img class="main-img w-100 h-100 object-fit-cover rounded-3" :src="product.imageUrl" :alt="product.id">
         </div>
-        <div class="col-sm-6 d-flex flex-column">
+        <div class="col-12 col-md-6 d-flex flex-column">
           <span class="badge bg-pink rounded-pill p-2 my-3 align-self-start fs-6 fw-normal">{{ product.category
             }}</span>
           <h3 class="modal-title" id="exampleModalLabel">
@@ -34,8 +34,10 @@
       </div>
     </div>
   </section>
+  <HotProductComponent :products="products"></HotProductComponent>
   <div v-if="!isLoading" class="pt-3 pb-4 text-center">
-    <button type="button" class="btn btn-primary rounded-3 py-2 px-5 text-white" @click="this.$router.push({ name: 'consumerProducts', query: { category: '所有產品', page: 1 } })">
+    <button type="button" class="btn btn-primary rounded-3 py-2 px-5 text-white"
+      @click="this.$router.push({ name: 'consumerProducts', query: { category: '所有產品', page: 1 } })">
       <i class="bi bi-caret-left-fill ps-1"></i>
       商品頁面
     </button>
@@ -44,21 +46,22 @@
 
 <script>
 import { mapActions, mapState } from 'pinia'
+import HotProductComponent from '@/components/consumer/homePage/HotProductComponent.vue'
 import { cartStore } from '@/store/Cart.js'
 import { loadingStore } from '@/store/Loading.js'
-import { getProductApi } from '@/mixin/Api.js'
+import { getProductApi, getProductsApi } from '@/mixin/Api.js'
 
 export default {
   data () {
     return {
       product: {},
+      products: [],
       qty: 1
     }
   },
   methods: {
     async getProduct (id) {
       try {
-        this.setLoading(true, '商品加載中...請稍候')
         const productInfo = await getProductApi(id)
         this.product = productInfo.product
       } catch (error) {
@@ -67,16 +70,38 @@ export default {
         this.setLoading(false, '')
       }
     },
+    async getProducts (category, page) {
+      try {
+        this.setLoading(true, '商品加載中...請稍候')
+        const productsInfo = await getProductsApi(category, page)
+        this.products = productsInfo.products
+        this.products = this.products.filter((item) => item.id !== this.$route.query.productID)
+      } catch (error) {
+        this.$showNotification('Oops...請稍後嘗試')
+      } finally {
+        this.setLoading(false, '')
+      }
+    },
+    async onRouteChange () {
+      const { productID } = this.$route.query
+      this.getProduct(productID)
+      this.getCart()
+      await this.getProducts()
+    },
     ...mapActions(loadingStore, ['setLoading']),
     ...mapActions(cartStore, ['getCart', 'addToCart'])
   },
   computed: {
     ...mapState(loadingStore, ['isLoading', 'loadingMessage', 'loadingItem'])
   },
+  watch: {
+    '$route.query': 'onRouteChange'
+  },
   mounted () {
-    const { productID } = this.$route.query
-    this.getProduct(productID)
-    this.getCart()
-  }
+    this.onRouteChange()
+  },
+  components: {
+    HotProductComponent
+  },
 }
 </script>
