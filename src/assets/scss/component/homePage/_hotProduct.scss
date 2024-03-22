@@ -1,0 +1,29 @@
+.hot-product-title::after,
+.hot-product-title::before {
+  content: "";
+  position: absolute;
+  height: 4em;
+  width: 4em;
+  border: 20px solid #F1b444;
+  top: 0;
+  left: 1em;
+  opacity: .8;
+  z-index: -1;
+}
+
+.hot-product-title::before {
+  transform: rotate(15deg) translate(-35%, -35%);
+}
+
+.hot-product-title::after {
+  transform: rotate(25deg) translate(-35%, -35%);
+}
+
+@media screen and (max-width: 768px){
+  .hot-product-title::after,
+  .hot-product-title::before {
+    height: 0px;
+    width: 0px;
+    border: none;
+  }
+}

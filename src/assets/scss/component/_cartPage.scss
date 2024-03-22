@@ -1,0 +1,35 @@
+.order-page,
+.cart-page {
+  .total-container{
+    letter-spacing: .25em;
+  }
+    table {
+      letter-spacing: .25em;
+  
+      thead {
+        letter-spacing: .5em;
+      }
+      .input-group{
+        flex-wrap: nowrap;
+        input{
+          min-width: 50px;
+        }
+      }
+    }
+  
+    .product-img {
+      height: 103px;
+      background-size: cover;
+      background-position: center center;
+      cursor: pointer;
+    }
+    .delProductItem{
+      cursor: pointer;
+    }
+    .voucher-text{
+      cursor: pointer;
+    }
+    .row{
+      margin: 0;
+    }
+  }

@@ -1,0 +1,27 @@
+@import "bootstrap/scss/functions";
+@import "./_variables";
+@import "bootstrap/scss/bootstrap.scss";
+
+@import "./component/_base.scss";
+// consumer
+@import "./component/_header.scss";
+@import "./component/_footer.scss";
+// ---
+// homePage
+@import "./component/homePage/_banner.scss";
+@import "./component/homePage/_about.scss";
+@import "./component/homePage/_category.scss";
+@import "./component/homePage/_hotProduct.scss";
+// productPage
+@import "./component/productPage/_aside.scss";
+@import "./component/productPage/_productList.scss";
+// --
+@import "./component/_order.scss";
+@import "./component/_productItem.scss";
+@import "./component/_cartPage.scss";
+@import "./component/_empty.scss";
+@import "./component/_checkout.scss";
+@import "./component/_login.scss";
+@import "./component/_productsPage.scss";
+@import "./component/_voucherPage.scss";
+@import "./component/_orderPage.scss";
