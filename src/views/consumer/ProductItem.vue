@@ -34,17 +34,10 @@
       </div>
     </div>
   </section>
-  <section v-if="!isLoading" class="container container-title pt-3 pb-6 category">
-    <h2 data-aos="fade-down" data-aos-delay="0" data-aos-duration="900" class="text-center py-3 fw-bold">熱銷商品</h2>
-    <div data-aos="fade-up" data-aos-delay="450" data-aos-duration="900"
-      class="content-shadow border border-1 bg-white rounded-4 d-flex p-5 position-relative z-1 flex-column flex-md-row ">
-      <div class="col-md-12">
-        <SwiperComponent :products='products' class="w-100"></SwiperComponent>
-      </div>
-    </div>
-  </section>
+  <HotProductComponent :products="products"></HotProductComponent>
   <div v-if="!isLoading" class="pt-3 pb-4 text-center">
-    <button type="button" class="btn btn-primary rounded-3 py-2 px-5 text-white" @click="this.$router.push({ name: 'consumerProducts', query: { category: '所有產品', page: 1 } })">
+    <button type="button" class="btn btn-primary rounded-3 py-2 px-5 text-white"
+      @click="this.$router.push({ name: 'consumerProducts', query: { category: '所有產品', page: 1 } })">
       <i class="bi bi-caret-left-fill ps-1"></i>
       商品頁面
     </button>
@@ -53,10 +46,10 @@
 
 <script>
 import { mapActions, mapState } from 'pinia'
+import HotProductComponent from '@/components/consumer/homePage/HotProductComponent.vue'
 import { cartStore } from '@/store/Cart.js'
 import { loadingStore } from '@/store/Loading.js'
 import { getProductApi, getProductsApi } from '@/mixin/Api.js'
-import SwiperComponent from '@/components/utils/SwiperComponent.vue'
 
 export default {
   data () {
@@ -82,20 +75,18 @@ export default {
         this.setLoading(true, '商品加載中...請稍候')
         const productsInfo = await getProductsApi(category, page)
         this.products = productsInfo.products
-        console.log('before products', this.products)
         this.products = this.products.filter((item) => item.id !== this.$route.query.productID)
-        console.log('after products', this.products)
       } catch (error) {
         this.$showNotification('Oops...請稍後嘗試')
       } finally {
         this.setLoading(false, '')
       }
     },
-    onRouteChange () {
+    async onRouteChange () {
       const { productID } = this.$route.query
-      this.getProducts()
       this.getProduct(productID)
       this.getCart()
+      await this.getProducts()
     },
     ...mapActions(loadingStore, ['setLoading']),
     ...mapActions(cartStore, ['getCart', 'addToCart'])
@@ -103,14 +94,14 @@ export default {
   computed: {
     ...mapState(loadingStore, ['isLoading', 'loadingMessage', 'loadingItem'])
   },
-  components: {
-    SwiperComponent
-  },
   watch: {
     '$route.query': 'onRouteChange'
   },
   mounted () {
     this.onRouteChange()
-  }
+  },
+  components: {
+    HotProductComponent
+  },
 }
 </script>

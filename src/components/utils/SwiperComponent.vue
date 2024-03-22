@@ -31,6 +31,7 @@ export default {
   methods: {
     initSwiper () {
       this.$nextTick(() => {
+        this.swiperInitialized = true
         // eslint-disable-next-line no-new
         new Swiper('.swiper', {
           modules: [Autoplay, Navigation, Pagination],
@@ -63,7 +64,10 @@ export default {
   watch: {
     // 在 tempProduct 屬性變化時執行
     products: function (newVal, oldVal) {
-      this.initSwiper()
+      console.log('newVal', newVal)
+      if(!this.swiperInitialized){
+        this.initSwiper()
+      }
     }
   }
 }
