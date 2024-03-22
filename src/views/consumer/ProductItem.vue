@@ -66,8 +66,6 @@ export default {
         this.product = productInfo.product
       } catch (error) {
         this.$showNotification('Oops...請稍後嘗試')
-      } finally {
-        this.setLoading(false, '')
       }
     },
     async getProducts (category, page) {
@@ -83,9 +81,9 @@ export default {
       }
     },
     async onRouteChange () {
-      this.getProducts()
       const { productID } = this.$route.query
       this.getProduct(productID)
+      this.getProducts()
       this.getCart()
     },
     ...mapActions(loadingStore, ['setLoading']),
