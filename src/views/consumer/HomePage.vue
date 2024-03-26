@@ -1,8 +1,8 @@
 <template>
   <LoadingComponent v-model:active="isLoading" :loadingMessage="loadingMessage"></LoadingComponent>
-  <BannerComponent></BannerComponent>
-  <CategoryComponent></CategoryComponent>
-  <AboutComponent></AboutComponent>
+  <BannerComponent />
+  <CategoryComponent />
+  <AboutComponent />
   <HotProductComponent :products="products"></HotProductComponent>
 </template>
 
@@ -23,6 +23,7 @@ export default {
     }
   },
   methods: {
+    // 取得Swiper輪播圖片
     async getProducts (category, page) {
       try {
         this.setLoading(true, '資料載入中...請稍候')

@@ -2,7 +2,8 @@
   <LoadingComponent v-model:active="isLoading" :loadingMessage="loadingMessage"></LoadingComponent>
   <section class="order-page container container-title py-3">
     <h2 data-aos="fade-down" data-aos-delay="0" data-aos-duration="900" class="text-center py-3 fw-bold">查詢訂單</h2>
-    <div data-aos="fade-up" data-aos-delay="450" data-aos-duration="900"  class="content-shadow border border-1 bg-white rounded-4 d-flex p-5 flex-column">
+    <div data-aos="fade-up" data-aos-delay="450" data-aos-duration="900"
+      class="content-shadow border border-1 bg-white rounded-4 d-flex p-5 flex-column">
       <TimelineComponent :active="'orderCheck'"></TimelineComponent>
       <img class="shopping-img" src="../../assets/image/orderFinish.svg" alt="購物完成">
       <div class="order-page-box">
@@ -22,38 +23,38 @@
         <h3 class="p-2 mb-3 text-bg position-relative z-1 h4">商品資訊</h3>
         <div style="overflow: auto; white-space: nowrap;">
           <table class="table align-middle">
-          <thead>
-            <tr>
-              <th class="text-center d-none d-lg-block">產品</th>
-              <th class="text-left">品名</th>
-              <th class="text-left">單價</th>
-              <th class="text-left">數量</th>
-              <th class="text-left">小計</th>
-            </tr>
-          </thead>
-          <tbody>
-            <template v-if="products?.length !== 0">
-              <tr v-for="item in products" :key="item.id">
-                <td class="text-left d-none d-lg-block">
-                  <div @click="routerChange('product', item.product.id)" class="product-img"
-                    :style="{ backgroundImage: `url(${item.product.imageUrl})` }"></div>
-                </td>
-                <td class="text-left">
-                  {{ item.product.title }}
-                </td>
-                <td class="text-left text-pink">
-                  $ {{ item.product.price.toLocaleString() }}
-                </td>
-                <td class="text-left text-pink">
-                  {{ item.qty }}
-                </td>
-                <td class="text-left text-pink">
-                  $ {{ item.final_total.toLocaleString() }}
-                </td>
+            <thead>
+              <tr>
+                <th class="text-center d-none d-lg-block">產品</th>
+                <th class="text-left">品名</th>
+                <th class="text-left">單價</th>
+                <th class="text-left">數量</th>
+                <th class="text-left">小計</th>
               </tr>
-            </template>
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              <template v-if="products?.length !== 0">
+                <tr v-for="item in products" :key="item.id">
+                  <td class="text-left d-none d-lg-block">
+                    <div @click="routerChange('product', item.product.id)" class="product-img"
+                      :style="{ backgroundImage: `url(${item.product.imageUrl})` }"></div>
+                  </td>
+                  <td class="text-left">
+                    {{ item.product.title }}
+                  </td>
+                  <td class="text-left text-pink">
+                    $ {{ item.product.price.toLocaleString() }}
+                  </td>
+                  <td class="text-left text-pink">
+                    {{ item.qty }}
+                  </td>
+                  <td class="text-left text-pink">
+                    $ {{ item.final_total.toLocaleString() }}
+                  </td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
         </div>
       </div>
       <div class="order-page-box">

@@ -9,18 +9,20 @@
         <p class="fs-5">快来看看我们店長為您推薦的新品吧！</p>
       </div>
       <div class="col-md-8">
-        <SwiperComponent :products='products' class="w-100"></SwiperComponent>
+        <SwiperComponent :products='products'></SwiperComponent>
       </div>
     </div>
   </section>
 </template>
 
 <script>
+import SwiperThumb from '@/components/utils/SwiperThumb.vue'
 import SwiperComponent from '@/components/utils/SwiperComponent.vue'
 export default {
   props: ['products'],
   components: {
-    SwiperComponent
+    SwiperComponent,
+    SwiperThumb
   }
 }
 </script>

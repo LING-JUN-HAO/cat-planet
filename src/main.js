@@ -1,31 +1,29 @@
 import { createApp } from 'vue'
-// boostrap
-import 'bootstrap-icons/font/bootstrap-icons.css'
-// axios
+import { createPinia } from 'pinia'
+// 第三方套件匯入(axios、aos、vue-validate、vue-toast-notification)
 import axios from 'axios'
 import VueAxios from 'vue-axios'
-// validate
+import AOS from 'aos'
+import 'aos/dist/aos.css'
 import { Field, Form, ErrorMessage, defineRule, configure } from 'vee-validate'
 import * as AllRules from '@vee-validate/rules'
 import { localize, setLocale } from '@vee-validate/i18n'
 import zhTW from '@vee-validate/i18n/dist/locale/zh_TW.json'
-// Pinia
-import { createPinia } from 'pinia'
+import 'bootstrap-icons/font/bootstrap-icons.css'
+import ToastPlugin from 'vue-toast-notification'
+import 'vue-toast-notification/dist/theme-bootstrap.css'
+// 自定義方法(SweetAlert2 & vue-toast-notification)
+import ShowNotification from '@/mixin/Swal.js'
+import ToastNotification from '@/mixin/Toast.js'
+import LoadingComponent from '@/components/utils/LoadingComponent.vue'
 import router from './router'
 import App from './App.vue'
 import './assets/scss/all.scss'
-// SweetAlert2
-import ShowNotification from '@/mixin/Swal.js'
-// vue-toast-notification
-import ToastPlugin from 'vue-toast-notification'
-import 'vue-toast-notification/dist/theme-bootstrap.css'
-import ToastNotification from '@/mixin/Toast.js'
-// Loading
-import LoadingComponent from '@/components/utils/LoadingComponent.vue'
-// AOS
-import AOS from 'aos'
-import 'aos/dist/aos.css'
-
+const app = createApp(App)
+const pinia = createPinia()
+app.config.globalProperties.$showNotification = ShowNotification
+app.config.globalProperties.$toastNotification = ToastNotification
+// i18n多國語系設定
 Object.keys(AllRules).forEach((rule) => {
   defineRule(rule, AllRules[rule])
 })
@@ -34,14 +32,6 @@ configure({
   validateOnInput: true
 })
 setLocale('zh_TW')
-
-const app = createApp(App)
-const pinia = createPinia()
-
-// 全域註冊
-app.config.globalProperties.$showNotification = ShowNotification
-app.config.globalProperties.$toastNotification = ToastNotification
-
 app.use({
   install: () => {
     AOS.init({
@@ -55,9 +45,9 @@ app.use({
   }
 })
 app.use(router)
-app.use(VueAxios, axios)
 app.use(pinia)
 app.use(ToastPlugin)
+app.use(VueAxios, axios)
 app.component('VField', Field)
 app.component('VForm', Form)
 app.component('ErrorMessage', ErrorMessage)

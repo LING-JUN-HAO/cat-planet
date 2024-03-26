@@ -100,6 +100,6 @@ export default {
   },
   components: {
     HotProductComponent
-  },
+  }
 }
 </script>

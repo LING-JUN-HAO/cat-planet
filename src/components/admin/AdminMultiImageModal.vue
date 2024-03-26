@@ -147,12 +147,11 @@ export default {
       }
       const formdata = new FormData()
       formdata.append('file-to-upload', file)
-      console.log('file', file)
       try {
         const result = await this.$http.post(`${VITE_API}/api/${VITE_PATH}/admin/upload`, formdata)
         this.newTemProduct.imagesUrl[this.currentImageIndex] = result.data.imageUrl
       } catch (error) {
-        console.log('error', error)
+
       } finally {
         this.uploadStatus = false
       }

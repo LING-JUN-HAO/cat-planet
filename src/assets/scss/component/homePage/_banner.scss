@@ -1,5 +1,5 @@
 .banner-container {
-    min-height: 100vh;
+    height: calc(100vh - 56px);
     background-image: url('@/assets/image/banner-cat.jpg');
     background-position: center;
     background-size: cover;
@@ -21,13 +21,3 @@
       }
     }
   }
-
-  @media screen and (max-width: 768px){
-    .header-container{
-        .nav-item{
-            .cartNumber{
-                left: 10px;
-            }
-        }
-    }
-}
