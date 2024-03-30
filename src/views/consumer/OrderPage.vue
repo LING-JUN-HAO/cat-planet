@@ -1,16 +1,16 @@
 <template>
   <LoadingComponent v-model:active="isLoading" :loadingMessage="loadingMessage"></LoadingComponent>
-  <section class="order-page container container-title py-3">
-    <h2 data-aos="fade-down" data-aos-delay="0" data-aos-duration="900" class="text-center py-3 fw-bold">查詢訂單</h2>
+  <section class="order-page container container-title">
+    <h2 data-aos="fade-down" data-aos-delay="0" data-aos-duration="900" class="text-center py-6 m-0 fw-bold">查詢訂單</h2>
     <div data-aos="fade-up" data-aos-delay="450" data-aos-duration="900"
-      class="content-shadow border border-1 bg-white rounded-4 d-flex p-5 flex-column">
+      class="content-shadow border border-1 bg-white rounded-4 d-flex p-4 p-md-6 flex-column">
       <TimelineComponent :active="'orderCheck'"></TimelineComponent>
-      <img class="shopping-img" src="../../assets/image/orderFinish.svg" alt="購物完成">
-      <div class="order-page-box">
-        <h3 class="p-2 mb-3 text-bg position-relative z-1 h4">訂單資訊</h3>
+      <img class="shopping-img d-none d-md-block" src="../../assets/image/orderFinish.svg" alt="購物完成">
+      <div class="order-page-box pt-4">
+        <h3 class="p-2 mb-4 text-bg position-relative z-1 h4">訂單資訊</h3>
         <div>
-          <div class="row p-2 mb-2">
-            <div class="col-12 col-md-6 pb-3 pb-md-0 order-text">
+          <div class="row mb-0 mb-md-4">
+            <div class="col-12 col-md-6 pb-4 pb-md-0">
               訂單編號：{{ orderInfo.id }}
             </div>
             <div class="col-12 col-md-6">
@@ -19,8 +19,8 @@
           </div>
         </div>
       </div>
-      <div class="order-page-box">
-        <h3 class="p-2 mb-3 text-bg position-relative z-1 h4">商品資訊</h3>
+      <div class="order-page-box pt-4">
+        <h3 class="p-2 mb-4 text-bg position-relative z-1 h4">商品資訊</h3>
         <div style="overflow: auto; white-space: nowrap;">
           <table class="table align-middle">
             <thead>
@@ -57,26 +57,26 @@
           </table>
         </div>
       </div>
-      <div class="order-page-box">
-        <h3 class="p-2 mb-3 text-bg position-relative z-1 h4">購物人資訊</h3>
-        <div>
-          <div class="row p-2 mb-0 mb-md-2">
-            <div class="col-12 col-md-6 pb-3 pb-md-0 order-text">
+      <div class="order-page-box pt-4">
+        <h3 class="p-2 mb-4 text-bg position-relative z-1 h4">購物人資訊</h3>
+        <div class="text-break">
+          <div class="row mb-0 mb-md-4">
+            <div class="col-12 col-md-6 pb-4 pb-md-0">
               姓名：{{ orderInfo.user?.name }}
             </div>
-            <div class="col-12 col-md-6">
+            <div class="col-12 col-md-6 pb-4 pb-md-0">
               信箱：{{ orderInfo.user?.email }}
             </div>
           </div>
-          <div class="row p-2 mb-0 mb-md-2">
-            <div class="col-12 col-md-6 pb-3 pb-md-0">
+          <div class="row mb-0 mb-md-4">
+            <div class="col-12 col-md-6 pb-4 pb-md-0">
               電話：{{ orderInfo.user?.tel }}
             </div>
-            <div class="col-12 col-md-6">
+            <div class="col-12 col-md-6 pb-4 pb-md-0">
               住址：{{ orderInfo.user?.address }}
             </div>
           </div>
-          <div class="row p-2 mb-0 mb-md-2">
+          <div class="row mb-0 mb-md-4">
             <div class="col-12">
               備註：{{ orderInfo?.message }}
             </div>
@@ -85,17 +85,16 @@
       </div>
     </div>
   </section>
-  <div class="pt-3 pb-4 text-center">
-    <button type="button" class="btn btn-primary rounded-3 py-2 px-5 text-white" @click="routerChange('back')">
-      <i class="bi bi-caret-left-fill pe-1"></i>
-      商品頁面
-    </button>
+  <div class="py-6 text-center">
+    <RouterButton :arrowIcon="'left'" :routerName="'consumerProducts'" :query="{ category: '所有產品', page: 1 }"
+      :display="'商品頁面'"></RouterButton>
   </div>
 </template>
 
 <script>
 import { mapActions, mapState } from 'pinia'
 import TimelineComponent from '@/components/utils/TimelineComponent.vue'
+import RouterButton from '@/components/utils/RouterButton.vue'
 import { loadingStore } from '@/store/Loading.js'
 import { getOrderApi } from '@/mixin/Api.js'
 
@@ -135,7 +134,7 @@ export default {
     await this.getOrder(this.$route.query.orderID)
   },
   components: {
-    TimelineComponent
+    TimelineComponent, RouterButton
   }
 }
 </script>

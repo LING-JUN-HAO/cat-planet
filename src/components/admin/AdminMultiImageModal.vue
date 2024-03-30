@@ -11,7 +11,7 @@
         <div class="modal-body">
           <div class="row">
             <div class="col-6">
-              <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
+              <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-indicators">
                   <template v-if="newTemProduct.imagesUrl">
                     <button v-for="(item, i) in newTemProduct.imagesUrl" type="button" :key="i + '123'"
@@ -32,7 +32,7 @@
                 <div class="position-relative">
                   <div class="carousel-inner">
                     <template v-if="newTemProduct.imagesUrl">
-                      <div v-for="(item, i) in newTemProduct.imagesUrl" :key="i + '123'"
+                      <div v-for="(item, i) in newTemProduct.imagesUrl" :key="i + '123'" data-bs-interval=""
                         class="carousel-item w-100 object-fit-cover mainImg" :class="{ active: i == currentImageIndex }">
                         <img :src="item" class="d-block w-100 h-100 object-fit-cover" alt="輪播照片">
                       </div>
@@ -147,11 +147,12 @@ export default {
       }
       const formdata = new FormData()
       formdata.append('file-to-upload', file)
+      console.log('file', file)
       try {
         const result = await this.$http.post(`${VITE_API}/api/${VITE_PATH}/admin/upload`, formdata)
         this.newTemProduct.imagesUrl[this.currentImageIndex] = result.data.imageUrl
       } catch (error) {
-
+        console.log('error', error)
       } finally {
         this.uploadStatus = false
       }

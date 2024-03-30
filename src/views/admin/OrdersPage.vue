@@ -191,8 +191,7 @@ export default {
   },
   mounted () {
     const hexCookie = document.cookie.replace(
-      // eslint-disable-next-line no-useless-escape
-      /(?:(?:^|.*;\s*)hexToken\s*\=\s*([^;]*).*$)|^.*$/,
+      /(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/,
       '$1'
     )
     this.$http.defaults.headers.common.Authorization = hexCookie

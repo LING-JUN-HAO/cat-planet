@@ -1,3 +1,11 @@
 <template>
-    <router-view></router-view>
+    <RouterView />
 </template>
+<script>
+import { RouterView } from 'vue-router'
+export default {
+  components: {
+    RouterView
+  }
+}
+</script>

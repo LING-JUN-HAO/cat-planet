@@ -7,14 +7,14 @@
         <div class="col-8">
           <form id="form" class="form-group" @submit.prevent="login()">
             <div class="form-floating mb-3">
-              <input id="username" type="email" class="form-control" placeholder="Email address" v-model="user.username"
+              <input id="username" type="email" class="form-control" placeholder="請輸入信箱" v-model="user.username"
                 required autofocus autocomplete="current-password" />
-              <label for="username">Email address</label>
+              <label for="username">請輸入信箱</label>
             </div>
             <div class="form-floating">
-              <input id="password" type="password" class="form-control" placeholder="Password" v-model="user.password"
+              <input id="password" type="password" class="form-control" placeholder="請輸入密碼" v-model="user.password"
                 required autocomplete="current-password" />
-              <label for="password">Password</label>
+              <label for="password">請輸入密碼</label>
             </div>
             <button class="btn btn-lg btn-hex w-100 mt-3" type="submit">登入</button>
           </form>

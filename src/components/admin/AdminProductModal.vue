@@ -102,6 +102,7 @@
   </div>
 </template>
 <script>
+// import * as bootstrap from 'bootstrap'
 import ShowNotification from '@/mixin/Swal.js'
 const { VITE_API, VITE_PATH } = import.meta.env
 
@@ -140,7 +141,6 @@ export default {
         const result = await this.$http.post(`${VITE_API}/api/${VITE_PATH}/admin/upload`, formdata)
         this.newTemProduct.imageUrl = result.data.imageUrl
       } catch (error) {
-        
       } finally {
         this.uploadStatus = false
       }

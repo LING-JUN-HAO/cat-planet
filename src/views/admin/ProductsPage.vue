@@ -38,7 +38,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item) in products" :key="item.id">
+          <tr v-for="(item) in dataList" :key="item.id">
             <td class="text-center">
               {{ item.num }}
             </td>
@@ -84,11 +84,11 @@
     </div>
     <Pagination :pages="pages" :get-products="getProducts"></Pagination>
     <!-- Modal -->
-    <AdminProductModal ref="pModal" :temp-Product="tempProduct" @update-temp-product="handleUpdateTempProduct"
-      :isNew="isNew"></AdminProductModal>
-    <AdminDeleteModal ref="dModal" :type="'產品'" :temp-Product="tempProduct" :deleteProduct="deleteProduct">
+    <AdminProductModal ref="pModal" :temp-Product="data" @update-temp-product="handleUpdateTempProduct" :isNew="isNew">
+    </AdminProductModal>
+    <AdminDeleteModal ref="dModal" :type="'產品'" :temp-Product="data" :deleteProduct="deleteProduct">
     </AdminDeleteModal>
-    <AdminMultiImageModal ref="iModal" :temp-Product="tempProduct" :isMultiImage="isMultiImage"
+    <AdminMultiImageModal ref="iModal" :temp-Product="data" :isMultiImage="isMultiImage"
       @update-temp-product="handleUpdateTempProduct"></AdminMultiImageModal>
   </div>
 </template>
@@ -101,34 +101,30 @@ import AdminProductModal from '@/components/admin/AdminProductModal.vue'
 import AdminDeleteModal from '@/components/admin/AdminDeleteModal.vue'
 import AdminMultiImageModal from '@/components/admin/AdminMultiImageModal.vue'
 import { loadingStore } from '@/store/Loading.js'
+import { backendDataListStore } from '@/store/BackendDataList.js'
 import { checkAdminApi, getProductsApi, deleteProductApi, createProductApi, updateProductApi } from '@/mixin/Api.js'
 
 export default {
   data () {
     return {
-      // 產品資料格式
-      products: [],
-      tempProduct: {},
-      isNew: false,
-      isMultiImage: false,
-      pages: {}
+      isMultiImage: false
     }
   },
   methods: {
+    // 驗證使用者權杖
     async checkAdmin () {
       try {
-        await checkAdminApi({})
+        await checkAdminApi()
         this.getProducts()
       } catch (error) {
         this.$router.push({ name: 'adminLogin' })
       }
     },
-    async getProducts (page) {
+    async getProducts () {
       try {
         this.setLoading(true, '資料載入中...請稍候')
-        const res = await getProductsApi('', page)
-        this.products = res.products
-        this.pages = res.pagination
+        const res = await getProductsApi()
+        this.setDataList(res.products, res.pagination)
       } catch (error) {
         this.$showNotification('Oops...請稍後嘗試')
       } finally {
@@ -137,33 +133,31 @@ export default {
     },
     openModal (status, item) {
       if (status === 'new') {
-        this.tempProduct = {
-          imagesUrl: []
-        }
-        this.isNew = true
+        this.setData({ imagesUrl: [] })
+        this.setIsNew(true)
         this.$refs.pModal.openModal()
       } else if (status === 'edit') {
-        this.tempProduct = { ...item }
-        if (!Array.isArray(this.tempProduct.imagesUrl)) {
-          this.tempProduct.imagesUrl = []
+        this.setData({ ...item })
+        if (!Array.isArray(this.data.imagesUrl)) {
+          this.data.imagesUrl = []
         }
-        this.isNew = false
+        this.setIsNew(false)
         this.$refs.pModal.openModal()
       } else if (status === 'delete') {
-        this.tempProduct = item
+        this.setData(item)
         this.$refs.dModal.openModal()
       } else if (status === 'singleImage') {
-        this.tempProduct = { ...item }
+        this.setData({ ...item })
         this.isMultiImage = false
         this.$refs.iModal.openModal()
       } else if (status === 'multiImage') {
-        this.tempProduct = { ...item }
+        this.setData({ ...item })
         this.isMultiImage = true
         this.$refs.iModal.openModal()
       }
     },
     handleUpdateTempProduct (updatedTempProduct) {
-      this.tempProduct = updatedTempProduct
+      this.setData(updatedTempProduct)
       this.updateProduct()
     },
     async updateProduct () {
@@ -173,10 +167,10 @@ export default {
         this.$refs.iModal.closeModal()
         let alertMsg = '商品資料新增成功'
         if (!this.isNew) {
-          await updateProductApi(this.tempProduct.id, this.tempProduct)
+          await updateProductApi(this.data.id, this.data)
           alertMsg = '商品資料編輯成功'
         } else {
-          await createProductApi(this.tempProduct)
+          await createProductApi(this.data)
         }
         this.$showNotification(alertMsg)
         this.getProducts()
@@ -190,7 +184,7 @@ export default {
       this.setLoading(true, '刪除資料中...請稍候')
       this.$refs.dModal.closeModal()
       try {
-        await deleteProductApi(this.tempProduct.id)
+        await deleteProductApi(this.data.id)
         this.$showNotification('商品刪除成功')
         this.getProducts()
       } catch (error) {
@@ -199,15 +193,16 @@ export default {
         this.setLoading(false, '')
       }
     },
-    ...mapActions(loadingStore, ['setLoading'])
+    ...mapActions(loadingStore, ['setLoading']),
+    ...mapActions(backendDataListStore, ['setDataList', 'setData', 'setIsNew'])
   },
   computed: {
-    ...mapState(loadingStore, ['isLoading', 'loadingMessage'])
+    ...mapState(loadingStore, ['isLoading', 'loadingMessage']),
+    ...mapState(backendDataListStore, ['data', 'dataList', 'pages', 'isNew'])
   },
   mounted () {
     const hexCookie = document.cookie.replace(
-      // eslint-disable-next-line no-useless-escape
-      /(?:(?:^|.*;\s*)hexToken\s*\=\s*([^;]*).*$)|^.*$/,
+      /(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/,
       '$1'
     )
     this.$http.defaults.headers.common.Authorization = hexCookie

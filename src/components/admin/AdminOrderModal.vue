@@ -67,6 +67,7 @@
   </div>
 </template>
 <script>
+// import * as bootstrap from 'bootstrap'
 
 export default {
   emits: ['update-temp-product'],

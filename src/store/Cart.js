@@ -19,6 +19,7 @@ export const cartStore = defineStore('cartStore', {
       try {
         const cartInfo = await axios.get(`${VITE_API}/api/${VITE_PATH}/cart`)
         this.cart = cartInfo.data.data
+        console.log('cart', this.cart)
       } catch (error) {
         ShowNotification('Oops...請重新嘗試')
       }

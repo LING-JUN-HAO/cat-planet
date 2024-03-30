@@ -89,9 +89,9 @@ export async function signInApi (userInfo) {
   return response.data
 }
 
-export async function checkAdminApi (userInfo) {
+export async function checkAdminApi () {
   const { VITE_API } = import.meta.env
-  const response = axios.post(`${VITE_API}/api/user/check`, userInfo)
+  const response = await axios.post(`${VITE_API}/api/user/check`, {})
   return response.data
 }
 

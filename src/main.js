@@ -1,5 +1,7 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import 'bootstrap/dist/css/bootstrap.min.css' // 導入 Bootstrap 的 CSS 文件
+import 'bootstrap'
 // 第三方套件匯入(axios、aos、vue-validate、vue-toast-notification)
 import axios from 'axios'
 import VueAxios from 'vue-axios'

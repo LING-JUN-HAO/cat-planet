@@ -29,5 +29,8 @@ module.exports = {
     'vue'
   ],
   rules: {
+  },
+  globals: {
+    bootstrap: 'readonly'
   }
 }

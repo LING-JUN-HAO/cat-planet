@@ -1,9 +1,9 @@
-<template v-if="!isLoading">
+<template v-if="!isDefaultStatus">
   <LoadingComponent v-model:active="isLoading" :loadingMessage="loadingMessage"></LoadingComponent>
-  <section class="product-item-container container container-title py-3 category">
-    <h2 data-aos="fade-down" data-aos-delay="0" data-aos-duration="900" class="text-center py-3 fw-bold">商品介紹</h2>
+  <section class="product-item-container container container-title category">
+    <h2 data-aos="fade-down" data-aos-delay="0" data-aos-duration="900" class="text-center py-6 m-0 fw-bold">商品介紹</h2>
     <div data-aos="fade-up" data-aos-delay="450" data-aos-duration="900"
-      class="product-item-content content-shadow border border-1 bg-white rounded-4 d-flex p-5">
+      class="product-item-content content-shadow border border-1 bg-white rounded-4 d-flex p-4 p-md-5">
       <div class="row w-100 ms-0">
         <div class="col-12 col-md-6">
           <img class="main-img w-100 h-100 object-fit-cover rounded-3" :src="product.imageUrl" :alt="product.id">
@@ -22,8 +22,14 @@
           <p class="my-3">商品描述：{{ product.description }}</p>
           <p class="my-3">商品內容：{{ product.content }}</p>
           <div class="input-group mt-auto gap-4">
-            <input type="number" class="form-control rounded-2 p-2 text-center col-4 fs-5" v-model.number="qty">
-            <button type="button" class="btn btn-taupe rounded-3 p-2 col-8 text-white"
+            <div class="input-group">
+              <button type="button" :disabled="qty == 1" @click="qty--;"
+                class="btn btn-outline-primary col-1 fs-5">-</button>
+              <input type="number" class="form-control rounded-2 p-2 text-center col-10 fs-5" v-model.number="qty"
+                min="1" readonly>
+              <button @click="qty++;" type="button" class="btn btn-outline-primary col-1 fs-5">+</button>
+            </div>
+            <button type="button" class="btn btn-taupe rounded-3 p-2 col-12 text-white"
               @click="addToCart(product.id, qty)">
               <i class="fas fa-spinner fa-pulse" v-if="loadingItem !== ''"></i>
               <i class="bi bi-cart" v-else></i>
@@ -35,18 +41,16 @@
     </div>
   </section>
   <HotProductComponent :products="products"></HotProductComponent>
-  <div class="pt-3 pb-4 text-center">
-    <button type="button" class="btn btn-primary rounded-3 py-2 px-5 text-white"
-      @click="this.$router.push({ name: 'consumerProducts', query: { category: '所有產品', page: 1 } })">
-      <i class="bi bi-caret-left-fill ps-1"></i>
-      商品頁面
-    </button>
+  <div class="py-6 text-center button-container">
+    <RouterButton :arrowIcon="'left'" :routerName="'consumerProducts'" :query="{ category: '所有產品', page: 1 }"
+      :display="'商品頁面'"></RouterButton>
   </div>
 </template>
 
 <script>
 import { mapActions, mapState } from 'pinia'
 import HotProductComponent from '@/components/consumer/homePage/HotProductComponent.vue'
+import RouterButton from '@/components/utils/RouterButton.vue'
 import { cartStore } from '@/store/Cart.js'
 import { loadingStore } from '@/store/Loading.js'
 import { getProductApi, getProductsApi } from '@/mixin/Api.js'
@@ -56,6 +60,7 @@ export default {
     return {
       product: {},
       products: [],
+      isDefaultStatus: false,
       qty: 1
     }
   },
@@ -70,20 +75,20 @@ export default {
     },
     async getProducts (category, page) {
       try {
-        this.setLoading(true, '商品加載中...請稍候')
         const productsInfo = await getProductsApi(category, page)
         this.products = productsInfo.products
         this.products = this.products.filter((item) => item.id !== this.$route.query.productID)
       } catch (error) {
         this.$showNotification('Oops...請稍後嘗試')
-      } finally {
-        this.setLoading(false, '')
       }
     },
     async onRouteChange () {
       const { productID } = this.$route.query
-      this.getProduct(productID)
-      this.getProducts()
+      this.setLoading(true, '商品加載中...請稍候')
+      await this.getProduct(productID)
+      await this.getProducts()
+      this.isDefaultStatus = true
+      this.setLoading(false, '')
       this.getCart()
     },
     ...mapActions(loadingStore, ['setLoading']),
@@ -99,7 +104,7 @@ export default {
     this.onRouteChange()
   },
   components: {
-    HotProductComponent
+    HotProductComponent, RouterButton
   }
 }
 </script>

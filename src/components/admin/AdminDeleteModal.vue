@@ -42,7 +42,6 @@ export default {
     }
   },
   mounted () {
-    // eslint-disable-next-line no-undef
     this.delProductModal = new bootstrap.Modal(this.$refs.delProductModal)
   }
 }

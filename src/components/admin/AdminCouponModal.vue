@@ -12,7 +12,6 @@
         <div class="modal-body">
           <div class="row">
             <div class="col-sm-12">
-
               <div class="row">
                 <div class="mb-3 col-md-6">
                   <label for="title" class="form-label">標題</label>
@@ -65,6 +64,7 @@
   </div>
 </template>
 <script>
+import * as bootstrap from 'bootstrap'
 import moment from 'moment'
 
 export default {
@@ -107,7 +107,6 @@ export default {
     }
   },
   mounted () {
-    // eslint-disable-next-line no-undef
     this.productModal = new bootstrap.Modal(this.$refs.productModal)
   }
 }

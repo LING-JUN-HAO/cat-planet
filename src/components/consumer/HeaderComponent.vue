@@ -25,7 +25,7 @@
               </router-link>
             </li>
             <li class="nav-item position-relative" @click="toggleNavbar">
-              <div class="position-absolute text-white text-center fs-6 rounded-circle cartNumber">
+              <div v-if="cart.carts.length !== 0" class="position-absolute text-white text-center rounded-circle cartNumber">
                 {{ cart.carts.length }}
               </div>
               <router-link class="nav-link fs-bold" active-class="active" to="/consumer/carts">

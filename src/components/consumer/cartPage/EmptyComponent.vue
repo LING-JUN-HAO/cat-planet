@@ -8,9 +8,3 @@
     </div>
   </section>
 </template>
-
-<script>
-export default {
-  props: ['defaultStatus', 'cart']
-}
-</script>
