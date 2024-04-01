@@ -1,5 +1,5 @@
 <template>
-  <div ref="productModal" class="modal fade" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
+  <div ref="productModal" class="modal fade ModalContainer" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
       <div class="modal-content border-0">
         <div class="modal-header bg-hex text-white">
@@ -67,8 +67,6 @@
   </div>
 </template>
 <script>
-// import * as bootstrap from 'bootstrap'
-
 export default {
   emits: ['update-temp-product'],
   props: ['tempProduct', 'isNew'],
@@ -97,13 +95,11 @@ export default {
     }
   },
   watch: {
-    // 在 tempProduct 屬性變化時執行
     tempProduct: function (newVal, oldVal) {
       this.newTemProduct = newVal
     }
   },
   mounted () {
-    // eslint-disable-next-line no-undef
     this.productModal = new bootstrap.Modal(this.$refs.productModal)
   }
 }

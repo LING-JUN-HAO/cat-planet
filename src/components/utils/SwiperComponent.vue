@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="swiper-base-container">
     <swiper :modules="modules" :slides-per-view="1" :space-between="20" :breakpoints="swiperOption" :autoplay="{
       delay: 3000,
       disableOnInteraction: true
@@ -14,7 +14,6 @@
             </a>
           </div>
         </swiper-slide>
-
       </template>
     </swiper>
   </div>
@@ -57,32 +56,3 @@ export default {
   }
 }
 </script>
-<style>
-.swiper-img {
-  height: 250px;
-  background-size: cover;
-  background-position: center center;
-}
-
-.swiper-img,
-.more {
-  transition: all .5s ease;
-  cursor: pointer;
-}
-
-.swiper-slide:hover .swiper-img {
-  transform: scale(1.03);
-  box-shadow: 4px 1px 10px #555;
-  opacity: .7;
-}
-
-.swiper-slide .more {
-  opacity: 0;
-}
-
-.swiper-slide:hover .active,
-.swiper-slide:hover .more {
-  opacity: 1;
-  transform: scale(1.03);
-}
-</style>

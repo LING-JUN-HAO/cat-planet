@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
+// CSS reset
 * {
   font-family: 'Noto Sans TC', sans-serif;
   list-style: none;
@@ -9,53 +10,59 @@
     padding: 0;
   }
 }
-
 body{
   width: 100%;
   height: 100%;
 }
+// 限制consumerLayout最大就是100vh(Header + Main + Footer)
 .main-container{
   min-height: 100vh;
 }
-.container-title>h2 {
+.container-title {
+  h2 {
     display: flex;
     justify-content: center;
     align-items: center;
     color: #6c5c53;
     font-size: 2em;
+    // 標題前後線條
+    &::before,
+    &::after {
+      content: '';
+      height: 5px;
+      width: 40px;
+      background-color: #6c5c53;
+    }
+    // 標題前後線條間距
+    &::before {
+      margin-right: 10px;
+    }
+    &::after {
+      margin-left: 10px;
+    }
   }
-  
-  .container-title>h2::before,
-  .container-title>h2::after {
-    content: '';
-    height: 5px;
-    width: 40px;
-    background-color: #6c5c53;
-  }
-  
-  .container-title>h2::before {
-    margin-right: 10px;
-  }
-  
-  .container-title>h2::after {
-    margin-left: 10px;
-  }
-  
-  .content-shadow {
-    box-shadow: 0 0 30px #ccc;
-  }
-
+}
+// 每一個區域的陰影
+.content-shadow {
+  box-shadow: 0 0 30px #ccc;
+}
+// 購物流程中的圖示大小
 .shopping-img{
   height: 180px;
 }
+// 禁止textarea能夠縮放大小
 textarea{
   resize: none !important;
 }
 .modal-open {
   overflow: hidden;
 }
-.button-container{
-  button{
-    height: 3rem;
-  }
+// 表格預設都使用不換行 + x捲軸檢視
+.table-container{
+  white-space: nowrap;
+  overflow: auto;
+}
+// 後台管理-編輯手掌效果 
+.bi-pencil-fill {
+  cursor: pointer;
 }

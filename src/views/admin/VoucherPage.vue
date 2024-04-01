@@ -2,7 +2,7 @@
   <LoadingComponent v-model:active="isLoading" :loadingMessage="loadingMessage"></LoadingComponent>
   <AdminHeader></AdminHeader>
   <div class="admin-voucher-page container overflow-auto">
-    <div class="text-end mt-3 mb-1">
+    <div class="text-end mt-4 mb-1">
       <button class="btn btn-primary text-white" @click="openModal('new')">
         建立新的優惠卷
       </button>
@@ -100,7 +100,7 @@ export default {
   methods: {
     async checkAdmin () {
       try {
-        await checkAdminApi({})
+        await checkAdminApi()
         this.getCoupons()
       } catch (error) {
         this.$router.push({ name: 'adminLogin' })
@@ -119,20 +119,34 @@ export default {
       }
     },
     openModal (status, item) {
-      if (status === 'new') {
-        this.tempProduct = {
-          due_date: moment().unix()
-        }
-        this.isNew = true
-        this.$refs.pModal.openModal()
-      } else if (status === 'edit') {
-        this.tempProduct = { ...item }
-        this.isNew = false
-        this.$refs.pModal.openModal()
-      } else if (status === 'delete') {
-        this.tempProduct = item
-        this.$refs.dModal.openModal()
+      const modalActions = {
+        new: () => this.newModalClick(true),
+        edit: () => this.editModalClick(item, false),
+        delete: () => this.deleteModalClick(item)
       }
+      const action = modalActions[status]
+      if (action) {
+        action()
+      }
+    },
+    newModalClick (isNew) {
+      this.tempProduct = {
+        title: '預設標題',
+        code: 'love_888',
+        is_enabled: 0,
+        due_date: moment().unix()
+      }
+      this.isNew = isNew
+      this.$refs.pModal.openModal()
+    },
+    editModalClick (item, isNew) {
+      this.tempProduct = { ...item }
+      this.isNew = isNew
+      this.$refs.pModal.openModal()
+    },
+    deleteModalClick (item) {
+      this.tempProduct = item
+      this.$refs.dModal.openModal()
     },
     handleUpdateTempProduct (updatedTempProduct) {
       this.tempProduct = updatedTempProduct
@@ -142,12 +156,13 @@ export default {
       try {
         this.setLoading(true, '資料更新中...請稍候')
         this.$refs.pModal.closeModal()
-        let alertMsg = '優惠卷新增成功'
+        let alertMsg
         if (!this.isNew) {
           await updateCouponApi(this.tempProduct.id, this.tempProduct)
           alertMsg = '優惠卷編輯成功'
         } else {
           await createCouponApi(this.tempProduct)
+          alertMsg = '優惠卷新增成功'
         }
         this.$showNotification(alertMsg)
         this.getCoupons()

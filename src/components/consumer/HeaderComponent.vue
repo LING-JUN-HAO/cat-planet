@@ -50,7 +50,6 @@ export default {
   },
   methods: {
     toggleNavbar () {
-      console.log('toggleNavbar')
       if (this.$refs.navbar.classList.contains('show')) {
         this.$refs.navbar.classList.remove('show')
       }

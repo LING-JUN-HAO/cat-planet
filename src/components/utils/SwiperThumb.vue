@@ -1,5 +1,5 @@
 <template>
-  <swiper :spaceBetween="10" :thumbs="{ swiper: thumbsSwiper }" :modules="modules" class="mySwiper2">
+  <swiper :spaceBetween="10" :thumbs="{ swiper: thumbsSwiper }" :modules="modules" class="main-swiperThumb-container">
     <template v-for="(item, index) in products" :key="index + '123'">
       <swiper-slide>
         <img :src="item.imageUrl" alt="">
@@ -7,7 +7,7 @@
     </template>
   </swiper>
   <swiper @swiper="setThumbsSwiper" :spaceBetween="10" :slidesPerView="4" :freeMode="false" :watchSlidesProgress="true"
-    :modules="modules" class="mySwiper">
+    :modules="modules" class="preview-swiperThumb-container">
     <template v-for="(item, index) in products" :key="index + '123'">
       <swiper-slide>
         <img :src="item.imageUrl" alt="">

@@ -104,7 +104,6 @@ import { loadingStore } from '@/store/Loading.js'
 export default {
   data () {
     return {
-      // 產品資料格式
       products: [],
       tempProduct: {},
       isNew: false,
@@ -133,24 +132,35 @@ export default {
       }
     },
     openModal (status, item) {
-      if (status === 'new') {
-        this.tempProduct = {
-          imagesUrl: []
-        }
-        this.isNew = true
-        this.$refs.pModal.openModal()
-      } else if (status === 'edit') {
-        this.tempProduct = { ...item }
-        if (!Array.isArray(this.tempProduct.imagesUrl)) {
-          this.tempProduct.imagesUrl = []
-        }
-        this.isNew = false
-        this.$refs.pModal.openModal()
-      } else if (status === 'delete') {
-        this.tempProduct = { ...item }
-        this.tempProduct.title = item.user.name
-        this.$refs.dModal.openModal()
+      const modalActions = {
+        new: () => this.newModalClick(true),
+        edit: () => this.editModalClick(item, false),
+        delete: () => this.deleteModalClick(item)
       }
+      const action = modalActions[status]
+      if (action) {
+        action()
+      }
+    },
+    newModalClick (isNew) {
+      this.tempProduct = {
+        imagesUrl: []
+      }
+      this.isNew = isNew
+      this.$refs.pModal.openModal()
+    },
+    editModalClick (item, isNew) {
+      this.tempProduct = { ...item }
+      if (!Array.isArray(this.tempProduct.imagesUrl)) {
+        this.tempProduct.imagesUrl = []
+      }
+      this.isNew = isNew
+      this.$refs.pModal.openModal()
+    },
+    deleteModalClick (item) {
+      this.tempProduct = item
+      this.tempProduct.title = item.user.name
+      this.$refs.dModal.openModal()
     },
     handleUpdateTempProduct (updatedTempProduct) {
       this.tempProduct = updatedTempProduct

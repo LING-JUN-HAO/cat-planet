@@ -1,29 +1,29 @@
+// boostrap & 自定義樣式檔
 @import "bootstrap/scss/functions";
 @import "./_variables";
 @import "bootstrap/scss/bootstrap.scss";
-
+// base 共用樣式檔案
 @import "./component/_base.scss";
 // consumer
-@import "./component/_header.scss";
-@import "./component/_footer.scss";
-// ---
-// homePage
-@import "./component/homePage/_banner.scss";
-@import "./component/homePage/_about.scss";
-@import "./component/homePage/_category.scss";
-@import "./component/homePage/_hotProduct.scss";
-// productPage
-@import "./component/productPage/_aside.scss";
-@import "./component/productPage/_productList.scss";
-// --
-@import "./component/_order.scss";
-@import "./component/_productItem.scss";
-@import "./component/_cartPage.scss";
-@import "./component/_empty.scss";
-@import "./component/_checkout.scss";
-@import "./component/_login.scss";
-@import "./component/_productsPage.scss";
-@import "./component/_voucherPage.scss";
-@import "./component/_orderPage.scss";
-
+@import "./component/consumer/_header.scss";
+@import "./component/consumer/_footer.scss";
+@import "./component/consumer/homePage/_banner.scss";
+@import "./component/consumer/homePage/_about.scss";
+@import "./component/consumer/homePage/_category.scss";
+@import "./component/consumer/homePage/_hotProduct.scss";
+@import "./component/consumer/productPage/_aside.scss";
+@import "./component/consumer/productPage/_productList.scss";
+@import "./component/consumer/cartPage/_cartPage.scss";
+@import "./component/consumer/cartPage/_empty.scss";
+@import "./component/consumer/checkoutPage/_checkout.scss";
+@import "./component/consumer/orderPage/_order.scss";
+@import "./component/consumer/productItemPage/_productItem.scss";
+// admin
+@import "./component/admin/_login.scss";
+@import "./component/admin/_modalContainer.scss";
+// utils
 @import "./component/utils/_loading.scss";
+@import "./component/utils/_routerButton.scss";
+@import "./component/utils/_swiperBase.scss";
+@import "./component/utils/_swiperThumb.scss";
+@import "./component/utils/_timeLine.scss";
