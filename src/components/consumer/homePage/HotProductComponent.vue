@@ -1,5 +1,5 @@
 <template>
-  <section class="container container-title category">
+  <section class="container container-title category mb-6">
     <h2 data-aos="fade-down" data-aos-delay="0" data-aos-duration="900" class="text-center py-6 m-0 fw-bold">熱銷商品</h2>
     <div data-aos="fade-up" data-aos-delay="450" data-aos-duration="900"
       class="content-shadow border border-1 bg-white rounded-4 d-flex p-4 p-md-6 position-relative z-1 flex-column flex-md-row ">

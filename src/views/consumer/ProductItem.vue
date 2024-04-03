@@ -41,10 +41,8 @@
     </div>
   </section>
   <HotProductComponent :products="products"></HotProductComponent>
-  <div class="py-6 text-center button-container">
-    <RouterButton :arrowIcon="'left'" :routerName="'consumerProducts'" :query="{ category: '所有產品', page: 1 }"
-      :display="'商品頁面'"></RouterButton>
-  </div>
+  <RouterButton :arrowIcon="'left'" :routerName="'consumerProducts'" :query="{ category: '所有產品', page: 1 }"
+    :display="'商品頁面'"></RouterButton>
 </template>
 
 <script>

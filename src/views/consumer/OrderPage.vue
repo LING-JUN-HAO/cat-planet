@@ -1,6 +1,6 @@
 <template>
   <LoadingComponent v-model:active="isLoading" :loadingMessage="loadingMessage"></LoadingComponent>
-  <section class="order-page container container-title">
+  <section class="order-page container container-title mb-6">
     <h2 data-aos="fade-down" data-aos-delay="0" data-aos-duration="900" class="text-center py-6 m-0 fw-bold">查詢訂單</h2>
     <div data-aos="fade-up" data-aos-delay="450" data-aos-duration="900"
       class="content-shadow border border-1 bg-white rounded-4 d-flex p-4 p-md-6 flex-column">
@@ -21,7 +21,8 @@
       </div>
       <div class="order-page-box pt-4">
         <h3 class="p-2 mb-4 text-bg position-relative z-1 h4">商品資訊</h3>
-        <div style="overflow: auto; white-space: nowrap;">
+        <MobileHint></MobileHint>
+        <div class="mt-3 table-container">
           <table class="table align-middle">
             <thead>
               <tr>
@@ -85,14 +86,13 @@
       </div>
     </div>
   </section>
-  <div class="py-6 text-center">
-    <RouterButton :arrowIcon="'left'" :routerName="'consumerProducts'" :query="{ category: '所有產品', page: 1 }"
-      :display="'商品頁面'"></RouterButton>
-  </div>
+  <RouterButton :arrowIcon="'left'" :routerName="'consumerProducts'" :query="{ category: '所有產品', page: 1 }"
+    :display="'商品頁面'"></RouterButton>
 </template>
 
 <script>
 import { mapActions, mapState } from 'pinia'
+import MobileHint from '@/components/utils/MobileHint.vue'
 import TimelineComponent from '@/components/utils/TimelineComponent.vue'
 import RouterButton from '@/components/utils/RouterButton.vue'
 import { loadingStore } from '@/store/Loading.js'
@@ -134,7 +134,7 @@ export default {
     await this.getOrder(this.$route.query.orderID)
   },
   components: {
-    TimelineComponent, RouterButton
+    TimelineComponent, RouterButton, MobileHint
   }
 }
 </script>

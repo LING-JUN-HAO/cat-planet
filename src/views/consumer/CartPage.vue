@@ -1,19 +1,20 @@
 <template>
   <LoadingComponent v-model:active="isLoading" :loadingMessage="loadingMessage"></LoadingComponent>
   <div v-if="isDefault === true">
-    <section v-if="cart.carts.length !== 0" class="cart-page container container-title">
+    <section v-if="cart.carts.length !== 0" class="cart-page container container-title mb-6">
       <h2 data-aos="fade-down" data-aos-delay="0" data-aos-duration="900" class="text-center py-6 m-0 fw-bold">確認商品</h2>
       <div data-aos="fade-up" data-aos-delay="450" data-aos-duration="900"
         class="content-shadow border border-1 bg-white rounded-4 d-flex p-4 p-md-6 flex-column">
         <TimelineComponent :active="'productCheck'"></TimelineComponent>
         <img class="shopping-img my-4 d-none d-md-block" src="../../assets/image/addCart.svg" alt="購物車檢視">
-        <button class="btn btn-outline-danger align-self-end my-4" :disabled="cart.total === 0" type="button"
+        <button class="btn btn-outline-danger align-self-end mt-4 mb-0 mb-md-4" :disabled="cart.total === 0" type="button"
           @click="deleteCartClick">
           <i class="bi bi-trash"></i>
           清空購物車
         </button>
-        <div style="overflow: auto; white-space: nowrap;">
-          <table class="table align-middle">
+        <MobileHint></MobileHint>
+        <div class="table-container">
+          <table class="table align-middle mt-3">
             <thead>
               <tr>
                 <th class="text-center d-none d-lg-block">產品</th>
@@ -86,18 +87,17 @@
     </section>
     <EmptyComponent v-if="cart.carts.length === 0">
     </EmptyComponent>
-    <div class="py-6 text-center button-container">
-      <RouterButton v-if="cart.carts.length !== 0" :arrowIcon="'right'" :routerName="'consumerCheckout'"
-        :display="'填寫聯絡資訊'" :type="'button'"></RouterButton>
-      <RouterButton v-else :arrowIcon="'left'" :routerName="'consumerProducts'" :query="{ category: '所有產品', page: 1 }"
-        :display="'商品頁面'" ></RouterButton>
-    </div>
+    <RouterButton v-if="cart.carts.length !== 0" :arrowIcon="'right'" :routerName="'consumerCheckout'"
+      :display="'填寫聯絡資訊'" :type="'button'"></RouterButton>
+    <RouterButton v-else :arrowIcon="'left'" :routerName="'consumerProducts'" :query="{ category: '所有產品', page: 1 }"
+      :display="'商品頁面'"></RouterButton>
   </div>
   <CartDeleteModal ref="dModal" :deleteAllCarts="deleteAllCarts"></CartDeleteModal>
 </template>
 
 <script>
 import { mapState, mapActions } from 'pinia'
+import MobileHint from '@/components/utils/MobileHint.vue'
 import CartDeleteModal from '@/components/consumer/cartPage/CartDeleteModal.vue'
 import EmptyComponent from '@/components/consumer/cartPage/EmptyComponent.vue'
 import TimelineComponent from '@/components/utils/TimelineComponent.vue'
@@ -188,7 +188,7 @@ export default {
     this.setLoading(false, '')
   },
   components: {
-    CartDeleteModal, TimelineComponent, EmptyComponent, RouterButton
+    CartDeleteModal, TimelineComponent, EmptyComponent, RouterButton, MobileHint
   }
 }
 </script>

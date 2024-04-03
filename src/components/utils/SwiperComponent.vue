@@ -7,6 +7,9 @@
       <template v-for="(item, index) in products" :key="index + '123'">
         <swiper-slide>
           <div class="swiper-slide position-relative" @click="moreProduct(item.id)">
+            <div class="swiper-title-container position-absolute d-flex align-items-center justify-content-center w-100 h-100">
+              <span class="swiper-title p-1 text-white rounded-3">{{ item.title }}</span>
+            </div>
             <div class="w-100 swiper-img" :style="{ backgroundImage: `url(${item.imageUrl})` }">
             </div>
             <a class="more position-absolute w-100 bottom-0 text-white text-center bg-hex p-3 text-decoration-none">

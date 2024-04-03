@@ -6,10 +6,17 @@
         transition: all 0.5s ease;
         cursor: pointer;
     }
+    .swiper-title{
+        background-color: #ca7658;
+        opacity: .9;
+    }
     .more {
         opacity: 0;
         transition: all 0.5s ease;
         cursor: pointer;
+    }
+    .swiper-slide:hover .swiper-title{
+        opacity: 0;
     }
     .swiper-slide:hover .swiper-img {
         transform: scale(1.03);

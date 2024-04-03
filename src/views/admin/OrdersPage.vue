@@ -2,8 +2,9 @@
   <AdminHeader></AdminHeader>
   <LoadingComponent v-model:active="isLoading" :loadingMessage="loadingMessage"></LoadingComponent>
   <div class="admin-order-page container table-container">
+    <MobileHint></MobileHint>
     <div class="table-container">
-      <table class="table table-hover mt-6">
+      <table class="table table-hover mt-3 mt-md-6">
         <thead>
           <tr>
             <th data-field="num" width="80" class="text-center">
@@ -19,7 +20,7 @@
               信箱
             </th>
             <th data-field="message" width="80" class="text-center">
-              備註
+              優惠卷
             </th>
             <th data-field="create_at" width="200" class="text-center">
               時間
@@ -53,13 +54,14 @@
               {{ item.user.email }}
             </td>
             <td class="text-center">
-              <i class="bi bi-stickies"></i>
+              <span v-if="Object.values(item.products)[0]?.coupon" class="text-success fw-bold">有</span>
+              <span v-else>無</span>
             </td>
             <td class="text-center">
               {{ this.dataFormatter(item.create_at) }}
             </td>
             <td class="text-center">
-              <i class="bi bi-pencil-fill" @click="openModal('singleImage', item)"></i>
+              <i class="bi bi-stickies" @click="openModal('singleImage', item)"></i>
             </td>
             <td class="text-center">
               {{ item.total.toLocaleString() }}
@@ -94,6 +96,7 @@
 <script>
 import { mapState, mapActions } from 'pinia'
 import moment from 'moment'
+import MobileHint from '@/components/utils/MobileHint.vue'
 import Pagination from '@/components/utils/PaginationComponent.vue'
 import AdminOrderModal from '@/components/admin/AdminOrderModal.vue'
 import AdminDeleteModal from '@/components/admin/AdminDeleteModal.vue'
@@ -208,7 +211,7 @@ export default {
     this.checkAdmin()
   },
   components: {
-    Pagination, AdminOrderModal, AdminDeleteModal, AdminHeader
+    Pagination, AdminOrderModal, AdminDeleteModal, AdminHeader, MobileHint
   }
 }
 </script>

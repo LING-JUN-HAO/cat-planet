@@ -1,7 +1,7 @@
 <template>
   <LoadingComponent v-model:active="isLoading" :loadingMessage="loadingMessage"></LoadingComponent>
   <VForm ref="orderForm" class="col-md-12" v-slot="{ errors }" @submit="createOrder">
-    <section class="checkout-page container container-title">
+    <section class="checkout-page container container-title mb-6">
       <h2 data-aos="fade-down" data-aos-delay="0" data-aos-duration="900" class="text-center py-6 m-0 fw-bold">填寫聯絡資訊</h2>
       <div
         data-aos="fade-up" data-aos-delay="450" data-aos-duration="900"
@@ -41,7 +41,7 @@
         </div>
       </div>
     </section>
-    <div class="py-6 text-center">
+    <div class="pb-6 text-center">
       <button type="submit" class="btn btn-primary rounded-3 py-2 px-5 text-white">
         送出訂單
         <i class="bi bi-caret-right-fill ps-1"></i>
