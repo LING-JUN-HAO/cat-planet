@@ -3,6 +3,7 @@
     <HeaderComponent></HeaderComponent>
     <main>
       <RouterView />
+      <ScrollTop />
     </main>
     <FooterComponent></FooterComponent>
   </div>
@@ -11,10 +12,11 @@
 import { RouterView } from 'vue-router'
 import HeaderComponent from '@/components/consumer/HeaderComponent.vue'
 import FooterComponent from '@/components/consumer/FooterComponent.vue'
+import ScrollTop from '@/components/utils/ScrollTop.vue'
 
 export default {
   components: {
-    RouterView, HeaderComponent, FooterComponent
+    RouterView, HeaderComponent, FooterComponent, ScrollTop
   }
 }
 </script>
