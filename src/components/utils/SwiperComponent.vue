@@ -8,7 +8,7 @@
         <swiper-slide>
           <div class="swiper-slide position-relative" @click="moreProduct(item.id)">
             <div class="swiper-title-container position-absolute d-flex align-items-center justify-content-center w-100 h-100">
-              <span class="swiper-title p-1 text-white rounded-3">{{ item.title }}</span>
+              <span class="swiper-title p-2 text-white rounded-3">{{ item.title }}</span>
             </div>
             <div class="w-100 swiper-img" :style="{ backgroundImage: `url(${item.imageUrl})` }">
             </div>
