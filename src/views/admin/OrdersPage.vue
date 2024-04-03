@@ -2,8 +2,9 @@
   <AdminHeader></AdminHeader>
   <LoadingComponent v-model:active="isLoading" :loadingMessage="loadingMessage"></LoadingComponent>
   <div class="admin-order-page container table-container">
+    <MobileHint></MobileHint>
     <div class="table-container">
-      <table class="table table-hover mt-6">
+      <table class="table table-hover mt-3 mt-md-6">
         <thead>
           <tr>
             <th data-field="num" width="80" class="text-center">
@@ -19,7 +20,7 @@
               信箱
             </th>
             <th data-field="message" width="80" class="text-center">
-              備註
+              優惠卷
             </th>
             <th data-field="create_at" width="200" class="text-center">
               時間
@@ -53,13 +54,14 @@
               {{ item.user.email }}
             </td>
             <td class="text-center">
-              <i class="bi bi-stickies"></i>
+              <span v-if="Object.values(item.products)[0]?.coupon" class="text-success fw-bold">有</span>
+              <span v-else>無</span>
             </td>
             <td class="text-center">
               {{ this.dataFormatter(item.create_at) }}
             </td>
             <td class="text-center">
-              <i class="bi bi-pencil-fill" @click="openModal('singleImage', item)"></i>
+              <i class="bi bi-stickies" @click="openModal('singleImage', item)"></i>
             </td>
             <td class="text-center">
               {{ item.total.toLocaleString() }}
@@ -94,6 +96,7 @@
 <script>
 import { mapState, mapActions } from 'pinia'
 import moment from 'moment'
+import MobileHint from '@/components/utils/MobileHint.vue'
 import Pagination from '@/components/utils/PaginationComponent.vue'
 import AdminOrderModal from '@/components/admin/AdminOrderModal.vue'
 import AdminDeleteModal from '@/components/admin/AdminDeleteModal.vue'
@@ -104,7 +107,6 @@ import { loadingStore } from '@/store/Loading.js'
 export default {
   data () {
     return {
-      // 產品資料格式
       products: [],
       tempProduct: {},
       isNew: false,
@@ -133,24 +135,35 @@ export default {
       }
     },
     openModal (status, item) {
-      if (status === 'new') {
-        this.tempProduct = {
-          imagesUrl: []
-        }
-        this.isNew = true
-        this.$refs.pModal.openModal()
-      } else if (status === 'edit') {
-        this.tempProduct = { ...item }
-        if (!Array.isArray(this.tempProduct.imagesUrl)) {
-          this.tempProduct.imagesUrl = []
-        }
-        this.isNew = false
-        this.$refs.pModal.openModal()
-      } else if (status === 'delete') {
-        this.tempProduct = { ...item }
-        this.tempProduct.title = item.user.name
-        this.$refs.dModal.openModal()
+      const modalActions = {
+        new: () => this.newModalClick(true),
+        edit: () => this.editModalClick(item, false),
+        delete: () => this.deleteModalClick(item)
       }
+      const action = modalActions[status]
+      if (action) {
+        action()
+      }
+    },
+    newModalClick (isNew) {
+      this.tempProduct = {
+        imagesUrl: []
+      }
+      this.isNew = isNew
+      this.$refs.pModal.openModal()
+    },
+    editModalClick (item, isNew) {
+      this.tempProduct = { ...item }
+      if (!Array.isArray(this.tempProduct.imagesUrl)) {
+        this.tempProduct.imagesUrl = []
+      }
+      this.isNew = isNew
+      this.$refs.pModal.openModal()
+    },
+    deleteModalClick (item) {
+      this.tempProduct = item
+      this.tempProduct.title = item.user.name
+      this.$refs.dModal.openModal()
     },
     handleUpdateTempProduct (updatedTempProduct) {
       this.tempProduct = updatedTempProduct
@@ -191,15 +204,14 @@ export default {
   },
   mounted () {
     const hexCookie = document.cookie.replace(
-      // eslint-disable-next-line no-useless-escape
-      /(?:(?:^|.*;\s*)hexToken\s*\=\s*([^;]*).*$)|^.*$/,
+      /(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/,
       '$1'
     )
     this.$http.defaults.headers.common.Authorization = hexCookie
     this.checkAdmin()
   },
   components: {
-    Pagination, AdminOrderModal, AdminDeleteModal, AdminHeader
+    Pagination, AdminOrderModal, AdminDeleteModal, AdminHeader, MobileHint
   }
 }
 </script>

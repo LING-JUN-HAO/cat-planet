@@ -2,11 +2,12 @@
   <LoadingComponent v-model:active="isLoading" :loadingMessage="loadingMessage"></LoadingComponent>
   <AdminHeader></AdminHeader>
   <div class="admin-product-page container overflow-auto">
-    <div class="text-end mt-3 mb-1">
+    <div class="text-end mt-4 mb-1">
       <button class="btn btn-primary text-white" @click="openModal('new')">
         建立新的產品
       </button>
     </div>
+    <MobileHint></MobileHint>
     <div class="table-container">
       <table class="table table-hover mt-3">
         <thead>
@@ -49,13 +50,13 @@
               {{ item.title }}
             </td>
             <td class="text-center">
-              <span v-if="item.imagesUrl" class="text-success fw-bold">
+              <span v-if="item.imagesUrl?.length > 0" class="text-success fw-bold">
                 是
-                <i class="bi bi-pencil-fill" @click="openModal('multiImage', item)"></i>
+                <i class="bi bi-pencil-fill" @click="openModal('editImage', item)"></i>
               </span>
               <span v-else>
                 否
-                <i class="bi bi-pencil-fill" @click="openModal('singleImage', item)"></i>
+                <i class="bi bi-pencil-fill" @click="openModal('editImage', item)"></i>
               </span>
             </td>
             <td class="text-center">
@@ -70,7 +71,7 @@
             </td>
             <td class="text-center">
               <div class="btn-group">
-                <button type="button" class="btn btn-outline-primary btn-sm" @click="openModal('edit', item)">
+                <button type="button" class="btn btn-outline-primary btn-sm" @click="openModal('editData', item)">
                   編輯
                 </button>
                 <button type="button" class="btn btn-outline-danger btn-sm" @click="openModal('delete', item)">
@@ -88,45 +89,46 @@
       :isNew="isNew"></AdminProductModal>
     <AdminDeleteModal ref="dModal" :type="'產品'" :temp-Product="tempProduct" :deleteProduct="deleteProduct">
     </AdminDeleteModal>
-    <AdminMultiImageModal ref="iModal" :temp-Product="tempProduct" :isMultiImage="isMultiImage"
-      @update-temp-product="handleUpdateTempProduct"></AdminMultiImageModal>
+    <AdminMultiImageModal ref="iModal" :temp-Product="tempProduct" @update-temp-product="handleUpdateTempProduct">
+    </AdminMultiImageModal>
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'pinia'
 import Pagination from '@/components/utils/PaginationComponent.vue'
+import MobileHint from '@/components/utils/MobileHint.vue'
 import AdminHeader from '@/components/admin/AdminHeader.vue'
 import AdminProductModal from '@/components/admin/AdminProductModal.vue'
 import AdminDeleteModal from '@/components/admin/AdminDeleteModal.vue'
 import AdminMultiImageModal from '@/components/admin/AdminMultiImageModal.vue'
 import { loadingStore } from '@/store/Loading.js'
-import { checkAdminApi, getProductsApi, deleteProductApi, createProductApi, updateProductApi } from '@/mixin/Api.js'
+import { checkAdminApi, getAdminProductsApi, deleteProductApi, createProductApi, updateProductApi } from '@/mixin/Api.js'
 
+const { VITE_BASEIMG } = import.meta.env
 export default {
   data () {
     return {
-      // 產品資料格式
       products: [],
       tempProduct: {},
       isNew: false,
-      isMultiImage: false,
       pages: {}
     }
   },
   methods: {
     async checkAdmin () {
       try {
-        await checkAdminApi({})
+        await checkAdminApi()
         this.getProducts()
       } catch (error) {
         this.$router.push({ name: 'adminLogin' })
       }
     },
+    // page參數給分頁組件使用時傳遞頁碼
     async getProducts (page) {
       try {
         this.setLoading(true, '資料載入中...請稍候')
-        const res = await getProductsApi('', page)
+        const res = await getAdminProductsApi(page)
         this.products = res.products
         this.pages = res.pagination
       } catch (error) {
@@ -136,31 +138,45 @@ export default {
       }
     },
     openModal (status, item) {
-      if (status === 'new') {
-        this.tempProduct = {
-          imagesUrl: []
-        }
-        this.isNew = true
-        this.$refs.pModal.openModal()
-      } else if (status === 'edit') {
-        this.tempProduct = { ...item }
-        if (!Array.isArray(this.tempProduct.imagesUrl)) {
-          this.tempProduct.imagesUrl = []
-        }
-        this.isNew = false
-        this.$refs.pModal.openModal()
-      } else if (status === 'delete') {
-        this.tempProduct = item
-        this.$refs.dModal.openModal()
-      } else if (status === 'singleImage') {
-        this.tempProduct = { ...item }
-        this.isMultiImage = false
-        this.$refs.iModal.openModal()
-      } else if (status === 'multiImage') {
-        this.tempProduct = { ...item }
-        this.isMultiImage = true
-        this.$refs.iModal.openModal()
+      const modalActions = {
+        new: () => this.newModalClick(true),
+        editData: () => this.editDataModalClick(item, false),
+        editImage: () => this.editImageModalClick(item),
+        delete: () => this.deleteModalClick(item)
       }
+      const action = modalActions[status]
+      if (action) {
+        action()
+      }
+    },
+    newModalClick (isNew) {
+      this.tempProduct = {
+        title: '預設標題',
+        unit: '個',
+        origin_price: 100,
+        price: 80,
+        imagesUrl: [],
+        imageUrl: VITE_BASEIMG,
+        category: '貓咪玩具'
+      }
+      this.isNew = isNew
+      this.$refs.pModal.openModal()
+    },
+    editDataModalClick (item, isNew) {
+      this.tempProduct = { ...item }
+      if (!Array.isArray(this.tempProduct.imagesUrl)) {
+        this.tempProduct.imagesUrl = []
+      }
+      this.isNew = isNew
+      this.$refs.pModal.openModal()
+    },
+    editImageModalClick (item) {
+      this.tempProduct = { ...item }
+      this.$refs.iModal.openModal()
+    },
+    deleteModalClick (item) {
+      this.tempProduct = item
+      this.$refs.dModal.openModal()
     },
     handleUpdateTempProduct (updatedTempProduct) {
       this.tempProduct = updatedTempProduct
@@ -170,13 +186,14 @@ export default {
       try {
         this.setLoading(true, '資料更新中...請稍候')
         this.$refs.pModal.closeModal()
-        this.$refs.iModal.closeModal()
-        let alertMsg = '商品資料新增成功'
+        let alertMsg
         if (!this.isNew) {
+          this.$refs.iModal.closeModal()
           await updateProductApi(this.tempProduct.id, this.tempProduct)
           alertMsg = '商品資料編輯成功'
         } else {
           await createProductApi(this.tempProduct)
+          alertMsg = '商品資料新增成功'
         }
         this.$showNotification(alertMsg)
         this.getProducts()
@@ -206,15 +223,14 @@ export default {
   },
   mounted () {
     const hexCookie = document.cookie.replace(
-      // eslint-disable-next-line no-useless-escape
-      /(?:(?:^|.*;\s*)hexToken\s*\=\s*([^;]*).*$)|^.*$/,
+      /(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/,
       '$1'
     )
     this.$http.defaults.headers.common.Authorization = hexCookie
     this.checkAdmin()
   },
   components: {
-    Pagination, AdminHeader, AdminProductModal, AdminDeleteModal, AdminMultiImageModal
+    Pagination, AdminHeader, AdminProductModal, AdminDeleteModal, AdminMultiImageModal, MobileHint
   }
 }
 </script>

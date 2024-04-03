@@ -1,8 +1,8 @@
 <template>
   <LoadingComponent v-model:active="isLoading" :loadingMessage="loadingMessage"></LoadingComponent>
-  <section class="container container-title py-3 category">
-    <h2 data-aos="fade-down" data-aos-delay="0" data-aos-duration="900" class="text-center py-3 fw-bold">各項精美商品</h2>
-    <div class="row d-flex flex-column flex-xl-row">
+  <section class="container container-title category">
+    <h2 data-aos="fade-down" data-aos-delay="0" data-aos-duration="900" class="text-center py-6 m-0 fw-bold">各項精美商品</h2>
+    <div class="row d-flex flex-column flex-xl-row mb-6">
       <AsideList data-aos="fade-left" data-aos-delay="450" data-aos-duration="900"></AsideList>
       <ProductList data-aos="fade-right" data-aos-delay="450" data-aos-duration="900" :products="products"></ProductList>
     </div>

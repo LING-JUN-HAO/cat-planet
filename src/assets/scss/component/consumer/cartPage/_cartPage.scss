@@ -5,7 +5,6 @@
   }
     table {
       letter-spacing: .25em;
-  
       thead {
         letter-spacing: .5em;
       }
@@ -16,17 +15,14 @@
         }
       }
     }
-  
     .product-img {
-      height: 103px;
+      min-height: 5.625rem;
       background-size: cover;
       background-position: center center;
-      cursor: pointer;
     }
+    .product-img,
+    .voucher-text,
     .delProductItem{
-      cursor: pointer;
-    }
-    .voucher-text{
       cursor: pointer;
     }
     .row{

@@ -1,0 +1,19 @@
+.loading-container {
+    letter-spacing: .25rem;
+
+    .loadingSvg{
+        width: 2.5rem;
+        height: 2.5rem;
+        animation: loading .35s cubic-bezier(0, 0, .15, 1) infinite alternate;
+    }
+}
+
+@keyframes loading {
+    0% {
+        transform: translateY(0%);
+    }
+
+    100% {
+        transform: translateY(-40%);
+    }
+}

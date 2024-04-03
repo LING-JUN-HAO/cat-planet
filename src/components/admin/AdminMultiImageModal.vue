@@ -1,5 +1,5 @@
 <template>
-  <div class="modal fade" ref="multiImageModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
+  <div class="ModalContainer modal fade ModalContainer" ref="multiImageModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content border-0">
         <div class="modal-header bg-hex text-white">
@@ -11,7 +11,7 @@
         <div class="modal-body">
           <div class="row">
             <div class="col-6">
-              <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
+              <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-indicators">
                   <template v-if="newTemProduct.imagesUrl">
                     <button v-for="(item, i) in newTemProduct.imagesUrl" type="button" :key="i + '123'"
@@ -32,7 +32,7 @@
                 <div class="position-relative">
                   <div class="carousel-inner">
                     <template v-if="newTemProduct.imagesUrl">
-                      <div v-for="(item, i) in newTemProduct.imagesUrl" :key="i + '123'"
+                      <div v-for="(item, i) in newTemProduct.imagesUrl" :key="i + '123'" data-bs-interval=""
                         class="carousel-item w-100 object-fit-cover mainImg" :class="{ active: i == currentImageIndex }">
                         <img :src="item" class="d-block w-100 h-100 object-fit-cover" alt="輪播照片">
                       </div>
@@ -75,7 +75,7 @@
                       ref="inputFile" accept="image/*" style="display: none">
                     <i class="bi bi-upload fs-1"></i>
                     <div class="fw-normal">上傳圖片</div>
-                    <span>(檔案大小限制3MB以下)</span>
+                    <span class="text-center">(檔案大小限制3MB以下)</span>
                   </template>
                   <template v-else>
                     <input type="file" @change="handleFileUpload" @click="this.$refs.inputFile.value = null"
@@ -106,7 +106,7 @@ const { VITE_API, VITE_PATH } = import.meta.env
 
 export default {
   emits: ['update-temp-product'],
-  props: ['tempProduct', 'isMultiImage'],
+  props: ['tempProduct'],
   data () {
     return {
       multiImageModal: null,
@@ -147,19 +147,16 @@ export default {
       }
       const formdata = new FormData()
       formdata.append('file-to-upload', file)
-      console.log('file', file)
       try {
         const result = await this.$http.post(`${VITE_API}/api/${VITE_PATH}/admin/upload`, formdata)
         this.newTemProduct.imagesUrl[this.currentImageIndex] = result.data.imageUrl
       } catch (error) {
-        console.log('error', error)
       } finally {
         this.uploadStatus = false
       }
     }
   },
   watch: {
-    // 在 tempProduct 屬性變化時執行
     tempProduct: function (newVal, oldVal) {
       this.newTemProduct = newVal
       if (!this.newTemProduct.imagesUrl) {
@@ -168,7 +165,6 @@ export default {
     }
   },
   mounted () {
-    // eslint-disable-next-line no-undef
     this.multiImageModal = new bootstrap.Modal(this.$refs.multiImageModal, {
       keyboard: false,
       backdrop: 'static'
@@ -176,25 +172,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-.mainImg {
-  height: 245px;
-}
-
-.flexItem {
-  height: 213px;
-}
-
-.uploadContainer {
-  border: 4px dotted;
-  cursor: pointer;
-}
-
-.carousel-control-prev-icon {
-  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%236c5c53' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E") !important;
-}
-
-.carousel-control-next-icon {
-  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%236c5c53' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E") !important;
-}
-</style>

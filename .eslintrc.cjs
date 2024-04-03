@@ -6,7 +6,7 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:vue/vue3-essential',
-    'standard'
+    'Standard'
   ],
   overrides: [
     {
@@ -14,8 +14,7 @@ module.exports = {
         node: true
       },
       files: [
-        '.eslintrc.js',
-        '.eslintrc.cjs'
+        '.eslintrc.{js,cjs}'
       ],
       parserOptions: {
         sourceType: 'script'
@@ -30,6 +29,8 @@ module.exports = {
     'vue'
   ],
   rules: {
-    'vue/no-v-model-argument': 'off'
+  },
+  globals: {
+    bootstrap: 'readonly'
   }
 }

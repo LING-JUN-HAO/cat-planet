@@ -1,0 +1,40 @@
+.timeline-container {
+    display: flex;
+    width: 100%;
+    .timeline-item {
+        height: 3.5rem;
+        width: 3.5rem;
+    }
+    .timeline-content {
+        white-space: nowrap;
+        color: #8c726c;
+    }
+    li::before,
+    .timeline-item {
+        background-color: #8c726c;
+    }
+    li::before {
+        content: '';
+        position: absolute;
+        height: .375rem;
+        margin-top: 1.75rem;
+    }
+    li.active::before,
+    li.active .timeline-item {
+        background-color: #E76952;
+    }
+    li.active .timeline-content {
+        color: #E76952;
+    }
+    li {
+        flex: 1;
+    }
+    li:first-child::before {
+        left: 50%;
+        width: 100%;
+    }
+    li:last-child::before {
+        right: 50%;
+        width: 100%;
+    }
+}
