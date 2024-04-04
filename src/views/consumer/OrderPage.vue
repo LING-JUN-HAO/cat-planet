@@ -1,7 +1,7 @@
 <template>
   <LoadingComponent v-model:active="isLoading" :loadingMessage="loadingMessage"></LoadingComponent>
   <section class="order-page container container-title mb-6">
-    <h2 data-aos="fade-down" data-aos-delay="0" data-aos-duration="900" class="text-center py-6 m-0 fw-bold">查詢訂單</h2>
+    <h2 data-aos="fade-down" data-aos-delay="0" data-aos-duration="900" class="text-center py-6 m-0 fw-bold">訂購完成</h2>
     <div data-aos="fade-up" data-aos-delay="450" data-aos-duration="900"
       class="content-shadow border border-1 bg-white rounded-4 d-flex p-4 p-md-6 flex-column">
       <TimelineComponent :active="'orderCheck'"></TimelineComponent>
@@ -12,8 +12,21 @@
           <div class="row mb-0 mb-md-4">
             <div class="col-12 col-md-6 pb-4 pb-md-0">
               訂單編號：{{ orderInfo.id }}
+              <span class="copy-button copy-container badge bg-pink p-2 mt-4 mt-md-0" @click="copyOrderUrl">
+                <i class="bi bi-copy"></i>
+                複製URL
+              </span>
             </div>
-            <div class="col-12 col-md-6">
+            <div class="col-12 col-md-6 pb-4 pb-md-0">
+              訂單日期：{{ dataFormatter(orderInfo.create_at) }}
+            </div>
+          </div>
+          <div class="row mb-0 mb-md-4">
+            <div class="col-12 col-md-6 pb-4 pb-md-0">
+              <div v-if="orderInfo['is_paid']">付款狀態：已付款</div>
+              <div v-else>付款狀態：<span class="text-pink">未付款</span></div>
+            </div>
+            <div class="col-12 col-md-6 pb-4 pb-md-0">
               總金額：{{ orderInfo.total?.toLocaleString() }}
             </div>
           </div>
@@ -92,6 +105,8 @@
 
 <script>
 import { mapActions, mapState } from 'pinia'
+import Clipboard from 'clipboard'
+import moment from 'moment'
 import MobileHint from '@/components/utils/MobileHint.vue'
 import TimelineComponent from '@/components/utils/TimelineComponent.vue'
 import RouterButton from '@/components/utils/RouterButton.vue'
@@ -124,6 +139,24 @@ export default {
       } else if (type === 'product') {
         this.$router.push({ name: 'consumerProductItem', query: { productID: id } })
       }
+    },
+    dataFormatter (date) {
+      return moment.unix(date).format('YYYY-MM-DD hh:mm')
+    },
+    copyOrderUrl () {
+      const { VITE_ORDERURL } = import.meta.env
+      const clipboard = new Clipboard('.copy-button', {
+        text: () => `${decodeURIComponent(VITE_ORDERURL)}?orderID=${this.orderInfo.id}`
+      })
+      clipboard.on('success', (e) => {
+        e.clearSelection()
+        this.$toastNotification('success', '已成功複製訂單查詢網址')
+        clipboard.destroy()
+      })
+      clipboard.on('error', (e) => {
+        this.$showNotification('Oops...請稍後嘗試')
+        clipboard.destroy()
+      })
     },
     ...mapActions(loadingStore, ['setLoading'])
   },
