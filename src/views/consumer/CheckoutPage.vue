@@ -55,7 +55,6 @@ import { mapActions, mapState } from 'pinia'
 import TimelineComponent from '@/components/utils/TimelineComponent.vue'
 import { cartStore } from '@/store/Cart.js'
 import { loadingStore } from '@/store/Loading.js'
-import ToastNotification from '@/mixin/Toast.js'
 import { createOrderApi } from '@/mixin/Api.js'
 
 export default {
@@ -79,7 +78,7 @@ export default {
         const data = await createOrderApi(this.orderData)
         const { orderId } = data
         this.$refs.orderForm.resetForm()
-        ToastNotification('success', '訂單已成功送出!')
+        this.$toastNotification('success', '訂單已成功送出')
         this.$router.push({ name: 'consumerOrders', query: { orderID: orderId } })
       } catch (error) {
         this.$showNotification('Oops...請稍後嘗試')

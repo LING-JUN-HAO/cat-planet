@@ -24,10 +24,11 @@
           <div class="input-group mt-auto gap-4">
             <div class="input-group">
               <button type="button" :disabled="qty == 1" @click="qty--;"
-                class="btn btn-outline-primary col-1 fs-5">-</button>
+                class="d-flex align-items-center justify-content-center btn btn-outline-primary col-1 fs-5">-</button>
               <input type="number" class="form-control rounded-2 p-2 text-center col-10 fs-5" v-model.number="qty"
                 min="1" readonly>
-              <button @click="qty++;" type="button" class="btn btn-outline-primary col-1 fs-5">+</button>
+              <button @click="qty++;" type="button"
+                class="d-flex align-items-center justify-content-center btn btn-outline-primary col-1 fs-5">+</button>
             </div>
             <button type="button" class="btn btn-taupe rounded-3 p-2 col-12 text-white"
               @click="addToCart(product.id, qty)">
