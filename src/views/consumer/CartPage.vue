@@ -6,7 +6,6 @@
       <div data-aos="fade-up" data-aos-delay="450" data-aos-duration="900"
         class="content-shadow border border-1 bg-white rounded-4 d-flex p-4 p-md-6 flex-column">
         <TimelineComponent :active="'productCheck'"></TimelineComponent>
-        <img class="shopping-img my-4 d-none d-md-block" src="../../assets/image/addCart.svg" alt="購物車檢視">
         <button class="btn btn-outline-danger align-self-end mt-4 mb-0 mb-md-4" :disabled="cart.total === 0" type="button"
           @click="deleteCartClick">
           <i class="bi bi-trash"></i>

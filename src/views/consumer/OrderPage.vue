@@ -5,8 +5,7 @@
     <div data-aos="fade-up" data-aos-delay="450" data-aos-duration="900"
       class="content-shadow border border-1 bg-white rounded-4 d-flex p-4 p-md-6 flex-column">
       <TimelineComponent :active="'orderCheck'"></TimelineComponent>
-      <img class="shopping-img d-none d-md-block" src="../../assets/image/orderFinish.svg" alt="購物完成">
-      <div class="order-page-box pt-4">
+      <div class="order-page-box pt-6">
         <h3 class="p-2 mb-4 text-bg position-relative z-1 h4">訂單資訊</h3>
         <div>
           <div class="row mb-0 mb-md-4">
