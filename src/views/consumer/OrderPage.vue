@@ -32,6 +32,32 @@
         </div>
       </div>
       <div class="order-page-box pt-4">
+        <h3 class="p-2 mb-4 text-bg position-relative z-1 h4">購物人資訊</h3>
+        <div class="text-break">
+          <div class="row mb-0 mb-md-4">
+            <div class="col-12 col-md-6 pb-4 pb-md-0">
+              姓名：{{ orderInfo.user?.name }}
+            </div>
+            <div class="col-12 col-md-6 pb-4 pb-md-0">
+              信箱：{{ orderInfo.user?.email }}
+            </div>
+          </div>
+          <div class="row mb-0 mb-md-4">
+            <div class="col-12 col-md-6 pb-4 pb-md-0">
+              電話：{{ orderInfo.user?.tel }}
+            </div>
+            <div class="col-12 col-md-6 pb-4 pb-md-0">
+              住址：{{ orderInfo.user?.address }}
+            </div>
+          </div>
+          <div class="row mb-0 mb-md-4">
+            <div class="col-12">
+              備註：{{ orderInfo?.message }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="order-page-box pt-4">
         <h3 class="p-2 mb-4 text-bg position-relative z-1 h4">商品資訊</h3>
         <MobileHint></MobileHint>
         <div class="mt-3 table-container">
@@ -68,32 +94,6 @@
               </template>
             </tbody>
           </table>
-        </div>
-      </div>
-      <div class="order-page-box pt-4">
-        <h3 class="p-2 mb-4 text-bg position-relative z-1 h4">購物人資訊</h3>
-        <div class="text-break">
-          <div class="row mb-0 mb-md-4">
-            <div class="col-12 col-md-6 pb-4 pb-md-0">
-              姓名：{{ orderInfo.user?.name }}
-            </div>
-            <div class="col-12 col-md-6 pb-4 pb-md-0">
-              信箱：{{ orderInfo.user?.email }}
-            </div>
-          </div>
-          <div class="row mb-0 mb-md-4">
-            <div class="col-12 col-md-6 pb-4 pb-md-0">
-              電話：{{ orderInfo.user?.tel }}
-            </div>
-            <div class="col-12 col-md-6 pb-4 pb-md-0">
-              住址：{{ orderInfo.user?.address }}
-            </div>
-          </div>
-          <div class="row mb-0 mb-md-4">
-            <div class="col-12">
-              備註：{{ orderInfo?.message }}
-            </div>
-          </div>
         </div>
       </div>
     </div>

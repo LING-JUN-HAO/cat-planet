@@ -89,7 +89,7 @@
     <RouterButton v-if="cart.carts.length !== 0" :arrowIcon="'right'" :routerName="'consumerCheckout'"
       :display="'填寫聯絡資訊'" :type="'button'"></RouterButton>
     <RouterButton v-else :arrowIcon="'left'" :routerName="'consumerProducts'" :query="{ category: '所有產品', page: 1 }"
-      :display="'商品頁面'"></RouterButton>
+      :display="'繼續逛逛'"></RouterButton>
   </div>
   <CartDeleteModal ref="dModal" :deleteAllCarts="deleteAllCarts"></CartDeleteModal>
 </template>
