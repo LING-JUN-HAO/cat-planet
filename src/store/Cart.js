@@ -10,7 +10,8 @@ export const cartStore = defineStore('cartStore', {
       carts: [],
       final_total: 0,
       total: 0
-    }
+    },
+    shippingMethod: ''
   }),
   actions: {
     async getCart () {
@@ -37,6 +38,9 @@ export const cartStore = defineStore('cartStore', {
       } finally {
         loadingStoreInstance.loadingItem = ''
       }
+    },
+    setShippingMethod (shippingMethod = '') {
+      this.shippingMethod = shippingMethod
     },
     cleanCart () {
       this.cart = {

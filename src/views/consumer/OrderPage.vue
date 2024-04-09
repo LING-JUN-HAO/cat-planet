@@ -1,7 +1,6 @@
 <template>
   <LoadingComponent v-model:active="isLoading" :loadingMessage="loadingMessage"></LoadingComponent>
-  <section class="order-page container container-title mb-6">
-    <h2 data-aos="fade-down" data-aos-delay="0" data-aos-duration="900" class="text-center py-6 m-0 fw-bold">訂購完成</h2>
+  <section class="order-page container container-title my-6">
     <div data-aos="fade-up" data-aos-delay="450" data-aos-duration="900"
       class="content-shadow border border-1 bg-white rounded-4 d-flex p-4 p-md-6 flex-column">
       <TimelineComponent :active="'orderCheck'"></TimelineComponent>
@@ -98,8 +97,8 @@
       </div>
     </div>
   </section>
-  <RouterButton :arrowIcon="'left'" :routerName="'consumerProducts'" :query="{ category: '所有產品', page: 1 }"
-    :display="'商品頁面'"></RouterButton>
+  <RouterButton :arrowIcon="'left'" :routerName="'consumerHome'" :query="{ category: '所有產品', page: 1 }"
+    :display="'了解更多喵星球'"></RouterButton>
 </template>
 
 <script>
