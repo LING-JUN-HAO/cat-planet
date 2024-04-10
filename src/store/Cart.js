@@ -11,7 +11,18 @@ export const cartStore = defineStore('cartStore', {
       final_total: 0,
       total: 0
     },
-    shippingMethod: ''
+    orderInfo: {
+      deliveryMethod: '',
+      pickupLocation: '',
+      deliveryArea: '',
+      logistics: '',
+      paymentMethod: '',
+      creditCardInfo: {
+        cardNumber: '',
+        expiryDate: '',
+        securityCode: ''
+      }
+    }
   }),
   actions: {
     async getCart () {
@@ -39,8 +50,32 @@ export const cartStore = defineStore('cartStore', {
         loadingStoreInstance.loadingItem = ''
       }
     },
-    setShippingMethod (shippingMethod = '') {
-      this.shippingMethod = shippingMethod
+    setOrderInfo (key, value) {
+      this.orderInfo[key] = value
+    },
+    updateCardNumber (newValue) {
+      console.log('newValue', newValue)
+      this.orderInfo.creditCardInfo.cardNumber = newValue
+    },
+    updateExpiryDate (newValue) {
+      this.orderInfo.creditCardInfo.expiryDate = newValue
+    },
+    updateSecurityCode (newValue) {
+      this.orderInfo.creditCardInfo.securityCode = newValue
+    },
+    cleanOrderInfo () {
+      this.orderInfo = {
+        deliveryMethod: '',
+        pickupLocation: '',
+        deliveryArea: '',
+        logistics: '',
+        paymentMethod: '',
+        creditCardInfo: {
+          cardNumber: '',
+          expiryDate: '',
+          securityCode: ''
+        }
+      }
     },
     cleanCart () {
       this.cart = {
