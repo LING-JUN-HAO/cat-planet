@@ -5,9 +5,8 @@
       <input name="search" type="text" class="form-control" style="width: 250px;" @input="$emit('searchValue', $event.target.value)">
     </div> -->
     <div v-for="item in products" :key="item.id" class="col-12 col-sm-6 col-lg-4 mb-4 text-center pe-0">
-      <div class="image-container border border-1 border-secondary pb-4 rounded-1">
-        <div class="overflow-hidden position-relative"
-          @click="this.$router.push({ name: 'consumerProductItem', query: { productID: item.id } })">
+      <div class="image-container border border-1 border-secondary rounded-1" @click="this.$router.push({ name: 'consumerProductItem', query: { productID: item.id } })">
+        <div class="overflow-hidden position-relative">
           <img :src="item.imageUrl" :alt="item.id" class="w-100 object-fit-cover productImg ">
           <div class="w-100 position-absolute top-50 translate-middle-y">
             <button type="button" class="btn btn-danger p-3 rounded-2 me-4"
@@ -21,7 +20,7 @@
             </button>
           </div>
         </div>
-        <div class="container">
+        <div class="container py-3">
           <h3 class="fs-5 fw-bold my-3">{{ item.title }}</h3>
           <p>
             <span class="fs-5 text-pink fw-bold">NT{{ item.origin_price }}</span>

@@ -1,6 +1,6 @@
 <template>
   <a href="#" class="scrollTopContainer position-fixed bg-primary rounded-3 text-center d-flex align-items-center justify-content-center"
-    :class="scrollYValue < 50 ? 'd-none' : ''" @click.prevent="scrollTop">
+    :class="scrollYValue < 20 ? 'd-none' : ''" @click.prevent="scrollTop">
     <i class="bi bi-arrow-up-circle text-white"></i>
   </a>
 </template>

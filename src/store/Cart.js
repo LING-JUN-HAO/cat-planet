@@ -10,6 +10,18 @@ export const cartStore = defineStore('cartStore', {
       carts: [],
       final_total: 0,
       total: 0
+    },
+    orderInfo: {
+      deliveryMethod: '',
+      pickupLocation: '',
+      deliveryArea: '',
+      logistics: '',
+      paymentMethod: '',
+      creditCardInfo: {
+        cardNumber: '',
+        expiryDate: '',
+        securityCode: ''
+      }
     }
   }),
   actions: {
@@ -36,6 +48,33 @@ export const cartStore = defineStore('cartStore', {
         ShowNotification('Oops...請重新嘗試')
       } finally {
         loadingStoreInstance.loadingItem = ''
+      }
+    },
+    setOrderInfo (key, value) {
+      this.orderInfo[key] = value
+    },
+    updateCardNumber (newValue) {
+      console.log('newValue', newValue)
+      this.orderInfo.creditCardInfo.cardNumber = newValue
+    },
+    updateExpiryDate (newValue) {
+      this.orderInfo.creditCardInfo.expiryDate = newValue
+    },
+    updateSecurityCode (newValue) {
+      this.orderInfo.creditCardInfo.securityCode = newValue
+    },
+    cleanOrderInfo () {
+      this.orderInfo = {
+        deliveryMethod: '',
+        pickupLocation: '',
+        deliveryArea: '',
+        logistics: '',
+        paymentMethod: '',
+        creditCardInfo: {
+          cardNumber: '',
+          expiryDate: '',
+          securityCode: ''
+        }
       }
     },
     cleanCart () {
