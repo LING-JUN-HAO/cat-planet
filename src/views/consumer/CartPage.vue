@@ -206,7 +206,7 @@
                     class="voucher-text text-decoration-none text-pink">使用優惠券</span>
                   <div v-if="isVoucher === true" class="input-group">
                     <input placeholder="請輸入love_888" type="text" class="form-control" v-model="couponCode">
-                    <button @click="this.getCoupons()" class="btn btn-primary text-white p-2 fs-6">
+                    <button @click="this.getCoupons()" type="button" class="btn btn-primary text-white p-2 fs-6">
                       <span v-if="loadingItem === 'spinner'"><i class="fas fa-spinner fa-pulse"></i></span>
                       <span v-else>使用</span>
                     </button>
