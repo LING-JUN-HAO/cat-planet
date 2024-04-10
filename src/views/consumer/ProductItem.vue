@@ -22,17 +22,17 @@
           <p class="my-3">商品描述：{{ product.description }}</p>
           <p class="my-3">商品內容：{{ product.content }}</p>
           <div class="row mt-auto col-12">
-            <div class="col-6">
+            <div class="col-12 pb-3">
               <div class="input-group">
                 <button type="button" :disabled="qty == 1" @click="qty--;"
                   class="d-flex align-items-center justify-content-center btn btn-outline-primary">-</button>
-                <input type="number" class="form-control rounded-2 p-2 text-center" v-model.number="qty" min="1"
+                <input type="number" class="form-control p-2 text-center" v-model.number="qty" min="1"
                   readonly>
                 <button @click="qty++;" type="button"
                   class="d-flex align-items-center justify-content-center btn btn-outline-primary">+</button>
               </div>
             </div>
-            <div class="col-6">
+            <div class="col-12">
               <button type="button" class="btn btn-taupe rounded-3 p-2 text-white fs-6 w-100"
                 @click="addToCart(product.id, qty)">
                 <i class="fas fa-spinner fa-pulse" v-if="loadingItem !== ''"></i>

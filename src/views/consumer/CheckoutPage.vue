@@ -5,7 +5,7 @@
       <div data-aos="fade-up" data-aos-delay="450" data-aos-duration="900"
         class="content-shadow border border-1 bg-white rounded-4 d-flex flex-column align-items-center justify-content-center w-100 p-4 p-md-6">
         <TimelineComponent :active="'consumerCheck'"></TimelineComponent>
-        <div class="row col-12 py-6">
+        <div class="row py-6">
           <div class="col-12 col-md-6 pb-3 pb-md-0">
             <div class="mb-3 col-12">
               <label for="name" class="form-label required">姓名</label>
@@ -22,7 +22,7 @@
             <div class="mb-3 col-12">
               <label for="email" class="form-label required">電子信箱</label>
               <VField id="email" name="email" type="email" class="form-control py-2"
-                :class="{ 'is-invalid': errors['email'] }" placeholder="請輸入 Email" rules="email|required"
+                :class="{ 'is-invalid': errors['email'] }" placeholder="請輸入信箱" rules="email|required"
                 v-model="orderData.user.email"></VField>
               <ErrorMessage name="email" class="invalid-feedback"></ErrorMessage>
             </div>

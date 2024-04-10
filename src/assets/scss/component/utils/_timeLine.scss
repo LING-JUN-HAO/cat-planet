@@ -7,11 +7,11 @@
     }
     .timeline-content {
         white-space: nowrap;
-        color: #8c726c;
+        color: #555;
     }
     li::before,
     .timeline-item {
-        background-color: #8c726c;
+        background-color: #ccc;
     }
     li::before {
         content: '';

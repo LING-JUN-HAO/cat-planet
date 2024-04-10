@@ -8,23 +8,23 @@
         <h3 class="p-2 mb-4 text-bg position-relative z-1 h4">訂單資訊</h3>
         <div>
           <div class="row mb-0 mb-md-4">
-            <div class="col-12 col-md-6 pb-4 pb-md-0">
+            <div class="order-content col-12 col-md-6 pb-4 pb-md-0">
               訂單編號：{{ orderInfo.id }}
               <span class="copy-button copy-container badge bg-pink p-2 mt-4 mt-md-0" @click="copyOrderUrl">
                 <i class="bi bi-copy"></i>
                 複製URL
               </span>
             </div>
-            <div class="col-12 col-md-6 pb-4 pb-md-0">
+            <div class="order-content col-12 col-md-6 pb-4 pb-md-0">
               訂單日期：{{ dataFormatter(orderInfo.create_at) }}
             </div>
           </div>
           <div class="row mb-0 mb-md-4">
-            <div class="col-12 col-md-6 pb-4 pb-md-0">
+            <div class="order-content col-12 col-md-6 pb-4 pb-md-0">
               <div v-if="orderInfo['is_paid']">付款狀態：已付款</div>
               <div v-else>付款狀態：<span class="text-pink">未付款</span></div>
             </div>
-            <div class="col-12 col-md-6 pb-4 pb-md-0">
+            <div class="order-content col-12 col-md-6 pb-4 pb-md-0">
               總金額：{{ orderInfo.total?.toLocaleString() }}
             </div>
           </div>
@@ -34,23 +34,23 @@
         <h3 class="p-2 mb-4 text-bg position-relative z-1 h4">購物人資訊</h3>
         <div class="text-break">
           <div class="row mb-0 mb-md-4">
-            <div class="col-12 col-md-6 pb-4 pb-md-0">
+            <div class="order-content col-12 col-md-6 pb-4 pb-md-0">
               姓名：{{ orderInfo.user?.name }}
             </div>
-            <div class="col-12 col-md-6 pb-4 pb-md-0">
+            <div class="order-content col-12 col-md-6 pb-4 pb-md-0">
               信箱：{{ orderInfo.user?.email }}
             </div>
           </div>
           <div class="row mb-0 mb-md-4">
-            <div class="col-12 col-md-6 pb-4 pb-md-0">
+            <div class="order-content col-12 col-md-6 pb-4 pb-md-0">
               電話：{{ orderInfo.user?.tel }}
             </div>
-            <div class="col-12 col-md-6 pb-4 pb-md-0">
+            <div class="order-content col-12 col-md-6 pb-4 pb-md-0">
               住址：{{ orderInfo.user?.address }}
             </div>
           </div>
           <div class="row mb-0 mb-md-4">
-            <div class="col-12">
+            <div class="order-content col-12">
               備註：{{ orderInfo?.message }}
             </div>
           </div>

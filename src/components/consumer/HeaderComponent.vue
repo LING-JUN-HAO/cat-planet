@@ -7,7 +7,7 @@
           <img class="title-content ms-4" src="@/assets/image/favicon-cat.png" alt="喵星球">
         </div>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
-          aria-controls="navbarText" aria-label="Toggle navigation">
+          aria-controls="navbarText" aria-label="Toggle navigation" @click="toggleNavbar">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarText" ref="navbar">
@@ -25,7 +25,8 @@
               </router-link>
             </li>
             <li class="nav-item position-relative" @click="toggleNavbar">
-              <div v-if="cart.carts.length !== 0" class="position-absolute text-white text-center rounded-circle cartNumber">
+              <div v-if="cart.carts.length !== 0"
+                class="position-absolute text-white text-center rounded-circle cartNumber">
                 {{ cart.carts.length }}
               </div>
               <router-link class="nav-link fs-bold" active-class="active" to="/consumer/carts">
@@ -45,14 +46,24 @@ import { mapState } from 'pinia'
 import { cartStore } from '@/store/Cart.js'
 
 export default {
+  data () {
+    return {
+      isNavbarCollapseShow: false
+    }
+  },
   computed: {
     ...mapState(cartStore, ['cart'])
   },
   methods: {
-    toggleNavbar () {
-      if (this.$refs.navbar.classList.contains('show')) {
-        this.$refs.navbar.classList.remove('show')
+    toggleNavbar (event) {
+      const navbar = new bootstrap.Collapse(this.$refs.navbar)
+      if (this.isNavbarCollapseShow) {
+        console.log('觸發hide了')
+        navbar.hide()
+      } else {
+        navbar.show()
       }
+      this.isNavbarCollapseShow = !this.isNavbarCollapseShow
     }
   }
 }

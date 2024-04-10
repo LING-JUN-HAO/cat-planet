@@ -5,17 +5,9 @@ export function SendMsg (email) {
   const templateParams = {
     to_email: email
   }
-  console.log('templateParams', templateParams)
   emailjs
     .send(VITE_SERVICEID, VITE_TEMPLATEID, templateParams, {
       publicKey: VITE_PUBLICKKEY
     })
-    .then(
-      (response) => {
-        console.log('SUCCESS!', response.status, response.text)
-      },
-      (err) => {
-        console.log('FAILED...', err)
-      }
-    )
+    .then()
 }
