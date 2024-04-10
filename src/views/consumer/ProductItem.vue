@@ -1,7 +1,7 @@
 <template v-if="!isDefaultStatus">
   <LoadingComponent v-model:active="isLoading" :loadingMessage="loadingMessage"></LoadingComponent>
   <section class="product-item-container container container-title category">
-    <h2 data-aos="fade-down" data-aos-delay="0" data-aos-duration="900" class="text-center py-6 m-0 fw-bold">商品介紹</h2>
+    <h2 data-aos="fade-down" data-aos-delay="0" data-aos-duration="900" class="text-center py-6 m-0 fw-bold">貓貓魔法解說</h2>
     <div data-aos="fade-up" data-aos-delay="450" data-aos-duration="900"
       class="product-item-content content-shadow border border-1 bg-white rounded-4 d-flex p-4 p-md-5">
       <div class="row w-100 ms-0">
@@ -47,7 +47,7 @@
   </section>
   <HotProductComponent :products="products"></HotProductComponent>
   <RouterButton :arrowIcon="'left'" :routerName="'consumerProducts'" :query="{ category: '所有產品', page: 1 }"
-    :display="'商品頁面'"></RouterButton>
+    :display="'貓咪寶物箱'"></RouterButton>
 </template>
 
 <script>
