@@ -1,6 +1,6 @@
 <template>
-  <header class="header-container sticky-top">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-hex">
+  <header class="header-container sticky-top bg-hex">
+    <nav class="navbar navbar-expand-lg navbar-dark">
       <div class="container-fluid">
         <div class="nav-brand-container ms-3 py-1">
           <img class="title-icon me-3" src="@/assets/image/logo-cat.svg" alt="喵星球">
@@ -46,24 +46,14 @@ import { mapState } from 'pinia'
 import { cartStore } from '@/store/Cart.js'
 
 export default {
-  data () {
-    return {
-      isNavbarCollapseShow: false
-    }
-  },
   computed: {
     ...mapState(cartStore, ['cart'])
   },
   methods: {
-    toggleNavbar (event) {
-      const navbar = new bootstrap.Collapse(this.$refs.navbar)
-      if (this.isNavbarCollapseShow) {
-        console.log('觸發hide了')
-        navbar.hide()
-      } else {
-        navbar.show()
+    toggleNavbar () {
+      if (this.$refs.navbar.classList.contains('show')) {
+        this.$refs.navbar.classList.remove('show')
       }
-      this.isNavbarCollapseShow = !this.isNavbarCollapseShow
     }
   }
 }
