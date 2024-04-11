@@ -6,8 +6,8 @@
           <img class="title-icon me-3" src="@/assets/image/logo-cat.svg" alt="喵星球">
           <img class="title-content ms-4" src="@/assets/image/favicon-cat.png" alt="喵星球">
         </div>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
-          aria-controls="navbarText" aria-label="Toggle navigation" @click="toggleNavbar">
+        <button class="navbar-toggler" type="button" aria-controls="navbarText" aria-label="Toggle navigation"
+          @click="toggleNavbar">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarText" ref="navbar">
@@ -44,17 +44,28 @@
 <script>
 import { mapState } from 'pinia'
 import { cartStore } from '@/store/Cart.js'
+import { Collapse } from 'bootstrap'
 
 export default {
+  data () {
+    return {
+      navCollapse: null
+    }
+  },
   computed: {
     ...mapState(cartStore, ['cart'])
   },
   methods: {
     toggleNavbar () {
       if (this.$refs.navbar.classList.contains('show')) {
-        this.$refs.navbar.classList.remove('show')
+        this.navCollapse.hide()
+      } else {
+        this.navCollapse.show()
       }
     }
+  },
+  mounted () {
+    this.navCollapse = new Collapse(this.$refs.navbar, { toggle: false })
   }
 }
 </script>

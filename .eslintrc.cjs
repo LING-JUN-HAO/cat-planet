@@ -31,6 +31,7 @@ module.exports = {
   rules: {
   },
   globals: {
-    bootstrap: 'readonly'
+    bootstrap: 'readonly',
+    Collapse: 'readonly'
   }
 }
