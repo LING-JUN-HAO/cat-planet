@@ -4,9 +4,9 @@
     <h2 data-aos="fade-down" data-aos-delay="0" data-aos-duration="900" class="text-center py-6 m-0 fw-bold">貓貓魔法解說</h2>
     <div data-aos="fade-up" data-aos-delay="450" data-aos-duration="900"
       class="product-item-content content-shadow border border-1 bg-white rounded-4 d-flex p-4 p-md-5">
-      <div class="row w-100 ms-0">
-        <div class="col-12 col-md-6">
-          <img class="main-img w-100 h-100 object-fit-cover rounded-3" :src="product.imageUrl" :alt="product.id">
+      <div class="row ms-0">
+        <div class="col-12 col-md-6" style="height: 25rem;">
+          <SwiperThumb :product="product"></SwiperThumb>
         </div>
         <div class="col-12 col-md-6 d-flex flex-column">
           <span class="badge bg-pink rounded-pill p-2 my-3 align-self-start fs-6 fw-normal">{{ product.category
@@ -45,15 +45,14 @@
       </div>
     </div>
   </section>
-  <HotProductComponent :products="products"></HotProductComponent>
   <RouterButton :arrowIcon="'left'" :routerName="'consumerProducts'" :query="{ category: '所有產品', page: 1 }"
     :display="'貓咪寶物箱'"></RouterButton>
 </template>
 
 <script>
 import { mapActions, mapState } from 'pinia'
-import HotProductComponent from '@/components/consumer/homePage/HotProductComponent.vue'
 import RouterButton from '@/components/utils/RouterButton.vue'
+import SwiperThumb from '@/components/utils/SwiperThumb.vue'
 import { cartStore } from '@/store/Cart.js'
 import { loadingStore } from '@/store/Loading.js'
 import { getProductApi, getProductsApi } from '@/mixin/Api.js'
@@ -72,6 +71,7 @@ export default {
       try {
         const productInfo = await getProductApi(id)
         this.product = productInfo.product
+        console.log('product', this.product)
       } catch (error) {
         this.$showNotification('Oops...請稍後嘗試')
       }
@@ -107,7 +107,7 @@ export default {
     this.onRouteChange()
   },
   components: {
-    HotProductComponent, RouterButton
+    RouterButton, SwiperThumb
   }
 }
 </script>

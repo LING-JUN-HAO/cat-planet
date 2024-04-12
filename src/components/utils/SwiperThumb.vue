@@ -1,16 +1,16 @@
 <template>
   <swiper :spaceBetween="10" :thumbs="{ swiper: thumbsSwiper }" :modules="modules" class="main-swiperThumb-container">
-    <template v-for="(item, index) in products" :key="index + '123'">
+    <template v-for="(item, index) in product.imagesUrl" :key="index + '123'">
       <swiper-slide>
-        <img :src="item.imageUrl" alt="">
+        <img :src="item" alt="">
       </swiper-slide>
     </template>
   </swiper>
   <swiper @swiper="setThumbsSwiper" :spaceBetween="10" :slidesPerView="4" :freeMode="false" :watchSlidesProgress="true"
-    :modules="modules" class="preview-swiperThumb-container">
-    <template v-for="(item, index) in products" :key="index + '123'">
+    :modules="modules" class="preview-swiperThumb-container swiper-childre py-2">
+    <template v-for="(item, index) in product.imagesUrl" :key="index + '123'">
       <swiper-slide>
-        <img :src="item.imageUrl" alt="">
+        <img :src="item" alt="">
       </swiper-slide>
     </template>
   </swiper>
@@ -23,7 +23,7 @@ import 'swiper/css/thumbs'
 import { FreeMode, Thumbs } from 'swiper/modules'
 
 export default {
-  props: ['products'],
+  props: ['product'],
   data () {
     return {
       thumbsSwiper: null,
@@ -43,43 +43,19 @@ export default {
 </script>
 
 <style scoped>
-.swiper {
-  width: 100%;
-  height: 300px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.swiper-slide {
-  background-size: cover;
-  background-position: center;
-}
-
-.mySwiper2 {
+.main-swiperThumb-container {
   height: 80%;
-  width: 100%;
 }
 
-.mySwiper {
+.preview-swiperThumb-container {
   height: 20%;
-  box-sizing: border-box;
-  padding: 10px 0;
-}
 
-.mySwiper .swiper-slide {
-  width: 25%;
-  height: 100%;
-  opacity: 0.4;
-}
+  .swiper-slide {
+    opacity: 0.4;
+  }
 
-.mySwiper .swiper-slide-thumb-active {
-  opacity: 1;
-}
-
-.swiper-slide img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  .swiper-slide-thumb-active {
+    opacity: 1;
+  }
 }
 </style>

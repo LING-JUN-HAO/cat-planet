@@ -2,8 +2,8 @@
 .hot-product-title::before {
   content: "";
   position: absolute;
-  height: 4em;
-  width: 4em;
+  height: 3.5em;
+  width: 3.5em;
   border: 20px solid #F1b444;
   top: 0;
   left: 1em;
@@ -16,7 +16,7 @@
 }
 
 .hot-product-title::after {
-  transform: rotate(25deg) translate(-35%, -35%);
+  transform: rotate(30deg) translate(-35%, -35%);
 }
 
 @media screen and (max-width: 768px){
