@@ -7,7 +7,6 @@
         建立新的產品
       </button>
     </div>
-    <MobileHint></MobileHint>
     <div class="table-container">
       <table class="table table-hover mt-3">
         <thead>
@@ -97,7 +96,6 @@
 <script>
 import { mapState, mapActions } from 'pinia'
 import Pagination from '@/components/utils/PaginationComponent.vue'
-import MobileHint from '@/components/utils/MobileHint.vue'
 import AdminHeader from '@/components/admin/AdminHeader.vue'
 import AdminProductModal from '@/components/admin/AdminProductModal.vue'
 import AdminDeleteModal from '@/components/admin/AdminDeleteModal.vue'
@@ -230,7 +228,7 @@ export default {
     this.checkAdmin()
   },
   components: {
-    Pagination, AdminHeader, AdminProductModal, AdminDeleteModal, AdminMultiImageModal, MobileHint
+    Pagination, AdminHeader, AdminProductModal, AdminDeleteModal, AdminMultiImageModal
   }
 }
 </script>

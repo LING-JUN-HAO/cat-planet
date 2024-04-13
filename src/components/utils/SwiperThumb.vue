@@ -1,16 +1,17 @@
 <template>
-  <swiper :spaceBetween="10" :thumbs="{ swiper: thumbsSwiper }" :modules="modules" class="main-swiperThumb-container">
-    <template v-for="(item, index) in products" :key="index + '123'">
+  <swiper :spaceBetween="10" :thumbs="{ swiper: thumbsSwiper }" :modules="modules" class="main-swiperThumb-container"
+    :class="{ 'full': !isThumbDisplay }">
+    <template v-for="(item, index) in productImages" :key="index + '123'">
       <swiper-slide>
-        <img :src="item.imageUrl" alt="">
+        <img :src="item" alt="">
       </swiper-slide>
     </template>
   </swiper>
-  <swiper @swiper="setThumbsSwiper" :spaceBetween="10" :slidesPerView="4" :freeMode="false" :watchSlidesProgress="true"
-    :modules="modules" class="preview-swiperThumb-container">
-    <template v-for="(item, index) in products" :key="index + '123'">
-      <swiper-slide>
-        <img :src="item.imageUrl" alt="">
+  <swiper v-if="isThumbDisplay" @swiper="setThumbsSwiper" :spaceBetween="10" :slidesPerView="4" :freeMode="false"
+    :watchSlidesProgress="true" :modules="modules" class="preview-swiperThumb-container swiper-childre py-2">
+    <template v-for="(item, index) in productImages" :key="index + '123'">
+      <swiper-slide :class="{ 'hidden': item === product.imageUrl }">
+        <img :src="item" alt="">
       </swiper-slide>
     </template>
   </swiper>
@@ -23,16 +24,29 @@ import 'swiper/css/thumbs'
 import { FreeMode, Thumbs } from 'swiper/modules'
 
 export default {
-  props: ['products'],
+  props: ['product'],
   data () {
     return {
       thumbsSwiper: null,
+      productImages: [],
+      isThumbDisplay: true,
       modules: [FreeMode, Thumbs]
     }
   },
   methods: {
     setThumbsSwiper (swiper) {
       this.thumbsSwiper = swiper
+    }
+  },
+  watch: {
+    product: function (newVal, oldVal) {
+      if (this.product.imagesUrl === undefined || this.product.imagesUrl.length === 0) {
+        this.productImages = [this.product.imageUrl]
+        this.isThumbDisplay = false
+      } else {
+        this.productImages = this.product.imagesUrl
+        this.isThumbDisplay = true
+      }
     }
   },
   components: {
@@ -43,43 +57,27 @@ export default {
 </script>
 
 <style scoped>
-.swiper {
-  width: 100%;
-  height: 300px;
-  margin-left: auto;
-  margin-right: auto;
+.main-swiperThumb-container {
+  height: 75%;
 }
 
-.swiper-slide {
-  background-size: cover;
-  background-position: center;
-}
-
-.mySwiper2 {
-  height: 80%;
-  width: 100%;
-}
-
-.mySwiper {
-  height: 20%;
-  box-sizing: border-box;
-  padding: 10px 0;
-}
-
-.mySwiper .swiper-slide {
-  width: 25%;
+.full {
   height: 100%;
-  opacity: 0.4;
 }
 
-.mySwiper .swiper-slide-thumb-active {
-  opacity: 1;
-}
+.preview-swiperThumb-container {
+  height: 25%;
 
-.swiper-slide img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  .swiper-slide {
+    opacity: 0.4;
+  }
+
+  /* .hidden {
+    opacity: 1;
+  } */
+
+  .swiper-slide-thumb-active {
+    opacity: 1;
+  }
 }
 </style>
