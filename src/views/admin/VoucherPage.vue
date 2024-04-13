@@ -7,7 +7,6 @@
         建立新的優惠卷
       </button>
     </div>
-    <MobileHint></MobileHint>
     <div class="table-container">
       <table class="table table-hover mt-3">
         <thead>
@@ -82,7 +81,6 @@
 <script>
 import { mapState, mapActions } from 'pinia'
 import moment from 'moment'
-import MobileHint from '@/components/utils/MobileHint.vue'
 import Pagination from '@/components/utils/PaginationComponent.vue'
 import AdminHeader from '@/components/admin/AdminHeader.vue'
 import AdminCouponModal from '@/components/admin/AdminCouponModal.vue'
@@ -204,7 +202,7 @@ export default {
     this.checkAdmin()
   },
   components: {
-    Pagination, AdminCouponModal, AdminDeleteModal, AdminHeader, MobileHint
+    Pagination, AdminCouponModal, AdminDeleteModal, AdminHeader
   }
 }
 </script>

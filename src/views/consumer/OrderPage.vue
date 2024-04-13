@@ -58,7 +58,6 @@
       </div>
       <div class="order-page-box pt-4">
         <h3 class="p-2 mb-4 text-bg position-relative z-1 h4">商品資訊</h3>
-        <MobileHint></MobileHint>
         <div class="mt-3 table-container">
           <table class="table align-middle">
             <thead>
@@ -105,7 +104,6 @@
 import { mapActions, mapState } from 'pinia'
 import Clipboard from 'clipboard'
 import moment from 'moment'
-import MobileHint from '@/components/utils/MobileHint.vue'
 import TimelineComponent from '@/components/utils/TimelineComponent.vue'
 import RouterButton from '@/components/utils/RouterButton.vue'
 import { loadingStore } from '@/store/Loading.js'
@@ -165,7 +163,7 @@ export default {
     await this.getOrder(this.$route.query.orderID)
   },
   components: {
-    TimelineComponent, RouterButton, MobileHint
+    TimelineComponent, RouterButton
   }
 }
 </script>

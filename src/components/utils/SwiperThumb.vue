@@ -1,15 +1,16 @@
 <template>
-  <swiper :spaceBetween="10" :thumbs="{ swiper: thumbsSwiper }" :modules="modules" class="main-swiperThumb-container">
-    <template v-for="(item, index) in product.imagesUrl" :key="index + '123'">
+  <swiper :spaceBetween="10" :thumbs="{ swiper: thumbsSwiper }" :modules="modules" class="main-swiperThumb-container"
+    :class="{ 'full': !isThumbDisplay }">
+    <template v-for="(item, index) in productImages" :key="index + '123'">
       <swiper-slide>
         <img :src="item" alt="">
       </swiper-slide>
     </template>
   </swiper>
-  <swiper @swiper="setThumbsSwiper" :spaceBetween="10" :slidesPerView="4" :freeMode="false" :watchSlidesProgress="true"
-    :modules="modules" class="preview-swiperThumb-container swiper-childre py-2">
-    <template v-for="(item, index) in product.imagesUrl" :key="index + '123'">
-      <swiper-slide>
+  <swiper v-if="isThumbDisplay" @swiper="setThumbsSwiper" :spaceBetween="10" :slidesPerView="4" :freeMode="false"
+    :watchSlidesProgress="true" :modules="modules" class="preview-swiperThumb-container swiper-childre py-2">
+    <template v-for="(item, index) in productImages" :key="index + '123'">
+      <swiper-slide :class="{ 'hidden': item === product.imageUrl }">
         <img :src="item" alt="">
       </swiper-slide>
     </template>
@@ -27,12 +28,25 @@ export default {
   data () {
     return {
       thumbsSwiper: null,
+      productImages: [],
+      isThumbDisplay: true,
       modules: [FreeMode, Thumbs]
     }
   },
   methods: {
     setThumbsSwiper (swiper) {
       this.thumbsSwiper = swiper
+    }
+  },
+  watch: {
+    product: function (newVal, oldVal) {
+      if (this.product.imagesUrl === undefined || this.product.imagesUrl.length === 0) {
+        this.productImages = [this.product.imageUrl]
+        this.isThumbDisplay = false
+      } else {
+        this.productImages = this.product.imagesUrl
+        this.isThumbDisplay = true
+      }
     }
   },
   components: {
@@ -44,15 +58,23 @@ export default {
 
 <style scoped>
 .main-swiperThumb-container {
-  height: 80%;
+  height: 75%;
+}
+
+.full {
+  height: 100%;
 }
 
 .preview-swiperThumb-container {
-  height: 20%;
+  height: 25%;
 
   .swiper-slide {
     opacity: 0.4;
   }
+
+  /* .hidden {
+    opacity: 1;
+  } */
 
   .swiper-slide-thumb-active {
     opacity: 1;

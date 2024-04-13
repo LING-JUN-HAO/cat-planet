@@ -12,7 +12,6 @@
             <i class="bi bi-trash"></i>
             清空購物車
           </button>
-          <MobileHint></MobileHint>
           <div class="table-container">
             <table class="table align-middle mt-4 mb-0">
               <thead>
@@ -145,7 +144,7 @@
               </ul>
             </div>
             <h3 class="mb-4 text-bg position-relative z-1 h4">付款方式</h3>
-            <div class="row">
+            <div class="row mb-4">
               <ul class="col-12 w-100 d-flex flex-column flex-md-row flex-wrap px-2">
                 <li class="col-12 col-md-6 pb-3 pe-0 pe-md-3" @click="setOrderInfo('paymentMethod', '信用卡')">
                   <div :class="{ active: this.orderInfo.paymentMethod === '信用卡' }"
@@ -175,28 +174,27 @@
             </div>
             <div v-if="this.orderInfo.paymentMethod == '信用卡'">
               <h3 class="mb-4 text-bg position-relative z-1 h4">信用卡資訊</h3>
-              <div class="row">
+              <div class="row creditCart-container">
                 <div class="mb-3 col-12">
                   <label for="name" class="form-label required">卡號</label>
-                  <VField id="name" name="卡號" type="text" class="form-control py-2"
+                  <VField id="name" name="卡號" type="tel" class="form-control py-2" maxlength="16"
                     @input="updateCardNumber($event.target.value)" :class="{ 'is-invalid': errors['卡號'] }"
-                    placeholder="請輸入卡號" rules="required|min:15|max:19|numeric:true">
+                    placeholder="**** **** **** ****" rules="required" v-model="cardNumber">
                   </VField>
                   <ErrorMessage name="卡號" class="invalid-feedback"></ErrorMessage>
                 </div>
                 <div class="mb-3 col-12 col-md-6">
                   <label for="period" class="form-label required">卡片有效年月</label>
-                  <VField id="period" name="卡片有效年月" type="date" class="form-control py-2"
-                    @input="updateExpiryDate($event.target.value)" :class="{ 'is-invalid': errors['卡片有效年月'] }"
-                    rules="required">
+                  <VField id="period" name="卡片有效年月" type="tel" class="form-control py-2" placeholder="MM/YY"
+                    maxlength="5" v-model="expiryDate" :class="{ 'is-invalid': errors['卡片有效年月'] }" rules="required">
                   </VField>
                   <ErrorMessage name="卡片有效年月" class="invalid-feedback"></ErrorMessage>
                 </div>
                 <div class="mb-3 col-12 col-md-6">
                   <label for="checkCode" class="form-label required">檢查碼</label>
-                  <VField id="checkCode" name="檢查碼" type="text" class="form-control py-2"
+                  <VField id="checkCode" name="檢查碼" type="text" class="form-control py-2" maxlength="3"
                     @input="updateSecurityCode($event.target.value)" :class="{ 'is-invalid': errors['檢查碼'] }"
-                    placeholder="請輸入檢查碼" rules="required|length:3|numeric:true">
+                    placeholder="CVC/CVV" rules="required|length:3|numeric:true">
                   </VField>
                   <ErrorMessage name="檢查碼" class="invalid-feedback"></ErrorMessage>
                 </div>
@@ -251,7 +249,6 @@
 
 <script>
 import { mapState, mapActions } from 'pinia'
-import MobileHint from '@/components/utils/MobileHint.vue'
 import CartDeleteModal from '@/components/consumer/cartPage/CartDeleteModal.vue'
 import EmptyComponent from '@/components/consumer/cartPage/EmptyComponent.vue'
 import TimelineComponent from '@/components/utils/TimelineComponent.vue'
@@ -265,7 +262,9 @@ export default {
       isDefault: false,
       isVoucher: false,
       isPlaceholderVisible: true,
-      couponCode: ''
+      couponCode: '',
+      expiryDate: '',
+      cardNumber: ''
     }
   },
   methods: {
@@ -298,7 +297,6 @@ export default {
       }
     },
     async removeCartItem (id) {
-      console.log('this.shippingMethod', this.shippingMethod)
       this.setLoading(true, '商品移除中...請稍後')
       try {
         await removeCartItemApi(id)
@@ -327,7 +325,6 @@ export default {
       }
     },
     routerChange (routerName, query, type = 'routerChange') {
-      console.log('type', type)
       if (type === 'formSubmit') {
         this.orderInfoValidate(routerName, query)
       } else {
@@ -366,6 +363,23 @@ export default {
     ...mapActions(cartStore, ['getCart', 'setOrderInfo', 'updateCardNumber', 'updateExpiryDate', 'updateSecurityCode', 'cleanOrderInfo']),
     ...mapActions(loadingStore, ['setLoading', 'setLoadItem'])
   },
+  watch: {
+    expiryDate (newExpiryDate, oldExpiryDate) {
+      if (newExpiryDate.length === 2 && newExpiryDate.length > oldExpiryDate.length) {
+        this.expiryDate += '/'
+      } else if (newExpiryDate.length < oldExpiryDate.length && (oldExpiryDate.charAt(2) === '/' && oldExpiryDate.length === 3)) {
+        this.expiryDate = oldExpiryDate.slice(0, 1)
+      }
+    },
+    cardNumber (newCardNumber, oldCardNumber) {
+      if (newCardNumber.length < oldCardNumber.length && oldCardNumber.charAt(oldCardNumber.length - 1) === ' ') {
+        this.cardNumber = oldCardNumber.slice(0, -1)
+      }
+      if (this.cardNumber.trim().length % 4 === 0 && this.cardNumber.trim().length !== 0) {
+        this.cardNumber = this.cardNumber + ' '
+      }
+    }
+  },
   computed: {
     ...mapState(cartStore, ['cart', 'orderInfo']),
     ...mapState(loadingStore, ['isLoading', 'loadingMessage', 'loadingItem'])
@@ -378,7 +392,7 @@ export default {
     this.setLoading(false, '')
   },
   components: {
-    CartDeleteModal, TimelineComponent, EmptyComponent, MobileHint
+    CartDeleteModal, TimelineComponent, EmptyComponent
   }
 }
 </script>

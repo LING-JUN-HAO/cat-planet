@@ -4,7 +4,7 @@
       <label for="search" class="form-label pe-2 mt-auto">搜尋</label>
       <input name="search" type="text" class="form-control" style="width: 250px;" @input="$emit('searchValue', $event.target.value)">
     </div> -->
-    <div v-for="item in products" :key="item.id" class="col-12 col-sm-6 col-lg-4 mb-4 text-center pe-0">
+    <div v-for="item in products" :key="item.id" class="card-container col-12 col-sm-6 col-lg-4 mb-4 text-center pe-0">
       <div class="image-container border border-1 border-secondary rounded-1" @click="this.$router.push({ name: 'consumerProductItem', query: { productID: item.id } })">
         <div class="overflow-hidden position-relative">
           <img :src="item.imageUrl" :alt="item.id" class="w-100 object-fit-cover productImg ">

@@ -2,7 +2,6 @@
   <AdminHeader></AdminHeader>
   <LoadingComponent v-model:active="isLoading" :loadingMessage="loadingMessage"></LoadingComponent>
   <div class="admin-order-page container table-container">
-    <MobileHint></MobileHint>
     <div class="table-container">
       <table class="table table-hover mt-3 mt-md-6">
         <thead>
@@ -96,7 +95,6 @@
 <script>
 import { mapState, mapActions } from 'pinia'
 import moment from 'moment'
-import MobileHint from '@/components/utils/MobileHint.vue'
 import Pagination from '@/components/utils/PaginationComponent.vue'
 import AdminOrderModal from '@/components/admin/AdminOrderModal.vue'
 import AdminDeleteModal from '@/components/admin/AdminDeleteModal.vue'
@@ -211,7 +209,7 @@ export default {
     this.checkAdmin()
   },
   components: {
-    Pagination, AdminOrderModal, AdminDeleteModal, AdminHeader, MobileHint
+    Pagination, AdminOrderModal, AdminDeleteModal, AdminHeader
   }
 }
 </script>

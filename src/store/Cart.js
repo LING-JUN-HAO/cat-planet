@@ -54,7 +54,6 @@ export const cartStore = defineStore('cartStore', {
       this.orderInfo[key] = value
     },
     updateCardNumber (newValue) {
-      console.log('newValue', newValue)
       this.orderInfo.creditCardInfo.cardNumber = newValue
     },
     updateExpiryDate (newValue) {
