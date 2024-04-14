@@ -1,8 +1,9 @@
 .order-page,
 .cart-page {
-  .total-container{
+  .total-container {
     border-bottom: 1px solid #dee2e6;
     letter-spacing: .25em;
+
     .text-bg:before {
       content: '';
       position: absolute;
@@ -13,41 +14,50 @@
       z-index: -1;
     }
   }
-    table {
-      letter-spacing: .25em;
-      thead {
-        letter-spacing: .5em;
+
+  table {
+    letter-spacing: .25em;
+
+    thead {
+      letter-spacing: .5em;
+    }
+
+    .input-group {
+      flex-wrap: nowrap;
+
+      input {
+        min-width: 50px;
       }
-      .input-group{
-        flex-wrap: nowrap;
-        input{
-          min-width: 50px;
-        }
-      }
-    }
-    .product-img {
-      min-height: 5.625rem;
-      background-size: cover;
-      background-position: center center;
-    }
-    .product-img,
-    .voucher-text,
-    .delProductItem{
-      cursor: pointer;
-    }
-    .row{
-      margin: 0;
     }
   }
 
-.purchase-container{
+  .product-img {
+    min-height: 5.625rem;
+    background-size: cover;
+    background-position: center center;
+  }
+
+  .product-img,
+  .voucher-text,
+  .delProductItem {
+    cursor: pointer;
+  }
+
+  .row {
+    margin: 0;
+  }
+}
+
+.purchase-container {
   cursor: pointer;
   border: 2px solid #e2e2e2;
 }
-.purchase-container.active{
+
+.purchase-container.active {
   border: 2px solid #ff6855;
 }
-.purchase-container .purchase-content::before{
+
+.purchase-container .purchase-content::before {
   position: absolute;
   top: 50%;
   left: 0px;
@@ -59,10 +69,12 @@
   border-radius: 50%;
   border: 2px solid #e2e2e2;
 }
-.purchase-container.active .purchase-content::before{
+
+.purchase-container.active .purchase-content::before {
   background-color: #F47373;
 }
-.purchase-content::after{
+
+.purchase-content::after {
   content: "";
   position: absolute;
   top: 50%;
@@ -75,6 +87,13 @@
   width: 6px;
 }
 
-.creditCart-container input{
+.creditCart-container input {
   letter-spacing: .25rem;
+}
+
+.creditCart-container label::after {
+  content: "*";
+  padding-left: 2px;
+  color: red;
+  opacity: 0.7;
 }

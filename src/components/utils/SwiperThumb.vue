@@ -66,6 +66,7 @@ export default {
 }
 
 .preview-swiperThumb-container {
+  cursor: pointer;
   height: 25%;
 
   .swiper-slide {

@@ -12,12 +12,12 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarText" ref="navbar">
           <ul class="navbar-nav mb-2 mb-lg-0 w-100 justify-content-end pe-4">
-            <!-- <li class="nav-item">
-              <router-link class="nav-link fs-bold fs-6" active-class="active" to="/consumer/home">
+            <li class="nav-item">
+              <router-link class="nav-link fs-bold fs-6" active-class="active" to="/consumer/about">
                 <i class="bi bi-award me-1 fs-4"></i>
                 <span class="fs-6">關於喵星球</span>
               </router-link>
-            </li> -->
+            </li>
             <li class="nav-item">
               <router-link class="nav-link fs-bold" active-class="active" to="/consumer/products?category=所有產品&page=1">
                 <i class="bi bi-shop me-1 fs-4"></i>

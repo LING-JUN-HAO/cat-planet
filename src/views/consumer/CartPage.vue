@@ -177,7 +177,7 @@
               <div class="row creditCart-container">
                 <div class="mb-3 col-12">
                   <label for="name" class="form-label required">卡號</label>
-                  <VField id="name" name="卡號" type="tel" class="form-control py-2" maxlength="16"
+                  <VField id="name" name="卡號" type="tel" class="form-control py-2" maxlength="19"
                     @input="updateCardNumber($event.target.value)" :class="{ 'is-invalid': errors['卡號'] }"
                     placeholder="**** **** **** ****" rules="required" v-model="cardNumber">
                   </VField>
@@ -372,11 +372,11 @@ export default {
       }
     },
     cardNumber (newCardNumber, oldCardNumber) {
-      if (newCardNumber.length < oldCardNumber.length && oldCardNumber.charAt(oldCardNumber.length - 1) === ' ') {
-        this.cardNumber = oldCardNumber.slice(0, -1)
+      if (newCardNumber.length < oldCardNumber.length && newCardNumber.charAt(newCardNumber.length - 1) === ' ') {
+        this.cardNumber = oldCardNumber.slice(0, -2)
       }
-      if (this.cardNumber.trim().length % 4 === 0 && this.cardNumber.trim().length !== 0) {
-        this.cardNumber = this.cardNumber + ' '
+      if (newCardNumber.length > oldCardNumber.length && (newCardNumber.length + 1) % 5 === 0 && this.cardNumber.length !== 0 && this.cardNumber.length < 19) {
+        this.cardNumber = newCardNumber + ' '
       }
     }
   },
