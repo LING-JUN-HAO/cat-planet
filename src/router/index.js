@@ -11,6 +11,7 @@ import ConsumerProducts from '@/views/consumer/ProductPage.vue'
 import ConsumerProductItem from '@/views/consumer/ProductItem.vue'
 import ConsumerCart from '@/views/consumer/CartPage.vue'
 import ConsumerOrder from '@/views/consumer/OrderPage.vue'
+import AboutPage from '@/views/consumer/AboutPage.vue'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -76,6 +77,11 @@ const router = createRouter({
           path: 'productItem',
           name: 'consumerProductItem',
           component: ConsumerProductItem
+        },
+        {
+          path: 'about',
+          name: 'consumerAbout',
+          component: AboutPage
         }
       ]
     },
