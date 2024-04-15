@@ -14,20 +14,18 @@ Demo Website：<https://ling-jun-hao.github.io/cat-planet/#/>
 
 ## 使用技術
 
-* 使用 Vue 2 和 Vue Cli 架設開發。
-* 引入 Vue Router 與 Vue Axios 等套件。
-* 使用 Bootstrap 5 & SCSS 建構響應式版型。
-* 加入 ESLint standard 規範管理程式品質。
-* 透過 Pinia 進行狀態管理，負責跨元件參數操作。
-
-## 使用技術2
-
 ![Vue.js](https://img.shields.io/badge/vuejs-%2335495e.svg?style=for-the-badge&logo=vuedotjs&logoColor=%234FC08D)
 ![Bootstrap.js](https://img.shields.io/badge/-Bootstrap-563D7C?style=for-the-badge&logo=bootstrap)
 ![SASS](https://img.shields.io/badge/SASS-hotpink.svg?style=for-the-badge&logo=SASS&logoColor=white)
 ![ESLint](https://img.shields.io/badge/ESLint-4B3263?style=for-the-badge&logo=eslint&logoColor=white)
 ![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white)
 ![Github Pages](https://img.shields.io/badge/github%20pages-121013?style=for-the-badge&logo=github&logoColor=white)
+
+* 使用 Vue 2 和 Vue Cli 架設開發。
+* 引入 Vue Router 與 Vue Axios 等套件。
+* 使用 Bootstrap 5 & SCSS 建構響應式版型。
+* 加入 ESLint standard 規範管理程式品質。
+* 透過 Pinia 進行狀態管理，負責跨元件參數操作。
 
 ## 使用套件
 
