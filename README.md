@@ -37,6 +37,10 @@ Demo Website：<https://ling-jun-hao.github.io/cat-planet/#/>
 * AOS 動畫效果。
 * Bootstrap Icons。
 
+## 後端Swagger API文件
+
+* <https://hexschool.github.io/vue3-courses-swaggerDoc/>
+
 ## 前台簡介
 
 * 首頁
@@ -59,7 +63,7 @@ npm install
 
 ## 啟動方式
 
-Start the development server on <http://localhost:3000>
+啟動伺服器預設使用：<http://localhost:3000>
 
 ```bash=
 npm run dev
